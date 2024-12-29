@@ -3,7 +3,7 @@ import { FaYoutube, FaTwitch, FaQuestion } from "react-icons/fa";
 
 import { MainBackgroundProvider } from "@/components/provider";
 
-export default function Home() {
+export default function Index() {
     return (
         <MainBackgroundProvider>
             <Flex direction="column" align="center" maxW="400px" gap={4}>
