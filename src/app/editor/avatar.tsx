@@ -1,8 +1,10 @@
+"use client";
+
 import { 
     Avatar, Indicator, Tooltip, 
     Popover, PopoverContent, PopoverTrigger, PopoverHeader, PopoverBody, 
     Text, Flex, useNumberInput, Input, IconButton,
-    Select, Option, Button, Avator
+    Select, Option, Button
 } from "@yamada-ui/react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
