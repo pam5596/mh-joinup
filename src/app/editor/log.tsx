@@ -1,6 +1,6 @@
 import { Box, Avatar, Flex, Text } from "@yamada-ui/react"
 
-export default function History() {
+export default function Log() {
     return (
         <Box w="full" p={1}>
             <Flex gap={2} align="center">

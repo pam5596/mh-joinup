@@ -6,7 +6,7 @@ import { LuSwords } from "react-icons/lu";
 
 import { LiveBackgroundProvider } from "@/components/provider";
 import EditorAvatar from "./avatar";
-import History from "./history";
+import Log from "./log";
 
 export default function Editor() {
     return (
@@ -38,11 +38,11 @@ export default function Editor() {
                     </Flex>
                 </GridItem>
                 <GridItem  colSpan={1} rowSpan={4} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.8), rgba(72, 85, 99, 0.6))" p={{sm: 2, base:4}}>
-                    <Heading size="xs" color="white">履歴</Heading>
+                    <Heading size="xs" color="white">ログ</Heading>
                     <Separator mt={2} mb={2} />
                     <ScrollArea h="217px">
                         <Flex direction="column" gap={1}>
-                            { Array(20).fill(0).map((_, i) => <History key={i} />)}
+                            { Array(20).fill(0).map((_, i) => <Log key={i} />)}
                         </Flex>
                     </ScrollArea>
                 </GridItem>
