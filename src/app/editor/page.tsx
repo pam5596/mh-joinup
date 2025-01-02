@@ -4,14 +4,14 @@ import { SimpleGrid, GridItem, Button, Flex, Heading, ScrollArea, Separator } fr
 import { IoSettingsSharp } from "react-icons/io5";
 import { LuSwords } from "react-icons/lu";
 
-import { MainBackgroundProvider } from "@/components/provider";
+import { LiveBackgroundProvider } from "@/components/provider";
 import EditorAvatar from "./avatar";
 import History from "./history";
 
 export default function Editor() {
     return (
-        <MainBackgroundProvider>
-            <SimpleGrid w="full" h="full" columns={2} rows={4} spacing={4} gap={{sm: 2, base: 4}} minW="265px">
+        <LiveBackgroundProvider>
+            <SimpleGrid w="full" h="2xl" columns={2} rows={6} spacing={4} gap={{sm: 2, base: 4}} minW="265px">
                 <GridItem colSpan={2} rowSpan={1} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.9), rgba(72, 85, 99, 0.8))" p={{sm: 2, base: 4}}>
                     <Heading size="xs" color="white" mb={2}>参加者</Heading>
                     <Separator mt={2} mb={2} />
@@ -22,12 +22,12 @@ export default function Editor() {
                         <EditorAvatar />
                     </Flex>
                 </GridItem>
-                <GridItem colSpan={1} rowSpan={3} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}}>
+                <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}}>
                     <Heading size="xs" color="white">待機者</Heading>
                     <Separator mt={2} mb={2} />
-                    <ScrollArea h="225px" overflowX="hidden">
+                    <ScrollArea h="354px" overflowX="hidden">
                         <SimpleGrid columns={{md:3, base: 4}} spacing={2} gap={{sm: 1, base: 4}} justifyItems="center" p={3}>
-                            { Array(20).fill(0).map((_, i) => <EditorAvatar key={i} />)}
+                            { Array(30).fill(0).map((_, i) => <EditorAvatar key={i} />)}
                         </SimpleGrid>
                     </ScrollArea>
                 </GridItem>
@@ -37,16 +37,16 @@ export default function Editor() {
                         <Button colorScheme="blackAlpha" size="sm" startIcon={<IoSettingsSharp/>} h="30%">Bot設定</Button>
                     </Flex>
                 </GridItem>
-                <GridItem  colSpan={1} rowSpan={2} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.8), rgba(72, 85, 99, 0.6))" p={{sm: 2, base:4}} h={40}>
-                    <Heading size="xs" color="white" mb={2}>履歴</Heading>
+                <GridItem  colSpan={1} rowSpan={4} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.8), rgba(72, 85, 99, 0.6))" p={{sm: 2, base:4}}>
+                    <Heading size="xs" color="white">履歴</Heading>
                     <Separator mt={2} mb={2} />
-                    <ScrollArea h="100px">
+                    <ScrollArea h="217px">
                         <Flex direction="column" gap={1}>
                             { Array(20).fill(0).map((_, i) => <History key={i} />)}
                         </Flex>
                     </ScrollArea>
                 </GridItem>
             </SimpleGrid>
-        </MainBackgroundProvider>
+        </LiveBackgroundProvider>
     )
 }
