@@ -33,7 +33,7 @@ export default function Editor() {
                 </GridItem>
                 <GridItem colSpan={1} rowSpan={1} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.8), rgba(72, 85, 99, 0.6))" p={{sm: 2, base:4}}>
                     <Flex direction="column" gap={2} h="full">
-                        <Button colorScheme="blackAlpha" color="amber.300" size="lg" startIcon={<LuSwords/>} h="70%">クエスト終了</Button>
+                        <Button colorScheme="blackAlpha" color="teal.400" size="lg" startIcon={<LuSwords/>} h="70%">クエスト終了</Button>
                         <Button colorScheme="blackAlpha" size="sm" startIcon={<IoSettingsSharp/>} h="30%">Bot設定</Button>
                     </Flex>
                 </GridItem>
