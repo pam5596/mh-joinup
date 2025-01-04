@@ -9,7 +9,7 @@ type Props = {
     onClose: () => void;
 }
 
-export default function HomeModal({ isOpen, onClose }: Props) {
+export default function SettingModal({ isOpen, onClose }: Props) {
     return (
         <Modal open={isOpen} onClose={onClose} size="sm" scrollBehavior="inside" bgColor="blackAlpha.700" color="white">
             <ModalHeader p="16px">ユーザ設定</ModalHeader>
