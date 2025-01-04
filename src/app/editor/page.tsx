@@ -5,8 +5,8 @@ import { IoSettingsSharp } from "react-icons/io5";
 import { LuSwords } from "react-icons/lu";
 
 import { LiveBackgroundProvider } from "@/components/provider";
-import EditorAvatar from "./avatar";
-import Log from "./log";
+import JoinerAvatar from "./joinerAvatar";
+import LogItem from "./logItem";
 
 export default function Editor() {
     return (
@@ -16,10 +16,10 @@ export default function Editor() {
                     <Heading size="xs" color="white" mb={2}>参加者</Heading>
                     <Separator mt={2} mb={2} />
                     <Flex justify="center" align="center" gap={{sm: 2, md: 4, base: 6}} p={3}>
-                        <EditorAvatar />
-                        <EditorAvatar />
-                        <EditorAvatar />
-                        <EditorAvatar />
+                        <JoinerAvatar />
+                        <JoinerAvatar />
+                        <JoinerAvatar />
+                        <JoinerAvatar />
                     </Flex>
                 </GridItem>
                 <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}}>
@@ -27,7 +27,7 @@ export default function Editor() {
                     <Separator mt={2} mb={2} />
                     <ScrollArea h="354px" overflowX="hidden">
                         <SimpleGrid columns={{md:3, base: 4}} spacing={2} gap={{sm: 1, base: 4}} justifyItems="center" p={3}>
-                            { Array(30).fill(0).map((_, i) => <EditorAvatar key={i} />)}
+                            { Array(30).fill(0).map((_, i) => <JoinerAvatar key={i} />)}
                         </SimpleGrid>
                     </ScrollArea>
                 </GridItem>
@@ -42,7 +42,7 @@ export default function Editor() {
                     <Separator mt={2} mb={2} />
                     <ScrollArea h="217px">
                         <Flex direction="column" gap={1}>
-                            { Array(20).fill(0).map((_, i) => <Log key={i} />)}
+                            { Array(20).fill(0).map((_, i) => <LogItem key={i} />)}
                         </Flex>
                     </ScrollArea>
                 </GridItem>
