@@ -8,7 +8,7 @@ import {
 } from "@yamada-ui/react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 
-export default function EditorAvatar() {
+export default function JoinerAvatar() {
     const { getInputProps, getIncrementProps, getDecrementProps } = useNumberInput({
         defaultValue: 0,
         min: 0
