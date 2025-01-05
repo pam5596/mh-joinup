@@ -9,7 +9,7 @@ export default function Index() {
             <Flex direction="column" align="center" maxW="400px" gap={4}>
                 <Flex direction="column" align="center">
                     <Image src="/logo.svg" alt="logo" maxW="150px" />
-                    <Heading as="h1" size={{sm: "2xl", base: "3xl"}}>MHJoinUp</Heading>
+                    <Heading as="h1" size={{sm: "2xl", base: "3xl"}} fontFamily='ReggaeOne, sans-serif'>MHJoinUp</Heading>
                 </Flex>
                 <Button colorScheme="whiteAlpha" w="90%" startIcon={<FaYoutube/>} color="red.700">Youtubeではじめる</Button>
                 <Button colorScheme="whiteAlpha" w="90%" startIcon={<FaTwitch/>} color="purple.900" disabled>Twitchではじめる</Button>

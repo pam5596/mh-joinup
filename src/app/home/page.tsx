@@ -15,7 +15,7 @@ export default function Home() {
             <Flex direction="column" align="center" maxW="400px" gap={4}>
                 <Flex direction="column" align="center" gap={4}>
                     <Image src={"null"} alt="usericon" maxW="150px" shadow="3px 3px 15px #373737" rounded="100%"/>
-                    <Heading as="h1" size={{sm: "md", base: "md"}} isTruncated w="180px">{null}</Heading>
+                    <Heading as="h1" size={{sm: "md", base: "md"}} isTruncated maxW="180px" fontFamily='ReggaeOne, sans-serif'>ユーザ名</Heading>
                 </Flex>
                 <Button colorScheme="whiteAlpha" w="90%" startIcon={<FaListUl/>} color="red.700">管理画面へ</Button>
                 <Button colorScheme="whiteAlpha" w="90%" startIcon={<FaLink/>} color="amber.700">ブラウザソースをコピー</Button>

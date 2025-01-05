@@ -9,7 +9,7 @@ export default function JoinerItem() {
                 <Indicator label="2" offset={1} ping pingScale={1.4} size="lg">
                     <Avatar name="PAM" size={{md: "sm", base: "md"}} />
                 </Indicator>
-                <Heading as="h5" size={{md: "sm", base: 'md'}} isTruncated>
+                <Heading as="h5" size={{md: "sm", base: 'md'}} isTruncated fontFamily='ReggaeOne, sans-serif'>
                     PAM
                 </Heading>
             </Flex>

@@ -30,10 +30,10 @@ export default function BrowserSource() {
     }, []);
 
     return (
-        <Box color="white" bgColor="transparent">
+        <Box color="white" bgColor="transparent" fontFamily='ReggaeOne, sans-serif'>
             <Flex direction="column" gap={{sm: 2, base: 4}} w="full">
                 <Box rounded="md" bgGradient="linear(to-br, rgba(21, 29, 37, 0.8), rgba(42, 49, 58, 0.7))" p={{sm: 2, base: 4}} borderColor="amber.400" borderWidth={3}>
-                    <Heading size="md" color="white">参加者</Heading>
+                    <Heading size="md" color="white" fontFamily='ReggaeOne, sans-serif'>参加者</Heading>
                     <Separator />
                     <Flex direction="column" gap={{sm: 2, base: 4}} mt={4} align="center">
                         {Array(4).fill(0).map((_,i)=>(
@@ -42,7 +42,7 @@ export default function BrowserSource() {
                     </Flex>
                 </Box>
                 <Box rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}} borderColor="gray.300" borderWidth={3}>
-                    <Heading size="md" color="white">待機者</Heading>
+                    <Heading size="md" color="white" fontFamily='ReggaeOne, sans-serif'>待機者</Heading>
                     <Separator />
                     <ScrollArea overflow="hidden" type="always" maxH="180px" p={2} ref={containerRef}>
                         <SimpleGrid columns={{md: 2, base: 4}} gap={{sm: 2, base: 4}} mt={2} align="center" >
