@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { UIProvider, ColorModeScript } from "@yamada-ui/react";
-
+import { AlertSnackProvider } from "@/components/provider"
 
 export const metadata: Metadata = {
     title: "MHJoinUp",
@@ -19,7 +19,9 @@ export default function RootLayout({
             <body>
                 <ColorModeScript />
                 <UIProvider>
-                    {children}
+                    <AlertSnackProvider>
+                        {children}
+                    </AlertSnackProvider>
                 </UIProvider>
             </body>
         </html>
