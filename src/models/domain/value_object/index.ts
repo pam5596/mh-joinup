@@ -10,3 +10,5 @@ export {ConnectChatToken} from './connections/chat_token';
 
 export {ManageQuest} from './managements/quest';
 export {ManageApplicant} from './managements/applicant';
+
+export {ApplicantMessage} from './applicants/message';
