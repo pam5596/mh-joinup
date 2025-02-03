@@ -3,11 +3,11 @@ import { ObjectId } from "mongodb";
 
 export default abstract class AbsEntity<T, DTO> {
     protected readonly _id: ObjectId;
-    protected readonly _object: T;
+    protected readonly _values: T;
 
-    constructor(id: ObjectId, object: T, schema: z.ZodType<T>) {
+    constructor(id: ObjectId, values: T, schema: z.ZodType<T>) {
         this._id = id;
-        this._object = schema.parse(object);
+        this._values = schema.parse(values);
     }
 
     get id(): ObjectId {
@@ -17,7 +17,7 @@ export default abstract class AbsEntity<T, DTO> {
     toJson(): T & { id: string } {
         return {
             id: this._id.toHexString(),
-            ...this._object
+            ...this._values
         }
     }
 
