@@ -29,7 +29,12 @@ export default abstract class AbsEntity<T, DTO> {
         }
     }
 
-    abstract toObject(): DTO & { id: ObjectId };
+    toObject(): DTO & { id: ObjectId } {
+        return {
+            id: this._id,
+            ...this._objects as DTO
+        }
+    }
 
     equals(other: AbsEntity<T, DTO>): boolean {
         return this._id.equals(other._id);
