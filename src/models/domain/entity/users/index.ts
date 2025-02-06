@@ -5,9 +5,26 @@ import AbsEntity from "../abstruct";
 import type { UserType, UserDTO } from "./type";
 import { UserChannelId, UserName, UserAvatar } from "@/models/domain/value_object";
 
-export class UserEntity extends AbsEntity<UserType, UserDTO> {    
-    constructor(id: ObjectId, object: UserDTO) {
-        super(id, object, UserEntity.schema());
+export class UserEntity extends AbsEntity<UserType, UserDTO> {  
+    public channel_id: UserChannelId;
+    public name: UserName;
+    public avatar: UserAvatar;
+    
+    constructor(
+        id: ObjectId,
+        channel_id: UserChannelId,
+        name: UserName,
+        avatar: UserAvatar
+    ) {
+        super(id, {
+            channel_id: channel_id.value,
+            name: name.value,
+            avatar: avatar.value
+        }, UserEntity.schema());
+
+        this.channel_id = channel_id;
+        this.name = name;
+        this.avatar = avatar;
     }
     
     static schema() {
@@ -16,5 +33,14 @@ export class UserEntity extends AbsEntity<UserType, UserDTO> {
             name: UserName.schema(),
             avatar: UserAvatar.schema()
         });
+    }
+
+    toObject(): UserDTO {
+        return {
+            id: this._id,
+            channel_id: this.channel_id,
+            name: this.name,
+            avatar: this.avatar
+        };
     }
 }
