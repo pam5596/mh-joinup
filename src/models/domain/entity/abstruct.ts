@@ -1,40 +1,35 @@
 import { z } from "zod";
 import { ObjectId } from "mongodb";
 
-import AbsValueObject from "@/models/domain/value_object/abstruct";
-
 export default abstract class AbsEntity<T, DTO> {
     protected readonly _id: ObjectId;
-    protected readonly _objects: Record<string, AbsValueObject<unknown>>;
-    protected readonly _values: T;
+    protected readonly _values: Omit<T, 'id'>;
 
-    constructor(id: ObjectId, objects: Record<string, AbsValueObject<unknown>>, schema: z.ZodType<T>) {
+    constructor(id: ObjectId, values: Omit<T, 'id'>, schema: z.ZodType<T>) {
         this._id = id;
-        this._objects = objects
-        this._values = schema.parse(
-            Object.fromEntries(
-                Object.entries(objects).map(([_, valueObj]) => [_, valueObj.value])
-            )
-        );
+        this._values = schema.parse(values);
     }
 
-    get id(): ObjectId {
+    get objectId(): ObjectId {
         return this._id;
     }
 
-    toJson(): T & { id: string } {
-        return {
-            id: this._id.toHexString(),
-            ...this._values
-        }
+    get stringId(): string {
+        return this._id.toString();
     }
 
-    toObject(): DTO & { id: ObjectId } {
-        return {
-            id: this._id,
-            ...this._objects as DTO
-        }
+    get createdAt(): Date {
+        return this._id.getTimestamp();
     }
+
+    toJson(): T {
+        return {
+            id: this._id.toString(),
+            ...this._values
+        } as T;
+    }
+
+    abstract toObject(): DTO
 
     equals(other: AbsEntity<T, DTO>): boolean {
         return this._id.equals(other._id);
