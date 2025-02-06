@@ -5,9 +5,9 @@ export default abstract class AbsEntity<T, DTO> {
     protected readonly _id: ObjectId;
     protected readonly _values: Omit<T, 'id'>;
 
-    constructor(id: ObjectId, values: Omit<T, 'id'>, schema: z.ZodType<T>) {
+    constructor(id: ObjectId, values: Omit<T, 'id'>, schema: z.ZodObject<z.ZodRawShape>) {
         this._id = id;
-        this._values = schema.parse(values);
+        this._values = schema.parse(values) as Omit<T, 'id'>;
     }
 
     get objectId(): ObjectId {
