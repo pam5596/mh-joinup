@@ -5,7 +5,7 @@ import AbsEntity from "../abstruct";
 import type { ApplicantType, ApplicantDTO } from "./type";
 import { ApplicantMessage, MongoId } from "@/models/domain/value_object";
 
-export class ApplicantsEntity extends AbsEntity<ApplicantType, ApplicantDTO> {
+export class ApplicantEntity extends AbsEntity<ApplicantType, ApplicantDTO> {
     private user_id: ObjectId;
     private connection_id: ObjectId;
     private message: ApplicantMessage;
@@ -20,7 +20,7 @@ export class ApplicantsEntity extends AbsEntity<ApplicantType, ApplicantDTO> {
             user_id: user_id.toString(),
             connection_id: connection_id.toString(),
             message: message.value
-        }, ApplicantsEntity.schema());
+        }, ApplicantEntity.schema());
 
         this.user_id = user_id;
         this.connection_id = connection_id;
