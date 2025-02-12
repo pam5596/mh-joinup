@@ -10,11 +10,6 @@ export type ManageType = {
     applicants: number;
 }
 
-export type ManageInstantType = {
-    user_id: string;
-    quest: number;
-}
-
 export type ManageDTO = {
     id: ObjectId;
     connection_id: ObjectId;
@@ -22,9 +17,4 @@ export type ManageDTO = {
     waiter: ManageInstantDTO[];
     quests: ManageQuest;
     applicants: ManageApplicant;
-}
-
-export type ManageInstantDTO = {
-    user_id: ObjectId;
-    quest: ManageQuest;
 }

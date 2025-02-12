@@ -2,8 +2,9 @@ import { z } from "zod";
 import { ObjectId } from  "mongodb";
 
 import AbsEntity from "../abstruct";
-import type { ManageType, ManageDTO, ManageInstantType, ManageInstantDTO } from "./type";
+import type { ManageType, ManageDTO } from "./type";
 import { ManageQuest, ManageApplicant, MongoId } from "@/models/domain/value_object";
+import { ManageInstant } from "@/models/domain/embedded"
 
 export class ManageEntity extends AbsEntity<ManageType, ManageDTO> {
     private connection_id: ObjectId;
@@ -53,40 +54,6 @@ export class ManageEntity extends AbsEntity<ManageType, ManageDTO> {
             waiter: this.waiter.map(w => w.toObject()),
             quests: this.quests,
             applicants: this.applicants
-        }
-    }
-}
-
-
-export class ManageInstant extends AbsEntity<ManageInstantType, ManageInstantDTO> {
-    private user_id: ObjectId;
-    private quest: ManageQuest;
-
-    constructor(
-        id: ObjectId,
-        user_id: ObjectId,
-        quest: ManageQuest
-    ){
-        super(id, {
-            user_id: user_id.toString(),
-            quest: quest.value
-        }, ManageInstant.schema());
-
-        this.user_id = user_id;
-        this.quest = quest;
-    }
-
-    static schema() {
-        return z.object({
-            user_id: MongoId.schema(),
-            quest: ManageQuest.schema()
-        })
-    }
-
-    toObject(): ManageInstantDTO {
-        return {
-            user_id: this.user_id,
-            quest: this.quest
         }
     }
 }
