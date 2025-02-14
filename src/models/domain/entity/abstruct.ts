@@ -3,7 +3,7 @@ import { ObjectId } from "mongodb";
 
 export default abstract class AbsEntity<T, DTO> {
     protected readonly _id: ObjectId;
-    protected readonly _values: Omit<T, 'id'>;
+    protected _values: Omit<T, 'id'>;
 
     constructor(id: ObjectId, values: Omit<T, 'id'>, schema: z.ZodObject<z.ZodRawShape>) {
         this._id = id;
