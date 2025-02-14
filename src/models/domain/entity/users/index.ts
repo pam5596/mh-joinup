@@ -35,6 +35,24 @@ export class UserEntity extends AbsEntity<UserType, UserDTO> {
         });
     }
 
+    set updateName(name: UserName) {
+        this.name = name;
+        this._values = UserEntity.schema().parse({
+            channel_id: this.channel_id.value,
+            name: name.value,
+            avatar: this.avatar.value
+        })
+    }
+
+    set updateAvatar(avatar: UserAvatar) {
+        this.avatar = avatar;
+        this._values = UserEntity.schema().parse({
+            channel_id: this.channel_id.value,
+            name: this.name.value,
+            avatar: avatar.value
+        })
+    }
+
     toObject(): UserDTO {
         return {
             id: this._id,
