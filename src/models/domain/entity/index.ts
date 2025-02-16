@@ -9,3 +9,6 @@ export type {ConnectionType, ConnectionDTO} from './connections/type'
 
 export {ApplicantEntity} from './applicants'
 export type {ApplicantType, ApplicantDTO} from './applicants/type'
+
+export {ManageEntity} from './managements'
+export type {ManageType, ManageDTO} from './managements/type'
