@@ -30,6 +30,15 @@ export class SettingEntity extends AbsEntity<SettingType, SettingDTO> {
         });
     }
 
+    set updateAll(args: Omit<SettingDTO, 'id'|'user_id'>) {
+        this.keywords = args.keywords;
+        
+        this._values = SettingEntity.schema().parse({
+            user_id: this.user_id.toString(),
+            keywords: this.keywords.map(keyword => keyword.value)
+        })
+    }
+
     toObject(): SettingDTO {
         return {
             id: this._id,

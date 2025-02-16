@@ -40,6 +40,16 @@ export class ConnectionEntity extends AbsEntity<ConnectionType, ConnectionDTO> {
         })
     }
 
+    set updateVideoTitle(video_title: ConnectVideoTitle) {
+        this.video_title = video_title;
+        this._values = ConnectionEntity.schema().parse({
+            user_id: this.user_id.toString(),
+            youtube_id: this.youtube_id.value,
+            video_title: video_title.value,
+            chat_token: this.chat_token.value
+        })
+    }
+
     toObject(): ConnectionDTO {
         return {
             id: this._id,
