@@ -3,7 +3,7 @@ import MongoDBClient from "../client/mongodb";
 import AbsEntity from "@/models/domain/entity/abstruct";
 
 
-export default abstract class AbsRepository<T, DTO> {
+export default abstract class AbsRepository<Entitiy extends AbsEntity<unknown, unknown>> {
     private client: MongoDBClient;
     private collection: Collection;
 
@@ -23,9 +23,9 @@ export default abstract class AbsRepository<T, DTO> {
         return result;
     }
 
-    async insert(data: AbsEntity<T, DTO>) {
+    async insert(data: Entitiy) {
         return await this.queryWrapper(data,
-            async(data: AbsEntity<T, DTO>) => await this.collection.insertOne(data.toDocument())
+            async(data: Entitiy) => await this.collection.insertOne(data.toDocument())
         )
     }
 
@@ -35,9 +35,9 @@ export default abstract class AbsRepository<T, DTO> {
         )
     }
 
-    async update(data: AbsEntity<T, DTO>) {
+    async update(data: Entitiy) {
         return await this.queryWrapper(data,
-            async (data: AbsEntity<T, DTO>) => {
+            async (data: Entitiy) => {
                 const { _id, ...otherProps } = data.toDocument(); 
                 return await this.collection.updateOne(
                     { _id },
