@@ -23,19 +23,19 @@ export default abstract class AbsRepository<Entitiy extends AbsEntity<unknown, u
         return result;
     }
 
-    async insert(data: Entitiy) {
+    protected async insertRaw(data: Entitiy) {
         return await this.queryWrapper(data,
             async(data: Entitiy) => await this.collection.insertOne(data.toDocument())
         )
     }
 
-    async selectById(id: ObjectId) {
+    protected async selectByIdRaw(id: ObjectId) {
         return await this.queryWrapper(id,
             async(id: ObjectId) => await this.collection.findOne({ _id: id })
         )
     }
 
-    async update(data: Entitiy) {
+    protected async updateRaw(data: Entitiy) {
         return await this.queryWrapper(data,
             async (data: Entitiy) => {
                 const { _id, ...otherProps } = data.toDocument(); 
@@ -47,7 +47,7 @@ export default abstract class AbsRepository<Entitiy extends AbsEntity<unknown, u
         )
     }
 
-    async deleteById(id: ObjectId) {
+    protected async deleteByIdRaw(id: ObjectId) {
         return await this.queryWrapper(id,
             async(id: ObjectId) => await this.collection.deleteOne({ _id: id })
         )
