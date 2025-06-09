@@ -1,6 +1,6 @@
 import AbsRepository from "./abstruct";
 import { UserEntity } from "@/models/domain/entity";
-import { MongoId, UserChannelId, UserAvatar, UserName } from "@/models/domain/value_object";
+import { UserChannelId, UserAvatar, UserName } from "@/models/domain/value_object";
 
 import { Collection, ObjectId } from "mongodb";
 import MongoDBClient from "../client/mongodb";
@@ -11,18 +11,17 @@ export default class UserRepository extends AbsRepository<UserEntity> {
         super(client, collection);
     }
 
-    async insert(user: UserEntity): Promise<MongoId> {
+    async insert(user: UserEntity): Promise<ObjectId> {
         const result = await this.insertRaw(user);
-        return new MongoId(result.insertedId.toHexString());
+        return result.insertedId
     }
 
-    async selectById(id: MongoId): Promise<UserEntity | null> {
-        const objectId = new ObjectId(id.toHexString());
-        const result = await this.selectByIdRaw(objectId);
+    async selectById(id: ObjectId): Promise<UserEntity | null> {
+        const result = await this.selectByIdRaw(id);
         
         if (result) {
             return new UserEntity(
-                new MongoId(result._id.toHexString()),
+                result._id,
                 new UserChannelId(result.channelId),
                 new UserName(result.name),
                 new UserAvatar(result.avatar)
