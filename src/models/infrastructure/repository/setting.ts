@@ -30,7 +30,7 @@ export default class SettingRepository extends AbsRepository<SettingEntity> {
         }
     }
 
-    async update(setting: SettingEntity): Promise<void> {
-        await this.updateRaw(setting);
+    async updateByUserId(setting: SettingEntity): Promise<void> {
+        await this.upsertByOtherPropsRaw("user_id", setting);
     }
 }

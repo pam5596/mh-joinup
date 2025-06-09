@@ -31,7 +31,7 @@ export default class UserRepository extends AbsRepository<UserEntity> {
         }
     }
 
-    async update(user: UserEntity): Promise<void> {
-        await this.updateRaw(user);
+    async upsertByChannelId(user: UserEntity): Promise<void> {
+        await this.upsertByOtherPropsRaw("channel_id", user);
     }
 }

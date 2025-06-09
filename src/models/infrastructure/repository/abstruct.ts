@@ -41,13 +41,31 @@ export default abstract class AbsRepository<Entitiy extends AbsEntity<unknown, u
         )
     }
 
-    protected async updateRaw(data: Entitiy) {
+    protected async upsertByIdRaw(data: Entitiy) {
         return await this.queryWrapper(data,
             async (data: Entitiy) => {
                 const { _id, ...otherProps } = data.toDocument(); 
                 return await this.collection.updateOne(
                     { _id },
-                    { $set: otherProps }
+                    { $set: otherProps },
+                    { upsert: true }
+                )
+            }
+        )
+    }
+
+    protected async upsertByOtherPropsRaw(props: string, data: Entitiy) {
+        return await this.queryWrapper({props: data},
+            async ({props: data}) => {
+                const document = data.toDocument() as Record<string, unknown>;
+                const filter = document[props] ? { [props]: document[props] } : { _id: document._id as ObjectId };
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const { _ , ...otherProps } = document;
+
+                return await this.collection.updateOne(
+                    filter,
+                    { $set: otherProps },
+                    { upsert: true }
                 )
             }
         )
