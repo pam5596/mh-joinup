@@ -35,6 +35,12 @@ export default abstract class AbsRepository<Entitiy extends AbsEntity<unknown, u
         )
     }
 
+    protected async selectByOtherPropsRaw(props: string, search: unknown) {
+        return await this.queryWrapper({props: search},
+            async({props: search}) => await this.collection.findOne({ [props]: search })
+        )
+    }
+
     protected async updateRaw(data: Entitiy) {
         return await this.queryWrapper(data,
             async (data: Entitiy) => {
