@@ -10,19 +10,14 @@ export default class SettingRepository extends AbsRepository<SettingEntity> {
     constructor(client: MongoDBClient, collection: Collection) {
         super(client, collection);
     }
-
-    async insert(setting: SettingEntity): Promise<ObjectId> {
-        const result = await this.insertRaw(setting);
-        return result.insertedId;
-    }
-
-    async selectByUserId(id: ObjectId): Promise<SettingEntity | null> {
-        const result = await this.selectByOtherPropsRaw("user_id", id.toHexString());
+    
+    async selectByUserId(user_id: ObjectId): Promise<SettingEntity | null> {
+        const result = await this.selectByOtherPropsRaw("user_id", user_id.toHexString());
 
         if (result) {
             return new SettingEntity(
                 result._id,
-                result.user_id,
+                user_id,
                 result.keywords.map((keyword: string) => new SettingKeyWord(keyword))
             );
         } else {
@@ -30,7 +25,7 @@ export default class SettingRepository extends AbsRepository<SettingEntity> {
         }
     }
 
-    async updateByUserId(setting: SettingEntity): Promise<void> {
+    async upsertByUserId(setting: SettingEntity): Promise<void> {
         await this.upsertByOtherPropsRaw("user_id", setting);
     }
 }

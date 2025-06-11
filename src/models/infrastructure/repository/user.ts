@@ -11,11 +11,6 @@ export default class UserRepository extends AbsRepository<UserEntity> {
         super(client, collection);
     }
 
-    async insert(user: UserEntity): Promise<ObjectId> {
-        const result = await this.insertRaw(user);
-        return result.insertedId
-    }
-
     async selectById(id: ObjectId): Promise<UserEntity | null> {
         const result = await this.selectByIdRaw(id);
         
