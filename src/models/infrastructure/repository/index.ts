@@ -1,2 +1,3 @@
 export {default as UserRepository} from "./user";
 export {default as SettingRepository} from "./setting";
+export {default as ConnectionRepository} from "./connection";
