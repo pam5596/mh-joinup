@@ -1,4 +1,4 @@
-import type { ConnectYoutubeId, ConnectVideoTitle, ConnectChatToken } from "@/models/domain/value_object";
+import type { ConnectYoutubeId, ConnectVideoTitle } from "@/models/domain/value_object";
 import { ObjectId } from "mongodb";
 
 export type ConnectionType = {
@@ -6,7 +6,6 @@ export type ConnectionType = {
     user_id: string,
     youtube_id: string,
     video_title: string,
-    chat_token: string
 }
 
 export type ConnectionDTO = {
@@ -14,5 +13,4 @@ export type ConnectionDTO = {
     user_id: ObjectId,
     youtube_id: ConnectYoutubeId,
     video_title: ConnectVideoTitle,
-    chat_token: ConnectChatToken
 }

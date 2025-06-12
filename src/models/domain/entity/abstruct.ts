@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ObjectId } from "mongodb";
+import { ObjectId, OptionalId } from "mongodb";
 
 export default abstract class AbsEntity<T, DTO> {
     protected readonly _id: ObjectId;
@@ -27,6 +27,13 @@ export default abstract class AbsEntity<T, DTO> {
             id: this._id.toString(),
             ...this._values
         } as T;
+    }
+
+    toDocument(): OptionalId<T> {
+        return {
+            _id: this._id,
+            ...this._values
+        } as OptionalId<T>;
     }
 
     abstract toObject(): DTO
