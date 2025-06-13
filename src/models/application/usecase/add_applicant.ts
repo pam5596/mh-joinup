@@ -10,7 +10,11 @@ export default class AddApplicantUseCase extends AbsUseCase<AddApplicantRequestP
     applicantRepository: ApplicantRepository;
     getUserIdService: GetUserIdService;
 
-    constructor(request: AddApplicantRequestPayload, applicantRepository: ApplicantRepository, getUserIdService: GetUserIdService) {
+    constructor(
+        request: AddApplicantRequestPayload, 
+        applicantRepository: ApplicantRepository, 
+        getUserIdService: GetUserIdService
+    ) {
         super(request);
         this.applicantRepository = applicantRepository;
         this.getUserIdService = getUserIdService;
