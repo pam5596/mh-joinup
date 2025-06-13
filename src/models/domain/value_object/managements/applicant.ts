@@ -7,6 +7,8 @@ export class ManageApplicant extends AbsValueObject<number> {
     }
     
     static schema(): z.ZodType<number> {
-        return z.number().int().nonnegative();
+        return z.number()
+            .int({ message: '[ManageApplicant] 整数値です'})
+            .nonnegative({ message: '[ManageApplicant] 0以上の値です' });
     }
 }

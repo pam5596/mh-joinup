@@ -7,6 +7,7 @@ export class UserName extends AbsValueObject<string> {
     }
     
     static schema(): z.ZodType<string> {
-        return z.string().min(1);
+        return z.string()
+            .min(1, { message: '[UserName] 文字数は1文字以上です' });
     }
 }

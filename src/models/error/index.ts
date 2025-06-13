@@ -1,0 +1,1 @@
+export { default as ValueObjectError } from './value_object';
