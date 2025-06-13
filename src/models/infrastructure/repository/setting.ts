@@ -38,6 +38,6 @@ export default class SettingRepository extends AbsRepository<SettingEntity> {
             );
         }
 
-        if (result.upsertedId) return result.upsertedId;
+        return result.upsertedId || setting.objectId;
     }
 }
