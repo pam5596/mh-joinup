@@ -1,0 +1,1 @@
+export { default as AddApplicantUseCase } from "./add_applicant";
