@@ -1,9 +1,9 @@
-export default abstract class AbsUseCase<ReqT, ResT> {
-    request: ReqT;
+export default abstract class AbsUseCase<ReqPayload, Respayload> {
+    request: ReqPayload;
     
-    constructor(request: ReqT) {
+    constructor(request: ReqPayload) {
         this.request = request;
     }
 
-    abstract execute(): Promise<ResT>;
+    abstract execute(): Promise<Respayload>;
 }

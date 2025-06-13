@@ -2,49 +2,42 @@ import { ObjectId } from "mongodb";
 
 import AbsUseCase from "./abstruct";
 import { AddApplicantRequestPayload, AddApplicantResponsePayload } from "../payload";
-import { UserRepository, ApplicantRepository } from "@/models/infrastructure/repository";
+import { GetUserIdService } from "../service";
+import { ApplicantRepository } from "@/models/infrastructure/repository";
 import { UserEntity, ApplicantEntity } from "@/models/domain/entity";
 
 export default class AddApplicantUseCase extends AbsUseCase<AddApplicantRequestPayload, AddApplicantResponsePayload> {
-    userRepository: UserRepository;
     applicantRepository: ApplicantRepository;
+    getUserIdService: GetUserIdService;
 
-    constructor(request: AddApplicantRequestPayload, userRepository: UserRepository, applicantRepository: ApplicantRepository) {
+    constructor(request: AddApplicantRequestPayload, applicantRepository: ApplicantRepository, getUserIdService: GetUserIdService) {
         super(request);
-        this.userRepository = userRepository;
         this.applicantRepository = applicantRepository;
+        this.getUserIdService = getUserIdService;
     }
 
     async execute(): Promise<AddApplicantResponsePayload> {
         const request = this.request.toObject();
 
-        const selected_user = await this.userRepository.selectByChannelId(request.channel_id);
-        let user_id: ObjectId;
-
-        if (selected_user) {
-            user_id = selected_user.objectId;
-        } else {
-            const upsert_user = new UserEntity(
-                new ObjectId(),
-                request.channel_id,
-                request.name,
-                request.avatar
-            )
-
-            user_id = await this.userRepository.upsertByChannelId(upsert_user) as ObjectId;
-        }
+        const select_user = new UserEntity(
+            new ObjectId(),
+            request.channel_id,
+            request.name,
+            request.avatar
+        )
+        const selected_user_id = await this.getUserIdService.execute(select_user);
 
         const insert_applicant = new ApplicantEntity(
             new ObjectId(),
-            user_id,
+            selected_user_id,
             request.connection_id,
             request.message
-        )
+        );
 
         const inserted_applicant_id = await this.applicantRepository.insert(insert_applicant) as ObjectId;
         return new AddApplicantResponsePayload(
             inserted_applicant_id,
-            user_id
+            selected_user_id
         );
     }
 }
