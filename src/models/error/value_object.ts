@@ -4,7 +4,7 @@ export default class ValueObjectError<DataType> extends AbsError<DataType> {
     constructor(
         message: string,
         data: DataType | null = null,
-        code: number = 400 // Default to 400 for value object errors
+        code: number = 400
     ) {
         super(message, data, 'valueObject', code);
     }

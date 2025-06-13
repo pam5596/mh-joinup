@@ -1,4 +1,6 @@
 import AbsRepository from "./abstruct";
+import { RepositoryError } from "@/models/error";
+
 import { ManageEntity } from "@/models/domain/entity";
 import { ManageInstant } from "@/models/domain/embedded";
 import { ManageApplicant, ManageQuest } from "@/models/domain/value_object";
@@ -13,12 +15,21 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
     }
 
 
-    async insert(entity: ManageEntity): Promise<void> {
-        await this.insertRaw(entity);
+    async insert(entity: ManageEntity): Promise<void|ObjectId> {
+        const result = await this.insertRaw(entity);
+
+        if (!result.acknowledged) {
+            throw new RepositoryError(
+                `[ManagementRepository] 挿入に失敗しました`,
+                entity.toDocument(),
+                500
+            )
+        }
+        return result.insertedId;
     }
 
 
-    async selectNewOneByConnectionId(connection_id: ObjectId){//: Promise<ManageEntity[]|null> {
+    async selectNewOneByConnectionId(connection_id: ObjectId): Promise<ManageEntity|null> {
         const result = await this.selectNewOneByOtherPropsRaw("connection_id", connection_id.toHexString())
         
         if (result) {

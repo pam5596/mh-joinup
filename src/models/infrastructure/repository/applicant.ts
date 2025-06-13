@@ -1,4 +1,6 @@
 import AbsRepository from "./abstruct";
+import { RepositoryError } from "@/models/error";
+
 import { ApplicantEntity } from "@/models/domain/entity";
 import { ApplicantMessage } from "@/models/domain/value_object";
 
@@ -12,8 +14,17 @@ export default class ApplicantRepository extends AbsRepository<ApplicantEntity> 
     }
 
 
-    async insert(entity: ApplicantEntity): Promise<void> {
-        await this.insertRaw(entity);
+    async insert(entity: ApplicantEntity): Promise<void|ObjectId> {
+        const result = await this.insertRaw(entity);
+
+        if (!result.acknowledged) {
+            throw new RepositoryError(
+                `[ApplicantRepository] 挿入に失敗しました`,
+                entity.toDocument(),
+                500
+            )
+        }
+        return result.insertedId;
     }
 
 

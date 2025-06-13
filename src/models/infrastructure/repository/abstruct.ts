@@ -58,7 +58,7 @@ export default abstract class AbsRepository<Entitiy extends AbsEntity<unknown, u
                 const document = data.toDocument() as Record<string, unknown>;
                 const filter = document[props] ? { [props]: document[props] } : { _id: document._id as ObjectId };
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                const { _ , ...otherProps } = document;
+                const { _id , ...otherProps } = document;
 
                 return await this.collection.updateOne(
                     filter,

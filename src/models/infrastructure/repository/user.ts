@@ -1,4 +1,6 @@
 import AbsRepository from "./abstruct";
+import { RepositoryError } from "@/models/error";
+
 import { UserEntity } from "@/models/domain/entity";
 import { UserChannelId, UserAvatar, UserName } from "@/models/domain/value_object";
 
@@ -26,7 +28,17 @@ export default class UserRepository extends AbsRepository<UserEntity> {
         }
     }
 
-    async upsertByChannelId(user: UserEntity): Promise<void> {
-        await this.upsertByOtherPropsRaw("channel_id", user);
+    async upsertByChannelId(user: UserEntity): Promise<void|ObjectId> {
+        const result = await this.upsertByOtherPropsRaw("channel_id", user);
+
+        if (result.matchedCount === 0 && result.upsertedCount === 0) {
+            throw new RepositoryError(
+                '[UserRepository] ChannelIDでのアップサートに失敗しました',
+                user.toDocument(),
+                500
+            );
+        }
+
+        if (result.upsertedId) return result.upsertedId;
     }
 }
