@@ -13,8 +13,8 @@ export default class UserRepository extends AbsRepository<UserEntity> {
         super(client, collection);
     }
 
-    async selectById(id: ObjectId): Promise<UserEntity | null> {
-        const result = await this.selectByIdRaw(id);
+    async selectByChannelId(channel_id: ObjectId): Promise<UserEntity | null> {
+        const result = await this.selectByOtherPropsRaw("channel_id", channel_id);
         
         if (result) {
             return new UserEntity(
