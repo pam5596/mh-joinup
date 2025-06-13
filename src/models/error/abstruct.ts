@@ -1,13 +1,13 @@
 export default abstract class AbsError<DataType> extends Error {
     public readonly message: string;
     public readonly data: DataType | null;
-    public readonly level: 'valueObject' | 'entity' | 'service' | 'repository' | 'usecase'
+    public readonly level: 'valueObject' | 'entity' | 'service' | 'repository' | 'usecase' | 'client';
     public readonly code: number = 500;
 
     constructor(
         message: string,
         data: DataType | null = null,
-        level: 'valueObject' | 'entity' | 'service' | 'repository' | 'usecase',
+        level: 'valueObject' | 'entity' | 'service' | 'repository' | 'usecase' | 'client',
         code: number = 500,
     ) {
         super(message);
