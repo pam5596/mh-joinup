@@ -1,4 +1,6 @@
 import AbsRepository from "./abstruct";
+import { RepositoryError } from "@/models/error";
+
 import { ConnectionEntity} from "@/models/domain/entity";
 import { ConnectVideoTitle, ConnectYoutubeId } from "@/models/domain/value_object";
 
@@ -26,7 +28,17 @@ export default class ConnectionRepository extends AbsRepository<ConnectionEntity
         }
     }
 
-    async upsertByYoutubeId(connection: ConnectionEntity) {
-        await this.upsertByOtherPropsRaw("youtube_id", connection);
+    async upsertByYoutubeId(connection: ConnectionEntity): Promise<void|ObjectId> {
+        const result = await this.upsertByOtherPropsRaw("youtube_id", connection);
+
+        if (result.matchedCount === 0 && result.upsertedCount === 0) {
+                throw new RepositoryError(
+                    '[ConnectionRepository] YoutubeIDでのアップサートに失敗しました',
+                    connection.toDocument(),
+                    500
+                );
+            }
+
+        if (result.upsertedId) return result.upsertedId;
     }
 }

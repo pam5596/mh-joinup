@@ -7,6 +7,8 @@ export class ConnectVideoTitle extends AbsValueObject<string> {
     }
     
     static schema(): z.ZodType<string> {
-        return z.string().min(1).max(100);
+        return z.string()
+            .min(1, { message: '[ConnectVideoTitle] 文字数は1文字以上です' })
+            .max(100, { message: '[ConnectVideoTitle] 文字数は100文字以下です' });
     }
 }

@@ -1,4 +1,6 @@
 import AbsRepository from "./abstruct";
+import { RepositoryError } from "@/models/error";
+
 import { SettingEntity } from "@/models/domain/entity";
 import { SettingKeyWord } from "@/models/domain/value_object";
 
@@ -25,7 +27,17 @@ export default class SettingRepository extends AbsRepository<SettingEntity> {
         }
     }
 
-    async upsertByUserId(setting: SettingEntity): Promise<void> {
-        await this.upsertByOtherPropsRaw("user_id", setting);
+    async upsertByUserId(setting: SettingEntity): Promise<void|ObjectId> {
+        const result = await this.upsertByOtherPropsRaw("user_id", setting);
+
+        if (result.matchedCount === 0 && result.upsertedCount === 0) {
+            throw new RepositoryError(
+                '[SettingRepository] UserIDでのアップサートに失敗しました',
+                setting.toDocument(),
+                500
+            );
+        }
+
+        if (result.upsertedId) return result.upsertedId;
     }
 }

@@ -7,6 +7,7 @@ export class UserAvatar extends AbsValueObject<string> {
     }
     
     static schema(): z.ZodType<string> {
-        return z.string().url();
+        return z.string()
+            .url({ message: '[UserAvatar] URL形式ではありません'});
     }
 }

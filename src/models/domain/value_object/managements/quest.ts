@@ -7,6 +7,8 @@ export class ManageQuest extends AbsValueObject<number> {
     }
     
     static schema(): z.ZodType<number> {
-        return z.number().int().nonnegative();
+        return z.number()
+            .int({ message: '[ManageQuest] 整数値です'})
+            .nonnegative({ message: '[ManageQuest] 0以上の値です' });
     }
 }
