@@ -1,4 +1,8 @@
-import type { ConnectionType, ConnectionDTO } from "@/models/domain/entity";
+import type { UserType, UserDTO, ConnectionType, ConnectionDTO } from "@/models/domain/entity";
+
+export type GetConnectionRequestType = Pick<UserType, 'channel_id'>;
+
+export type GetConnectionRequestDTO = Pick<UserDTO, 'channel_id'>;
 
 export type GetConnectionResponseType = {
     connection_id: ConnectionType['id'];
