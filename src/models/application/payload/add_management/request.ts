@@ -7,7 +7,7 @@ import { ManageInstant } from "@/models/domain/embedded";
 import type { AddManagementRequestDTO, AddManagementRequestType } from "./type";
 
 
-export class AddApplicantRequestPayload extends AbsPayload<AddManagementRequestType, AddManagementRequestDTO> {
+export class AddManagementRequestPayload extends AbsPayload<AddManagementRequestType, AddManagementRequestDTO> {
     protected connection_id: ObjectId;
     protected joiner: ManageInstant[];
     protected waiter: ManageInstant[];
@@ -27,7 +27,7 @@ export class AddApplicantRequestPayload extends AbsPayload<AddManagementRequestT
             waiter: waiter.map(i => i.toJson()),
             quests: quests.value,
             applicants: applicants.value
-        }, AddApplicantRequestPayload.schema());
+        }, AddManagementRequestPayload.schema());
 
         this.connection_id = connection_id;
         this.joiner = joiner;
