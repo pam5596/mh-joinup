@@ -1,0 +1,1 @@
+export { default as GetUserIdService } from "./get_user_id";
