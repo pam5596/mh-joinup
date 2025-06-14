@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import { UIProvider, ColorModeScript, extendTheme, defaultTheme } from "@yamada-ui/react";
+import { UIProvider } from "@yamada-ui/react";
 
 
 export const metadata: Metadata = {
@@ -18,7 +18,6 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body>
-                <ColorModeScript />
                 <UIProvider>
                     {children}
                 </UIProvider>
