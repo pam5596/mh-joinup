@@ -39,6 +39,6 @@ export default class ConnectionRepository extends AbsRepository<ConnectionEntity
                 );
             }
 
-        if (result.upsertedId) return result.upsertedId;
+        return result.upsertedId || connection.objectId;
     }
 }
