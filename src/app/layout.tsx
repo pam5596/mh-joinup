@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { UIProvider } from "@yamada-ui/react";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
+import { AlertSnackProvider } from "@/components/provider";
 
 export const metadata: Metadata = {
     title: "MHJoinUp",
@@ -19,7 +21,11 @@ export default function RootLayout({
         <html lang="en">
             <body>
                 <UIProvider>
-                    {children}
+                    <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ""}>
+                        <AlertSnackProvider>
+                            {children}
+                        </AlertSnackProvider>
+                    </GoogleOAuthProvider>
                 </UIProvider>
             </body>
         </html>
