@@ -5,8 +5,8 @@ import { TokenResponse } from "@react-oauth/google";
 import { youtube_v3 } from "googleapis";
 
 
-export default class GetChannelInfoService extends AbsService<TokenResponse, youtube_v3.Schema$ChannelProfileDetails> {
-    async execute(request: TokenResponse): Promise<youtube_v3.Schema$ChannelProfileDetails> {
+export default class GetChannelInfoService extends AbsService<TokenResponse, youtube_v3.Schema$ChannelListResponse> {
+    async execute(request: TokenResponse): Promise<youtube_v3.Schema$ChannelListResponse> {
         const response = await fetch("https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true", {
             method: "GET",
             headers: {
