@@ -4,13 +4,13 @@ import useAlertSnack from "./useAlertSnack";
 export default function useCallApi() {
     const { openSnack } = useAlertSnack();
 
-    async function fetchAPI<BodyType>(
+    async function fetchAPI<BodyType, ResponseType>(
         url: string,
         method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
         body?: BodyType,
         successSnack?: { title: string, description?: string },
         errorSnack?: { title: string, description?: string },
-        onSuccess?: (response: Response) => void,
+        onSuccess?: (response: ResponseType) => void,
         onError?: (error: Response) => void
     ) {
         const fetch_result = await fetch(url, {
@@ -35,10 +35,9 @@ export default function useCallApi() {
                 successSnack.description || '',
                 "success"
             );
-            onSuccess?.(fetch_result);
+            const response_data = await fetch_result.json() as ResponseType;
+            onSuccess?.(response_data);
         }
-
-        return await fetch_result.json()
     };
 
     return { fetchAPI };
