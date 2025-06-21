@@ -1,11 +1,12 @@
 import { TokenResponse } from "@react-oauth/google";
 import { serialize } from "cookie";
 
+import MongoDBClient from "@/models/infrastructure/client/mongodb";
 import { GetUserUseCase, GoogleOAuthUseCase } from "@/models/application/usecase";
 import { GetUserIdService, GetChannelInfoService, CookieParseService } from "@/models/application/service";
 import { UserRepository } from "@/models/infrastructure/repository";
 import { GetUserRequestPayload } from "@/models/application/payload/get_user";
-import MongoDBClient from "@/models/infrastructure/client/mongodb";
+
 
 const mongoDBClient = new MongoDBClient(process.env.MONGODB_URI || "");
 const collection = mongoDBClient.field(process.env.MONGODB_NAME || '', "users");
