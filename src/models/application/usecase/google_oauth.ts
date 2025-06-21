@@ -42,7 +42,7 @@ export default class GoogleOAuthUseCase extends AbsUseCase<TokenResponse, Object
 
         const user_channel_id = user_channel_info.id;
         const user_name = user_channel_info.snippet?.localized?.title;
-        const user_avatar = user_channel_info.snippet?.thumbnails?.default?.url;
+        const user_avatar = user_channel_info.snippet?.thumbnails?.high?.url;
 
         if (!user_channel_id || !user_name || !user_avatar) throw new UseCaseError(
             "YoutubeDataAPIのレスポンスに必要な情報が含まれていません。Youtubeチャンネルを作成してください。",

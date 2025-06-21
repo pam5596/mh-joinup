@@ -19,7 +19,7 @@ export default class GetUserUseCase extends AbsUseCase<GetUserRequestPayload, Ge
     async execute(): Promise<GetUserResponsePayload> {
         const request = this.request.toObject();
 
-        const selected_user = await this.userRepository.selectByChannelId(request.channel_id);
+        const selected_user = await this.userRepository.selectById(request.user_id);
 
         if (selected_user) {
             return new GetUserResponsePayload(
