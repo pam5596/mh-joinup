@@ -5,8 +5,11 @@ import { FaQuestion, FaPlus } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 
 import KeywordEditor from "./keywordEditor";
+import { useSettingController } from "../controller";
 
 export default function KeyWordSetting() {
+    const { settings, addNewKeywordEvent, removeKeywordEvent, updateKeyWordEvent } = useSettingController();
+
     return (
         <>
             <Heading as="h2" size="sm">
@@ -21,8 +24,21 @@ export default function KeyWordSetting() {
                 <AccordionItem label="合言葉一覧">
                     <AccordionPanel p={2}>
                         <Flex direction="column" gap={2}>
-                            <Button size="sm" colorScheme="whiteAlpha" startIcon={<FaPlus/>}>合言葉を追加する</Button>
-                            <KeywordEditor defaultValue=""/>
+                            <Button size="sm" colorScheme="whiteAlpha" startIcon={<FaPlus/>} onClick={addNewKeywordEvent}>合言葉を追加する</Button>
+                            { 
+                                settings.keywords.map(
+                                    (keyword, index) => (
+                                        <KeywordEditor 
+                                            key={index}
+                                            index={index}
+                                            settings={settings.keywords}
+                                            defaultValue={keyword}
+                                            removeAction={removeKeywordEvent}
+                                            updateAction={updateKeyWordEvent}
+                                        />
+                                    )
+                                )
+                            }
                         </Flex>
                     </AccordionPanel>
                 </AccordionItem>

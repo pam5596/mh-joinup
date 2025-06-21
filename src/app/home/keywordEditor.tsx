@@ -4,7 +4,11 @@ import { useState } from "react";
 import { SimpleGrid, GridItem, Heading, Input, Button } from "@yamada-ui/react";
 
 type Props = {
+    index: number;
     defaultValue: string;
+    settings: string[];
+    removeAction: (index: number) => void;
+    updateAction: (index: number, value: string) => void;
 }
 
 export default function KeywordEditor(props: Props) {
@@ -21,22 +25,49 @@ export default function KeywordEditor(props: Props) {
                             defaultValue={value} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setValue(e.target.value)}
                         />
                     ) : (
-                        <Heading as="h3" size="sm" isTruncated>{value}</Heading>
+                        <Heading as="h3" size="sm" isTruncated>{props.settings[props.index]}</Heading>
                     ) 
                 }
             </GridItem>
             { isEdit ?
                 (
                     <GridItem colSpan={2}>
-                        <Button colorScheme="success" size="sm" w="100%" onClick={()=>setIsEdit(!isEdit)}>保存</Button>
+                        <Button 
+                            colorScheme="success" 
+                            size="sm" 
+                            w="100%"
+                            disabled={value==""}
+                            onClick={()=>{
+                                setIsEdit(!isEdit);
+                                props.updateAction(props.index, value);
+                            }}
+                        >
+                            保存
+                        </Button>
                     </GridItem>
                 ) : (
                     <>
                         <GridItem colSpan={1}>
-                            <Button colorScheme="primary" size="sm" w="100%" onClick={()=>setIsEdit(!isEdit)}>編集</Button>
+                            <Button 
+                                colorScheme="primary" 
+                                size="sm" 
+                                w="100%" 
+                                onClick={()=>setIsEdit(!isEdit)}
+                                disabled={props.settings.some((value) => value == "")}
+                            >
+                                編集
+                            </Button>
                         </GridItem>
                         <GridItem colSpan={1}>
-                            <Button colorScheme="danger" size="sm" w="100%">削除</Button>
+                            <Button 
+                                colorScheme="danger" 
+                                size="sm" 
+                                w="100%" 
+                                onClick={()=>props.removeAction(props.index)}
+                                disabled={props.settings.some((value) => value == "")}
+                            >
+                                削除
+                            </Button>
                         </GridItem>
                     </>
                 )
