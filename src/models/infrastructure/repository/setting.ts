@@ -27,7 +27,7 @@ export default class SettingRepository extends AbsRepository<SettingEntity> {
         }
     }
 
-    async upsertByUserId(setting: SettingEntity): Promise<void|ObjectId> {
+    async upsertByUserId(setting: SettingEntity): Promise<ObjectId> {
         const result = await this.upsertByOtherPropsRaw("user_id", setting);
 
         if (result.matchedCount === 0 && result.upsertedCount === 0) {

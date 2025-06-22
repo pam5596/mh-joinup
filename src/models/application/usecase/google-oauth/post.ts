@@ -1,29 +1,28 @@
-import AbsUseCase from "./abstruct";
+import AbsUseCase from "../abstruct";
 import { UseCaseError } from "@/models/error";
 
-import { TokenResponse } from "@react-oauth/google";
-import { ObjectId } from "mongodb";
-
-import { GetUserIdService, GetChannelInfoService } from "../service";
+import { GoogleOauthPayload } from "@/models/application/payload";
+import { GetUserIdService, GetChannelInfoService } from "@/models/application/service";
 import { UserEntity } from "@/models/domain/entity";
 import { UserChannelId, UserName, UserAvatar } from "@/models/domain/value_object";
+import { ObjectId } from "mongodb";
 
 
-export default class GoogleOAuthUseCase extends AbsUseCase<TokenResponse, ObjectId> {
+export default class GoogleOauthPOSTUseCase extends AbsUseCase<GoogleOauthPayload.POSTRequestType, GoogleOauthPayload.POSTResponseType> {
     getUserIdService: GetUserIdService;
     getChannelInfoService: GetChannelInfoService;
 
     constructor(
-        request: TokenResponse,
+        request: GoogleOauthPayload.POSTRequestType,
         getUserIdService: GetUserIdService,
         getChannelInfoService: GetChannelInfoService
     ) {
-        super(request);
-        this.getUserIdService = getUserIdService;
-        this.getChannelInfoService = getChannelInfoService;
+        super(request)
+        this.getUserIdService = getUserIdService
+        this.getChannelInfoService = getChannelInfoService
     }
 
-    async execute(): Promise<ObjectId> {
+    async execute(): Promise<GoogleOauthPayload.POSTResponseType> {
         const channel_info = await this.getChannelInfoService.execute(this.request);
 
         if (channel_info.kind != "youtube#channelListResponse") throw new UseCaseError(
@@ -57,8 +56,10 @@ export default class GoogleOAuthUseCase extends AbsUseCase<TokenResponse, Object
             new UserAvatar(user_avatar)
         )
 
-        const user_id = await this.getUserIdService.execute(user_entity);
+        const selected_user_id = await this.getUserIdService.execute(user_entity);
 
-        return user_id;
+        return {
+            user_id: selected_user_id.toHexString()
+        }
     }
 }
