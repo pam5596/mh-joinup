@@ -2,14 +2,14 @@
 import { useState, useEffect } from "react";
 import { useCallApi } from "@/hooks";
 
-import { GetSettingResponseType } from "@/models/application/payload/get_setting/type";
+import { SettingsPayload } from "@/models/application/payload";
 
 export default function useSettingController() {
-    const [settings, setSettings] = useState<GetSettingResponseType>({
+    const [settings, setSettings] = useState<SettingsPayload.GETResponseType>({
         setting_id: "",
         keywords: []
     });
-    const [prev_settings, setPrevSettings] = useState<GetSettingResponseType>({
+    const [prev_settings, setPrevSettings] = useState<SettingsPayload.GETResponseType>({
         setting_id: "",
         keywords: []
     });
@@ -37,7 +37,7 @@ export default function useSettingController() {
     const { fetchAPI } = useCallApi();
 
     const getSettingsEvent = async () => {
-        await fetchAPI<undefined, GetSettingResponseType>(
+        await fetchAPI<undefined, SettingsPayload.GETResponseType>(
             "/api/settings",
             "GET",
             undefined,
@@ -50,7 +50,7 @@ export default function useSettingController() {
     }
 
     const updateSettingsEvent = async () => {
-        await fetchAPI<GetSettingResponseType, unknown>(
+        await fetchAPI<SettingsPayload.GETResponseType, unknown>(
             "/api/settings",
             "PUT",
             settings,

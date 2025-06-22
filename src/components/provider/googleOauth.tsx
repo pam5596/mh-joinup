@@ -12,10 +12,7 @@ export default function GoogleOauth({ children }: { children: React.ReactNode })
                 '/api/google-oauth',
                 'GET',
                 undefined,
-                {
-                    title: '正常にログインしました',
-                    description: 'GoogleOAuthの認証が成功しました。',
-                },
+                undefined,
                 undefined,
                 undefined,
                 () => {

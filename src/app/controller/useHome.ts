@@ -2,10 +2,10 @@
 import { useState, useEffect } from "react";
 import { useCallApi } from "@/hooks";
 
-import { GetUserResponseType } from "@/models/application/payload/get_user/type";
+import { GoogleOauthPayload } from "@/models/application/payload";
 
 export default function useHomeController() {
-    const [userInfo, setUserInfo] = useState<Partial<GetUserResponseType>>({});
+    const [userInfo, setUserInfo] = useState<Partial<GoogleOauthPayload.GETResponseType>>({});
 
     useEffect(() => {
         getUserInfoEvent();
@@ -15,7 +15,7 @@ export default function useHomeController() {
     const { fetchAPI } = useCallApi();
 
     const getUserInfoEvent = async () => {
-        await fetchAPI<undefined, GetUserResponseType>(
+        await fetchAPI<undefined, GoogleOauthPayload.GETResponseType>(
             "/api/google-oauth",
             "GET",
             undefined,
