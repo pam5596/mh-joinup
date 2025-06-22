@@ -1,4 +1,4 @@
-"useclient";
+"use client";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import { useCallApi, useAlertSnack } from "@/hooks";
 
