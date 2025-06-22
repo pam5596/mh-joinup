@@ -11,7 +11,7 @@ import { useHomeController } from "../controller";
 
 export default function Home() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { userInfo } = useHomeController();
+    const { userInfo, getBrowserSourceEvent } = useHomeController();
 
     return (
         <GoogleOauthProvider>
@@ -27,9 +27,33 @@ export default function Home() {
                             </Heading>
                         </SkeletonText>
                     </Flex>
-                    <Button colorScheme="whiteAlpha" w="90%" startIcon={<FaListUl/>} color="red.700">管理画面へ</Button>
-                    <Button colorScheme="whiteAlpha" w="90%" startIcon={<FaLink/>} color="amber.700">ブラウザソースをコピー</Button>
-                    <Button colorScheme="blackAlpha" w="90%" startIcon={<IoSettingsSharp/>} color="amber.300" onClick={onOpen}>ユーザ設定</Button>
+                    <Button 
+                        colorScheme="blackAlpha" 
+                        w="90%" 
+                        startIcon={<FaListUl/>} 
+                        color="whiteAlpha" 
+                        onClick={()=>{location.href = '/editor'}}
+                    >
+                        管理画面へ
+                    </Button>
+                    <Button 
+                        colorScheme="whiteAlpha" 
+                        w="90%" 
+                        startIcon={<FaLink/>} 
+                        color="amber.700"
+                        onClick={getBrowserSourceEvent}
+                    >
+                        ブラウザソースをコピー
+                    </Button>
+                    <Button 
+                        colorScheme="blackAlpha" 
+                        w="90%" 
+                        startIcon={<IoSettingsSharp/>} 
+                        color="amber.300" 
+                        onClick={onOpen}
+                    >
+                        ユーザ設定
+                    </Button>
                 </Flex>
                 <SettingModal isOpenAction={isOpen} onCloseAction={onClose}/>
             </MainBackgroundProvider>

@@ -27,5 +27,18 @@ export default function useHomeController() {
         )
     }
 
-    return { userInfo }
+    const getBrowserSourceEvent = async () => {
+        await fetchAPI<undefined, { url: string }>(
+            "/api/browser-source",
+            "GET",
+            undefined,
+            { title: 'ブラウザソースをクリップボードにコピーしました！'},
+            { title: 'ブラウザソースの取得に失敗しました' },
+            async (response) => {
+                await navigator.clipboard.writeText(response.url);
+            }
+        )
+    }
+
+    return { userInfo, getBrowserSourceEvent }
 }
