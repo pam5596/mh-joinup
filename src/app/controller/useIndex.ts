@@ -7,7 +7,6 @@ export default function useIndexController() {
     const { openSnack } = useAlertSnack();
 
     const loginEvent = useGoogleLogin({
-        scope: "https://www.googleapis.com/auth/youtube.readonly",
         onSuccess: async (tokenResponse) => {
             await fetchAPI<TokenResponse, { next_path: string }>(
                 "/api/google-oauth",
