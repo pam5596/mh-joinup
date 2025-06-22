@@ -41,18 +41,27 @@ export async function POST(request: Request) {
 
     const response = await usecase.execute();
 
-    const cookie = serialize('user_id', response.user_id, {
+    const user_id_cookie = serialize('user_id', response.user_id, {
+        path: '/',
         httpOnly: true,
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge: 60 * 60 * 24,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
     });
+
+    const auth_token_cookie = serialize('auth_token', response.auth_token, {
+        path: '/',
+        httpOnly: true,
+        maxAge: 60 * 60 * 24,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+    });
+
+    const headers = new Headers();
+    headers.append('Set-Cookie', user_id_cookie);
+    headers.append('Set-Cookie', auth_token_cookie);
     
     return Response.json({
         next_path: '/home'
-    },{
-        headers: {
-            'Set-Cookie': cookie
-        }
-    })
+    },{ headers })
 }

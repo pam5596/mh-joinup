@@ -59,7 +59,8 @@ export default class GoogleOauthPOSTUseCase extends AbsUseCase<GoogleOauthPayloa
         const selected_user_id = await this.getUserIdService.execute(user_entity);
 
         return {
-            user_id: selected_user_id.toHexString()
+            user_id: selected_user_id.toHexString(),
+            auth_token: this.request.access_token
         }
     }
 }
