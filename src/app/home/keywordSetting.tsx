@@ -31,7 +31,7 @@ export default function KeyWordSetting() {
                                         <KeywordEditor 
                                             key={index}
                                             index={index}
-                                            settings={settings.keywords}
+                                            setting_keywords={settings.keywords}
                                             defaultValue={keyword}
                                             removeAction={removeKeywordEvent}
                                             updateAction={updateKeyWordEvent}

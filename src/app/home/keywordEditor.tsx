@@ -6,7 +6,7 @@ import { SimpleGrid, GridItem, Heading, Input, Button } from "@yamada-ui/react";
 type Props = {
     index: number;
     defaultValue: string;
-    settings: string[];
+    setting_keywords: string[];
     removeAction: (index: number) => void;
     updateAction: (index: number, value: string) => void;
 }
@@ -25,7 +25,7 @@ export default function KeywordEditor(props: Props) {
                             defaultValue={value} onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setValue(e.target.value)}
                         />
                     ) : (
-                        <Heading as="h3" size="sm" isTruncated>{props.settings[props.index]}</Heading>
+                        <Heading as="h3" size="sm" isTruncated>{props.setting_keywords[props.index]}</Heading>
                     ) 
                 }
             </GridItem>
@@ -53,7 +53,7 @@ export default function KeywordEditor(props: Props) {
                                 size="sm" 
                                 w="100%" 
                                 onClick={()=>setIsEdit(!isEdit)}
-                                disabled={props.settings.some((value) => value == "")}
+                                disabled={props.setting_keywords.some((value) => value == "")}
                             >
                                 編集
                             </Button>
@@ -64,7 +64,7 @@ export default function KeywordEditor(props: Props) {
                                 size="sm" 
                                 w="100%" 
                                 onClick={()=>props.removeAction(props.index)}
-                                disabled={props.settings.some((value) => value == "")}
+                                disabled={props.setting_keywords.some((value) => value == "")}
                             >
                                 削除
                             </Button>

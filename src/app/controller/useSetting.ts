@@ -1,4 +1,4 @@
-"useclient";
+"use client";
 import { useState, useEffect } from "react";
 import { useCallApi } from "@/hooks";
 
@@ -9,11 +9,30 @@ export default function useSettingController() {
         setting_id: "",
         keywords: []
     });
+    const [prev_settings, setPrevSettings] = useState<GetSettingResponseType>({
+        setting_id: "",
+        keywords: []
+    });
 
     useEffect(() => {
         getSettingsEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    useEffect(() => {
+        setPrevSettings(settings)
+        if (
+            prev_settings.setting_id.length && 
+            JSON.stringify(settings) != JSON.stringify(prev_settings)
+        ) {
+            if (
+                !settings.keywords.some((v)=>v=="")
+            ) {
+                updateSettingsEvent()
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [settings.keywords])
 
     const { fetchAPI } = useCallApi();
 
@@ -30,27 +49,36 @@ export default function useSettingController() {
         )
     }
 
+    const updateSettingsEvent = async () => {
+        await fetchAPI<GetSettingResponseType, unknown>(
+            "/api/settings",
+            "PUT",
+            settings,
+            { title: "ユーザ設定を更新しました" },
+            { title: "ユーザ設定の更新に失敗しました" }
+        )
+    }
+
     const addNewKeywordEvent = () => setSettings(
-        {
-            ...settings,
-            keywords: [...settings.keywords, ""]
-        }
+        (prev) => ({
+            ...prev,
+            keywords: [...prev.keywords, ""]
+        })
     )
 
     const removeKeywordEvent = (index: number) => {
-        const new_keywords = settings.keywords.filter((_, i) => i != index)
-        setSettings({
-            ...settings,
-            keywords: new_keywords
-        })
+        setSettings((prev) => ({
+            ...prev,
+            keywords: prev.keywords.filter((_, i) => i != index)
+        }))
     }
 
     const updateKeyWordEvent = (index: number, value: string) => {
-        setSettings({
-            ...settings,
-            keywords: settings.keywords.map((keyword, i) => i == index ? value : keyword)
-        })
+        setSettings((prev) => ({
+            ...prev,
+            keywords: prev.keywords.map((keyword, i) => i == index ? value : keyword)
+        }));
     }
 
-    return { settings, addNewKeywordEvent, removeKeywordEvent, updateKeyWordEvent }
+    return { settings, updateSettingsEvent, addNewKeywordEvent, removeKeywordEvent, updateKeyWordEvent }
 }
