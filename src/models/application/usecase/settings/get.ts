@@ -22,7 +22,7 @@ export default class SettingsGETUseCase extends AbsUseCase<SettingsPayload.GETRe
     }
 
     async execute(): Promise<SettingsPayload.GETResponseType> {
-        const user_id = await this.cookieParseService.execute(this.request);
+        const { user_id } = await this.cookieParseService.execute(this.request);
         
         const selected_setting = await this.settingRepository.selectByUserId(user_id);
         if (selected_setting) {

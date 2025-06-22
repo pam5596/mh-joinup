@@ -24,7 +24,7 @@ export default class SettingsPUTUseCase extends AbsUseCase<SettingsPayload.PUTRe
     }
 
     async execute(): Promise<SettingsPayload.PUTResponseType> {
-        const user_id = await this.cookieParseService.execute(this.request)
+        const { user_id } = await this.cookieParseService.execute(this.request)
         const request_body = await this.request.json();
 
         if (!request_body.setting_id || !request_body.keywords) 

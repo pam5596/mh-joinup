@@ -24,7 +24,7 @@ export default class GoogleOauthGETUseCase extends AbsUseCase<GoogleOauthPayload
     }
 
     async execute(): Promise<GoogleOauthPayload.GETResponseType> {
-        const user_id = await this.cookieParseService.execute(this.request);
+        const { user_id } = await this.cookieParseService.execute(this.request);
         
         const selected_user = await this.userRepository.selectById(user_id);
         if (!selected_user) throw new UseCaseError("ユーザが見つかりませんでした", user_id, 404);

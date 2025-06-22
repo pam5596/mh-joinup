@@ -5,24 +5,34 @@ import AbsService from "./abstruct";
 import { ServiceError } from "@/models/error";
 
 
-export default class CookieParseService extends AbsService<Request, ObjectId> {
-    async execute(request: Request): Promise<ObjectId> {
+export default class CookieParseService extends AbsService<Request, {user_id: ObjectId, auth_token: string}> {
+    async execute(request: Request): Promise<{user_id: ObjectId, auth_token: string}> {
         const cookie = request.headers.get("cookie");
         if (!cookie) throw new ServiceError(
-            "ログインに失敗しました。再度ログインし直してください。",
+            "不正なリクエストです。ヘッダーにcookieが含まれていません。",
             request,
             401
         )
 
         const parsed_cookie = parse(cookie);
     
-        const userId = parsed_cookie.user_id;
-        if (!userId) throw new ServiceError(
-            "ログインに失敗しました。再度ログインし直してください。",
-            request,
+        const user_id = parsed_cookie.user_id;
+        if (!user_id) throw new ServiceError(
+            "不正なリクエストです。UserIdがcookieに含まれていません。",
+            parsed_cookie,
             400
         );
 
-        return new ObjectId(userId);
+        const auth_token = parsed_cookie.auth_token;
+        if (!auth_token) throw new ServiceError(
+            "不正なリクエストです。AuthTokenがcookieに含まれていません。",
+            parsed_cookie,
+            400
+        )
+
+        return {
+            user_id: new ObjectId(user_id),
+            auth_token: auth_token
+        }
     }
 }

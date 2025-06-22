@@ -20,7 +20,7 @@ export default class BrowserSourceGETUseCase extends AbsUseCase<BrowserSourcePay
 
     async execute(): Promise<BrowserSourcePayload.GETResponseType> {
         const url_origin = new URL(this.request.url).origin;
-        const user_id = await this.cookieParseService.execute(this.request)
+        const { user_id } = await this.cookieParseService.execute(this.request)
         const hashed_user_id = await this.createHashedIdService.execute(user_id)
 
         return {
