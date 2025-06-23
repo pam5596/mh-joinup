@@ -28,7 +28,7 @@ export default class ConnectionRepository extends AbsRepository<ConnectionEntity
         }
     }
 
-    async upsertByYoutubeId(connection: ConnectionEntity): Promise<void|ObjectId> {
+    async upsertByYoutubeId(connection: ConnectionEntity): Promise<ObjectId> {
         const result = await this.upsertByOtherPropsRaw("youtube_id", connection);
 
         if (result.matchedCount === 0 && result.upsertedCount === 0) {

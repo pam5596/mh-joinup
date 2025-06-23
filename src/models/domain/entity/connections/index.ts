@@ -6,9 +6,9 @@ import type { ConnectionType, ConnectionDTO } from "./type";
 import { ConnectYoutubeId, ConnectVideoTitle, MongoId } from "@/models/domain/value_object";
 
 export class ConnectionEntity extends AbsEntity<ConnectionType, ConnectionDTO> {
-    private user_id: ObjectId;
-    private youtube_id: ConnectYoutubeId;
-    private video_title: ConnectVideoTitle;
+    public user_id: ObjectId;
+    public youtube_id: ConnectYoutubeId;
+    public video_title: ConnectVideoTitle;
 
     constructor(
         id: ObjectId,

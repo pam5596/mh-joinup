@@ -44,7 +44,7 @@ export default class UserRepository extends AbsRepository<UserEntity> {
         }
     }
 
-    async upsertByChannelId(user: UserEntity): Promise<void|ObjectId> {
+    async upsertByChannelId(user: UserEntity): Promise<ObjectId> {
         const result = await this.upsertByOtherPropsRaw("channel_id", user);
 
         if (result.matchedCount === 0 && result.upsertedCount === 0) {

@@ -1,14 +1,12 @@
 import AbsService from "./abstruct";
 import { ServiceError } from "@/models/error";
 
-import { UserChannelId } from "@/models/domain/value_object";
 import { youtube_v3 } from "googleapis";
 
-
-export default class GetStreamsInfoService extends AbsService<{auth_token: string, channel_id: UserChannelId}, youtube_v3.Schema$SearchListResponse> {
-    async execute(request: {auth_token: string, channel_id: UserChannelId}): Promise<youtube_v3.Schema$SearchListResponse> {
+export default class GetStreamsInfoService extends AbsService<{auth_token: string}, youtube_v3.Schema$LiveBroadcast> {
+    async execute(request: {auth_token: string}): Promise<youtube_v3.Schema$LiveBroadcast> {
         const response = await fetch(
-            `https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=${request.channel_id.value}&eventType=live&type=video`,
+            `https://www.googleapis.com/youtube/v3/liveBroadcasts?part=snippet&broadcastStatus=active`,
             {
                 method: "GET",
                 headers: {
@@ -24,6 +22,26 @@ export default class GetStreamsInfoService extends AbsService<{auth_token: strin
             response.status,
         )
 
-        return await response.json();
+        const response_data = await response.json() as youtube_v3.Schema$LiveBroadcastListResponse;
+
+        if (response_data.kind != "youtube#liveBroadcastListResponse") throw new ServiceError(
+            "YoutubeDataAPIのレスポンスが正しくありません。異なるリクエストを送信した可能性があります。",
+            response_data,
+            400
+        );
+
+        if (!response_data.items) throw new ServiceError(
+            "YoutubeDataAPIのレスポンスにチャンネル情報が含まれていません。Youtubeチャンネルを作成してください。",
+            response_data,
+            400
+        );
+
+        if (!response_data.items.length) throw new ServiceError(
+            "ユーザーチャンネルでライブ配信コンテンツが見つかりませんでした。",
+            response_data,
+            404
+        );
+
+        return response_data.items[0];
     }
 }
