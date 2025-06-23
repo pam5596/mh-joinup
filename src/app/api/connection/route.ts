@@ -12,6 +12,7 @@ const cookieParseService = new CookieParseService();
 const getStreamInfoService = new GetStreamInfoService();
 const getConnectionIdService = new GetConnectionIdService(connectionRepository)
 
+
 export async function GET(request: Request) {
     const usecase = new ConnectionGETUseCase(
         request,
@@ -20,7 +21,7 @@ export async function GET(request: Request) {
         getConnectionIdService
     );
 
-    const response = await usecase.execute()
+    const response = await usecase.execute();
 
-    return Response.json(response)
+    return Response.json(response);
 }

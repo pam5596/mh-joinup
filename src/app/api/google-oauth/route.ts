@@ -3,7 +3,7 @@ import { serialize } from "cookie";
 import MongoDBClient from "@/models/infrastructure/client/mongodb";
 import { GoogleOauthPayload } from "@/models/application/payload";
 import { GoogleOauthGETUseCase, GoogleOauthPOSTUseCase } from "@/models/application/usecase";
-import { GetUserIdService, GetChannelInfoService, CookieParseService } from "@/models/application/service";
+import { GetUserIdService, GetChannelInfoService, CookieParseService, ConfirmTokenService } from "@/models/application/service";
 import { UserRepository } from "@/models/infrastructure/repository";
 
 const mongoDBClient = new MongoDBClient(process.env.MONGODB_URI || "");
@@ -13,6 +13,7 @@ const userRepository = new UserRepository(mongoDBClient, collection);
 const getUserIdService = new GetUserIdService(userRepository);
 const cookieParseService = new CookieParseService();
 const getChannelInfoService = new GetChannelInfoService();
+const confirmTokenService = new ConfirmTokenService();
 
 
 export async function GET(request: Request) {
@@ -21,6 +22,7 @@ export async function GET(request: Request) {
         userRepository,
         cookieParseService,
         getUserIdService,
+        confirmTokenService
     );
 
     const response = await usecase.execute();
@@ -37,7 +39,6 @@ export async function POST(request: Request) {
         getUserIdService,
         getChannelInfoService
     )
-    
 
     const response = await usecase.execute();
 
