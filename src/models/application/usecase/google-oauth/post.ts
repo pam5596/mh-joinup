@@ -26,9 +26,9 @@ export default class GoogleOauthPOSTUseCase extends AbsUseCase<GoogleOauthPayloa
         const channel_info = await this.getChannelInfoService.execute(this.request);
 
         if (channel_info.kind != "youtube#channelListResponse") throw new UseCaseError(
-            "YoutubeDataAPIのレスポンスが正しくありません。https://www.googleapis.com/auth/youtube.readonlyがスコープに含まれているか確認してください。",
-            channel_info.kind,
-            403
+            "YoutubeDataAPIのレスポンスが正しくありません。異なるリクエストを送信した可能性があります。",
+            channel_info,
+            400
         )
 
         if (!channel_info.items) throw new UseCaseError(

@@ -5,12 +5,15 @@ import { IoSettingsSharp, IoArrowUndo, IoArrowRedo } from "react-icons/io5";
 import { LuSwords } from "react-icons/lu";
 import { FaYoutube } from "react-icons/fa";
 
-
 import { LiveBackgroundProvider, GoogleOauthProvider } from "@/components/provider";
 import JoinerAvatar from "./joinerAvatar";
 import LogItem from "./logItem";
 
+import { useEditorController } from "@/app/controller";
+
 export default function Editor() {
+    useEditorController()
+
     return (
         <GoogleOauthProvider>
             <LiveBackgroundProvider>
