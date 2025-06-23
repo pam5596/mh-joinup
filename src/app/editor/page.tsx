@@ -1,7 +1,8 @@
 "use client";
 
 import { SimpleGrid, GridItem, Button, Flex, Heading, ScrollArea, Separator, Text } from "@yamada-ui/react";
-import { IoSettingsSharp, IoArrowUndo, IoArrowRedo } from "react-icons/io5";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { IoArrowUndo, IoArrowRedo } from "react-icons/io5";
 import { LuSwords } from "react-icons/lu";
 import { FaYoutube } from "react-icons/fa";
 
@@ -12,7 +13,7 @@ import LogItem from "./logItem";
 import { useEditorController } from "@/app/controller";
 
 export default function Editor() {
-    useEditorController()
+    const { is_connect_socket, connection_info, connectionEvent, disconnectionEvent } = useEditorController()
 
     return (
         <GoogleOauthProvider>
@@ -48,15 +49,23 @@ export default function Editor() {
                     </GridItem>
                     <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.8), rgba(41, 50, 60, 0.6))" p={{sm: 2, base:4}}>
                         <Flex direction="column" gap={2} h="full" justify="space-between">
-                            <Button colorScheme="blackAlpha" color="amber.400" size="lg" startIcon={<LuSwords/>}>クエスト終了</Button>
+                            <Button colorScheme="blackAlpha" size="lg" startIcon={<LuSwords/>} disabled={!is_connect_socket}>クエスト開始</Button>
                             <Flex gap={2}>
-                                <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowUndo />} w="50%">元に戻す</Button>
-                                <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowRedo />} w="50%">やり直し</Button>
+                                <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowUndo />} w="50%" disabled={!is_connect_socket}>元に戻す</Button>
+                                <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowRedo />} w="50%" disabled={!is_connect_socket}>やり直し</Button>
                             </Flex>
-                            <Button colorScheme="blackAlpha" startIcon={<FaYoutube/>} color="red.400">配信に接続</Button>
-                            <Button colorScheme="blackAlpha" startIcon={<IoSettingsSharp/>}>Bot設定</Button>
+                            { is_connect_socket ? (
+                                    <Button colorScheme="blackAlpha" size="lg" startIcon={<AiFillThunderbolt/>} color="green.400" onClick={disconnectionEvent}>
+                                        配信を切断
+                                    </Button>
+                                ) : (
+                                    <Button colorScheme="blackAlpha" size="lg" startIcon={<FaYoutube/>} color="red.400" onClick={connectionEvent}>
+                                        配信に接続
+                                    </Button>
+                                )
+                            }
                             <Flex direction="column" bgColor="#0000005C" rounded="md" p={{sm: 2, base:4}}>
-                                <Text fontWeight="bold" isTruncated>ライブタイトル</Text>
+                                <Text fontWeight="bold" isTruncated>{connection_info.video_title || '配信に接続してください'}</Text>
                                 <Separator mt={2} mb={2} />
                                 <Flex align="center">
                                     <Text isTruncated>参加希望者数：</Text>

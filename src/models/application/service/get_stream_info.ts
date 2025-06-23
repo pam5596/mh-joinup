@@ -37,7 +37,7 @@ export default class GetStreamsInfoService extends AbsService<{auth_token: strin
         );
 
         if (!response_data.items.length) throw new ServiceError(
-            "ユーザーチャンネルでライブ配信コンテンツが見つかりませんでした。",
+            "ユーザーチャンネルで配信中のライブコンテンツが見つかりませんでした。",
             response_data,
             404
         );
