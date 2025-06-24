@@ -13,7 +13,7 @@ import LogItem from "./logItem";
 import { useEditorController } from "@/app/controller";
 
 export default function Editor() {
-    const { is_connect_socket, connection_info, connectionEvent, disconnectionEvent } = useEditorController()
+    const { board, liver_info, is_connect_socket, connection_info, applicants, connectionEvent, disconnectionEvent } = useEditorController()
 
     return (
         <GoogleOauthProvider>
@@ -23,10 +23,16 @@ export default function Editor() {
                         <Heading size="xs" color="white" mb={2}>参加者</Heading>
                         <Separator mt={2} mb={2} />
                         <Flex justify="center" align="center" gap={{sm: 2, md: 4, base: 6}} p={3}>
-                            <JoinerAvatar />
-                            <JoinerAvatar />
-                            <JoinerAvatar />
-                            <JoinerAvatar />
+                            { liver_info ? (
+                                <JoinerAvatar 
+                                    key={0}
+                                    is_liver={true}
+                                    name={liver_info.name}
+                                    avatar={liver_info.avatar}
+                                    channel_id={liver_info.channel_id}
+                                    quests={0}
+                                />
+                            ) : null}
                         </Flex>
                     </GridItem>
                     <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}}>
@@ -34,7 +40,7 @@ export default function Editor() {
                         <Separator mt={2} mb={2} />
                         <ScrollArea h="354px" overflowX="hidden">
                             <SimpleGrid columns={{md:3, base: 4}} gap={{sm: 1, base: 4}} justifyItems="center" p={3}>
-                                { Array(30).fill(0).map((_, i) => <JoinerAvatar key={i} />)}
+                                {/* { Array(30).fill(0).map((_, i) => <JoinerAvatar key={i} />)} */}
                             </SimpleGrid>
                         </ScrollArea>
                     </GridItem>
@@ -43,7 +49,14 @@ export default function Editor() {
                         <Separator mt={2} mb={2} />
                         <ScrollArea h="354px">
                             <Flex direction="column" gap={1}>
-                                { Array(20).fill(0).map((_, i) => <LogItem key={i} />)}
+                                { applicants.map((applicant, i) => 
+                                    <LogItem 
+                                        key={i} 
+                                        name={applicant.name}
+                                        avatar={applicant.avatar}
+                                        message={applicant.message}
+                                    />
+                                )}
                             </Flex>
                         </ScrollArea>
                     </GridItem>
@@ -69,11 +82,11 @@ export default function Editor() {
                                 <Separator mt={2} mb={2} />
                                 <Flex align="center">
                                     <Text isTruncated>参加希望者数：</Text>
-                                    <Heading as="h2" isTruncated ml="auto">100</Heading>
+                                    <Heading as="h2" isTruncated ml="auto">{board.applicants}</Heading>
                                 </Flex>
                                 <Flex align="center">
                                     <Text isTruncated>クエスト出発数：</Text>
-                                    <Heading as="h2" isTruncated ml="auto">100</Heading>
+                                    <Heading as="h2" isTruncated ml="auto">{board.quests}</Heading>
                                 </Flex>
                             </Flex>
                         </Flex>

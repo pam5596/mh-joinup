@@ -3,7 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { useState, useEffect } from "react";
 import { useCallApi } from "@/hooks";
 
-import { ConnectionPayload, SettingsPayload, ApplicantPayload } from "@/models/application/payload";
+import { ConnectionPayload, SettingsPayload, ApplicantPayload, GoogleOauthPayload } from "@/models/application/payload";
 
 export default function useEditorController() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -13,18 +13,41 @@ export default function useEditorController() {
         })
     );
     const [is_connect_socket, setIsConnect] = useState(false);
-    const [user_settings, setUserSettings] = useState<Partial<SettingsPayload.GETResponseType>>({})
+
+    const [liver_info, setLiverInfo] = useState<GoogleOauthPayload.GETResponseType>();
+    const [user_settings, setUserSettings] = useState<Partial<SettingsPayload.GETResponseType>>({});
+
     const [connection_info, setConnectInfo] = useState<Partial<ConnectionPayload.GETResponseType>>({});
     const [applicants, setApplicants] = useState<ApplicantPayload.POSTResponseType["applicants"]>([]);
+    const [board, setBoard] = useState({
+        joiner: [],
+        waiter: [],
+        quests: 0,
+        applicants: 0,
+    })
 
     const { fetchAPI } = useCallApi();
 
     useEffect(()=>{
-        getUserSettings();
+        getUserSettingsEvent();
+        getLiverInfoEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    const getUserSettings = async () => {
+    const getLiverInfoEvent = async () => {
+        await fetchAPI<undefined, GoogleOauthPayload.GETResponseType>(
+            "/api/google-oauth",
+            "GET",
+            undefined,
+            undefined,
+            { title: "ライバー情報の取得に失敗しました" },
+            (response) => {
+                setLiverInfo(response);
+            }
+        )
+    }
+
+    const getUserSettingsEvent = async () => {
         await fetchAPI<undefined, SettingsPayload.GETResponseType>(
             "/api/settings",
             "GET",
@@ -56,8 +79,8 @@ export default function useEditorController() {
             "GET",
             undefined,
             undefined,
-            { title: "ユーザー情報の取得に失敗しました" },
-            (response: ConnectionPayload.GETResponseType) => {
+            { title: "ライブ配信情報の取得に失敗しました" },
+            async (response: ConnectionPayload.GETResponseType) => {
                 setConnectInfo(response);
                 setIsConnect(true);
 
@@ -82,8 +105,15 @@ export default function useEditorController() {
     const disconnectionEvent = async () => {
         socketClient.disconnect();
         setIsConnect(false);
-        setConnectInfo({})
+        setConnectInfo({});
+        setApplicants([]);
+        setBoard({
+            joiner: [],
+            waiter: [],
+            quests: 0,
+            applicants: 0,
+        });
     }
 
-    return { connection_info, is_connect_socket, applicants, connectionEvent, disconnectionEvent }
+    return { liver_info, connection_info, is_connect_socket, applicants, board, connectionEvent, disconnectionEvent }
 }
