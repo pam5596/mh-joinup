@@ -29,7 +29,7 @@ export default function useEditorConnectionController() {
             "GET",
             undefined,
             undefined,
-            { title: "ライブ配信情報の取得に失敗しました" },
+            "ライブ配信情報の取得に失敗しました。" ,
             async (response: ConnectionPayload.GETResponseType) => {
                 setConnectInfo(response);
                 setIsConnect(true);

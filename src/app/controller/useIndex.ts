@@ -13,7 +13,7 @@ export default function useIndexController() {
                 "POST",
                 tokenResponse,
                 undefined,
-                { title: "ログインに失敗しました" },
+                "ログインに失敗しました。",
                 (response) => {
                     location.href = response.next_path;
                 }
@@ -21,7 +21,7 @@ export default function useIndexController() {
         },
         onError: () => {
             openSnack(
-                "ログインに失敗しました",
+                "ログインに失敗しました。",
                 "Googleアカウントを作成するか、しばらく時間を置いてから再度お試しください。",
                 "error"
             )

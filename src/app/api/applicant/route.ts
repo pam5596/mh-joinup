@@ -1,3 +1,5 @@
+import errorHandling from "@/utils/errorHandling";
+
 import MongoDBClient from "@/models/infrastructure/client/mongodb";
 import { ApplicantPayload } from "@/models/application/payload";
 import { ApplicantPOSTUseCase } from "@/models/application/usecase";
@@ -12,15 +14,17 @@ const getUserIdService = new GetUserIdService(userRepository);
 
 
 export async function POST(request: Request) {
-    const request_body = await request.json() as ApplicantPayload.POSTRequestType;
+    return errorHandling(request, async (request) => {
+        const request_body = await request.json() as ApplicantPayload.POSTRequestType;
 
-    const usecase = new ApplicantPOSTUseCase(
-        request_body,
-        applicantRepository,
-        getUserIdService
-    );
+        const usecase = new ApplicantPOSTUseCase(
+            request_body,
+            applicantRepository,
+            getUserIdService
+        );
 
-    const response = await usecase.execute();
+        const response = await usecase.execute();
 
-    return Response.json(response);
+        return Response.json(response);
+    })
 }

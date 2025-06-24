@@ -20,7 +20,7 @@ export default function useHomeController() {
             "GET",
             undefined,
             undefined,
-            { title: "ユーザー情報の取得に失敗しました" },
+            "ユーザー情報の取得に失敗しました",
             (response) => {
                 setUserInfo(response);
             }
@@ -32,8 +32,8 @@ export default function useHomeController() {
             "/api/browser-source",
             "GET",
             undefined,
-            { title: 'ブラウザソースをクリップボードにコピーしました！'},
-            { title: 'ブラウザソースの取得に失敗しました' },
+            'ブラウザソースをクリップボードにコピーしました！',
+            'ブラウザソースの取得に失敗しました' ,
             async (response) => {
                 await navigator.clipboard.writeText(response.url);
             }

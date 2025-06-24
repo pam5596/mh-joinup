@@ -8,8 +8,8 @@ export default function useCallApi() {
         url: string,
         method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
         body?: BodyType,
-        successSnack?: { title: string, description?: string },
-        errorSnack?: { title: string, description?: string },
+        successSnackTitle?: string,
+        errorSnackTitle?: string,
         onSuccess?: (response: ResponseType) => void,
         onError?: (error: Response) => void
     ) {
@@ -22,20 +22,22 @@ export default function useCallApi() {
             body: body ? JSON.stringify(body) : undefined,
         });
 
+        const response_data = await fetch_result.json();
+        console.log(response_data);
+
         if (!fetch_result.ok) {
-            if (errorSnack) openSnack(
-                errorSnack.title,
-                errorSnack.description || `${fetch_result.status} ${fetch_result.statusText}`,
+            openSnack(
+                errorSnackTitle || response_data.message,
+                response_data.message || '',
                 "error"
             ) 
             onError?.(fetch_result);
         } else {
-            if (successSnack) openSnack(
-                successSnack.title,
-                successSnack.description || '',
+            if (successSnackTitle) openSnack(
+                successSnackTitle,
+                '',
                 "success"
             );
-            const response_data = await fetch_result.json() as ResponseType;
             onSuccess?.(response_data);
         }
     };

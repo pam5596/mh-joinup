@@ -1,3 +1,5 @@
+import errorHandling from "@/utils/errorHandling";
+
 import MongoDBClient from "@/models/infrastructure/client/mongodb";
 import { CookieParseService } from "@/models/application/service";
 import { SettingRepository } from "@/models/infrastructure/repository";
@@ -12,27 +14,30 @@ const cookieParseService = new CookieParseService();
 
 
 export async function GET(request: Request) {
-    const usecase = new SettingsGETUseCase(
-        request,
-        settingRepository,
-        cookieParseService
-    );
+    return errorHandling(request, async (request) => {
+        const usecase = new SettingsGETUseCase(
+            request,
+            settingRepository,
+            cookieParseService
+        );
 
-    const response = await usecase.execute();
+        const response = await usecase.execute();
 
-    return Response.json(response);
+        return Response.json(response);
+    });
 }
 
 
 export async function PUT(request: Request) {
-    const usecase = new SettingsPUTUseCase(
-        request,
-        settingRepository,
-        cookieParseService
-    );
+    return errorHandling(request, async (request) => {
+        const usecase = new SettingsPUTUseCase(
+            request,
+            settingRepository,
+            cookieParseService
+        );
 
-    const response = await usecase.execute();
+        const response = await usecase.execute();
 
-    return Response.json(response);
-
+        return Response.json(response);
+    });
 }

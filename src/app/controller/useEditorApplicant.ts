@@ -27,7 +27,7 @@ export default function useEditorApplicantController() {
             "GET",
             undefined,
             undefined,
-            { title: "ライバー情報の取得に失敗しました" },
+            "ライバー情報の取得に失敗しました。",
             (response) => {
                 setLiverInfo(response);
             }
@@ -40,7 +40,7 @@ export default function useEditorApplicantController() {
             "GET",
             undefined,
             undefined,
-            { title: "ユーザー設定の取得に失敗しました" },
+            "ユーザー設定の取得に失敗しました。",
             (response) => {
                 setUserSettings(response);
             }
@@ -52,7 +52,7 @@ export default function useEditorApplicantController() {
             "/api/applicant",
             "POST",
             request,
-            { title: "参加希望を確認しました" },
+            "参加希望を確認しました。",
             undefined,
             (response) => {
                 setApplicants([...applicants, ...response.applicants]);

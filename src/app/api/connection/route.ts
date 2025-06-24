@@ -1,3 +1,4 @@
+import errorHandling from "@/utils/errorHandling";
 
 import MongoDBClient from "@/models/infrastructure/client/mongodb";
 import { ConnectionGETUseCase } from "@/models/application/usecase";
@@ -14,14 +15,16 @@ const getConnectionIdService = new GetConnectionIdService(connectionRepository)
 
 
 export async function GET(request: Request) {
-    const usecase = new ConnectionGETUseCase(
-        request,
-        cookieParseService,
-        getStreamInfoService,
-        getConnectionIdService
-    );
+    return errorHandling(request, async (request) => {
+        const usecase = new ConnectionGETUseCase(
+            request,
+            cookieParseService,
+            getStreamInfoService,
+            getConnectionIdService
+        );
 
-    const response = await usecase.execute();
+        const response = await usecase.execute();
 
-    return Response.json(response);
+        return Response.json(response);
+    })
 }
