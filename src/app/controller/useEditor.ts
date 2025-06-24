@@ -1,9 +1,9 @@
 "use client";
 import { io, Socket } from "socket.io-client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCallApi } from "@/hooks";
 
-import { ConnectionPayload } from "@/models/application/payload";
+import { ConnectionPayload, SettingsPayload, ApplicantPayload } from "@/models/application/payload";
 
 export default function useEditorController() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -13,9 +13,42 @@ export default function useEditorController() {
         })
     );
     const [is_connect_socket, setIsConnect] = useState(false);
+    const [user_settings, setUserSettings] = useState<Partial<SettingsPayload.GETResponseType>>({})
     const [connection_info, setConnectInfo] = useState<Partial<ConnectionPayload.GETResponseType>>({});
+    const [applicants, setApplicants] = useState<ApplicantPayload.POSTResponseType["applicants"]>([]);
 
     const { fetchAPI } = useCallApi();
+
+    useEffect(()=>{
+        getUserSettings();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
+    const getUserSettings = async () => {
+        await fetchAPI<undefined, SettingsPayload.GETResponseType>(
+            "/api/settings",
+            "GET",
+            undefined,
+            undefined,
+            { title: "ユーザー設定の取得に失敗しました" },
+            (response) => {
+                setUserSettings(response);
+            }
+        )
+    }
+
+    const postApplicantEvent = async (request: ApplicantPayload.POSTRequestType) => {
+        await fetchAPI<ApplicantPayload.POSTRequestType, ApplicantPayload.POSTResponseType>(
+            "/api/applicant",
+            "POST",
+            request,
+            { title: "参加希望を確認しました" },
+            undefined,
+            (response) => {
+                setApplicants([...applicants, ...response.applicants])
+            }
+        )
+    }
 
     const connectionEvent = async () => {
         await fetchAPI(
@@ -28,8 +61,19 @@ export default function useEditorController() {
                 setConnectInfo(response);
                 setIsConnect(true);
 
-                socketClient.on(response.youtube_id, (emit_data) => {
-                    console.log(emit_data);
+                socketClient.on(response.youtube_id, async(emit_data: ApplicantPayload.POSTRequestType) => {
+                    const applicant_messages = {
+                        ...emit_data,
+                        connectionId: response.connection_id,
+                        chatMessages: emit_data.chatMessages.filter(
+                            (chatMessage) => user_settings.keywords!.some(
+                                (keyword) => chatMessage.displayMessage.includes(keyword)
+                            )
+                        )
+                    };
+                    console.log(applicant_messages);
+
+                    await postApplicantEvent(applicant_messages);
                 });
             }
         );
@@ -41,5 +85,5 @@ export default function useEditorController() {
         setConnectInfo({})
     }
 
-    return { connection_info, connectionEvent, is_connect_socket, disconnectionEvent }
+    return { connection_info, is_connect_socket, applicants, connectionEvent, disconnectionEvent }
 }
