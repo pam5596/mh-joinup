@@ -1,11 +1,11 @@
 export type POSTRequestType = {
-    videoId: string;
-    connectionId: string;
-    chatMessages: {
-        displayMessage: string;
-        displayName: string;
-        photoUrl: string;
-        platformAudienceId: string;
+    youtube_id: string;
+    connection_id: string;
+    chat_data: {
+        message: string;
+        name: string;
+        avatar: string;
+        channel_id: string;
     }[]
 }
 

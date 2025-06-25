@@ -23,20 +23,20 @@ export default class ApplicantPOSTUseCase extends AbsUseCase<ApplicantPayload.PO
 
     async execute(): Promise<ApplicantPayload.POSTResponseType> {
         const applicants = await Promise.all(
-            this.request.chatMessages.map(async(chatMessage) => {
+            this.request.chat_data.map(async(chatData) => {
                 const user = new UserEntity(
                     new ObjectId(),
-                    new UserChannelId(chatMessage.platformAudienceId),
-                    new UserName(chatMessage.displayName),
-                    new UserAvatar(chatMessage.photoUrl)
+                    new UserChannelId(chatData.channel_id),
+                    new UserName(chatData.name),
+                    new UserAvatar(chatData.avatar)
                 );
                 const user_id = await this.getUserIdService.execute(user);
 
                 const applicant = new ApplicantEntity(
                     new ObjectId(),
                     user_id,
-                    new ObjectId(this.request.connectionId),
-                    new ApplicantMessage(chatMessage.displayMessage)
+                    new ObjectId(this.request.connection_id),
+                    new ApplicantMessage(chatData.message)
                 );
                 const applicant_id = await this.applicantRepository.insert(applicant)
 

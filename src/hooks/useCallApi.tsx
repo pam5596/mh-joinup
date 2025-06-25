@@ -23,7 +23,6 @@ export default function useCallApi() {
         });
 
         const response_data = await fetch_result.json();
-        console.log(response_data);
 
         if (!fetch_result.ok) {
             openSnack(

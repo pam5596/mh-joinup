@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-// import { ApplicantPayload } from "@/models/application/payload";
+import { useState, useEffect } from "react";
 
 
 export default function useEditorBoardController() {
@@ -10,6 +9,16 @@ export default function useEditorBoardController() {
         quests: 0,
         applicants: 0,
     });
+
+    useEffect(() => {
+        console.log(board)
+    }, [board])
+
+    // const onJoin = async () => {
+    //     if (board.joiner.length <= 3) {
+    //         setBoard((prev) => ({...prev, joiner: [...prev.joiner, ]}))
+    //     }
+    // }
 
 
     const onResetBoard = async () => {

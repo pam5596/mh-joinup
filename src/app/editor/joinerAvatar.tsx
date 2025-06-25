@@ -51,7 +51,7 @@ export default function JoinerAvatar(props: Props) {
                         <Flex w="full" align="center" gap={2}>
                             <Select placeholder="待機者を選択" placeholderInOptions={false} textColor="white" iconProps={{color: "white"}} listProps={{bg: "#2c2c2c", rounded: "md", _scrollbar: { display: "none" }}}>
                                 {Array(10).fill(0).map((_, i) => (
-                                    <Option key={i}>
+                                    <Option key={i} value={i.toString()}>
                                         <Flex align="center" gap={2}>
                                             <Avatar size="xs" name={`待機者${i}`} />
                                             <Text maxW="150px" isTruncated>待機者</Text>

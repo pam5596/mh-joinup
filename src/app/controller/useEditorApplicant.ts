@@ -21,6 +21,10 @@ export default function useEditorApplicantController() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
+    useEffect(()=>{
+        console.log(applicants)
+    }, [applicants])
+
     const getLiverInfoEvent = async () => {
         await fetchAPI<undefined, GoogleOauthPayload.GETResponseType>(
             "/api/google-oauth",
@@ -55,29 +59,28 @@ export default function useEditorApplicantController() {
             "参加希望を確認しました。",
             undefined,
             (response) => {
-                setApplicants([...applicants, ...response.applicants]);
+                setApplicants(prevApplicants => [...prevApplicants, ...response.applicants]);
             }
         )
     }
 
-    const onEmitEvent = async(
+    const onEmitEvent = async (
         emit_data: ApplicantPayload.POSTRequestType,
         connection_response: ConnectionPayload.GETResponseType
     ) => {
         const applicant_messages = {
             ...emit_data,
-            connectionId: connection_response.connection_id,
-            chatMessages: emit_data.chatMessages.filter(
-                (chatMessage) => user_settings.keywords!.some(
-                    (keyword) => chatMessage.displayMessage.includes(keyword)
+            connection_id: connection_response.connection_id,
+            chat_data: emit_data.chat_data.filter(
+                (chatData) => user_settings.keywords!.some(
+                    (keyword) => chatData.message.includes(keyword)
                 )
             )
         };
-        console.log(applicant_messages);
 
-        await postApplicantEvent(applicant_messages);
+        if (applicant_messages.chat_data.length) await postApplicantEvent(applicant_messages);
     }
-            
+
 
     const onResetEvent = async () => {
         setApplicants([]);

@@ -15,7 +15,7 @@ export default function GoogleOauth({ children }: { children: React.ReactNode })
                 undefined,
                 undefined,
                 undefined,
-                () => {
+                async () => {
                     redirect('/')
                 }
             );

@@ -44,11 +44,12 @@ export async function POST(request: Request) {
         )
 
         const response = await usecase.execute();
+        console.log(response)
 
         const user_id_cookie = serialize('user_id', response.user_id, {
             path: '/',
             httpOnly: true,
-            maxAge: 60 * 60 * 24,
+            maxAge: 60 * 60,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax'
         });
@@ -56,9 +57,31 @@ export async function POST(request: Request) {
         const auth_token_cookie = serialize('auth_token', response.auth_token, {
             path: '/',
             httpOnly: true,
-            maxAge: 60 * 60 * 24,
+            maxAge: 60 * 60,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax'
+        });
+
+        const headers = new Headers();
+        headers.append('Set-Cookie', user_id_cookie);
+        headers.append('Set-Cookie', auth_token_cookie);
+        
+        return Response.json({
+            next_path: '/home'
+        },{ headers })
+    })
+}
+
+export async function DELETE(request: Request) {
+    return errorHandling(request, async () => {
+        const user_id_cookie = serialize('user_id', '', {
+            path: '/',
+            expires: new Date(0)
+        });
+
+        const auth_token_cookie = serialize('auth_token', '', {
+            path: '/',
+            expires: new Date(0)
         });
 
         const headers = new Headers();
