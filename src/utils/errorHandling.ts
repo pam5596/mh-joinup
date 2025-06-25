@@ -8,7 +8,6 @@ export default async function errorHandling(
     try {
         return await callback(request);
     } catch(error: unknown) {
-        console.log(error);
         if (error instanceof AbsError) {
             return Response.json(
                 {

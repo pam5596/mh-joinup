@@ -27,9 +27,10 @@ export default class GoogleOauthGETUseCase extends AbsUseCase<GoogleOauthPayload
     }
 
     async execute(): Promise<GoogleOauthPayload.GETResponseType> {
-        const { user_id, auth_token } = await this.cookieParseService.execute(this.request);
+        const { user_id/*, auth_token*/ } = await this.cookieParseService.execute(this.request);
 
-        await this.confirmTokenService.execute(auth_token);
+        // [TODO]: refresh tokenを発行してトークンを再生成するように変更する
+        // await this.confirmTokenService.execute(auth_token);
 
         const selected_user = await this.userRepository.selectById(user_id);
         if (!selected_user) throw new UseCaseError("ユーザが見つかりませんでした", user_id, 404);

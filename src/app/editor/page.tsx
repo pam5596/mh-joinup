@@ -15,7 +15,7 @@ import { useEditorController } from "@/app/controller";
 export default function Editor() {
     const { 
         board, liver_info, is_connect_socket, connection_info, applicants, 
-        connectionEvent, disconnectionEvent, onLeaveEvent, onReplaceEvent
+        connectionEvent, disconnectionEvent, onLeaveEvent, onUpdateQuestEvent, onReplaceEvent, onStartQuestEvent
     } = useEditorController()
 
     return (
@@ -30,22 +30,28 @@ export default function Editor() {
                                 <JoinerAvatar 
                                     key={0}
                                     is_liver={true}
-                                    name={liver_info.name}
-                                    avatar={liver_info.avatar}
-                                    quests={0}
+                                    joiner_info={{
+                                        user_id: '',
+                                        name: liver_info.name,
+                                        avatar: liver_info.avatar,
+                                        applicant_id: '',
+                                        message: '',
+                                        quest: 0
+                                    }}
+                                    status="joiner"
                                 />
                             ) : null}
                             { board.joiner.map((joiner, i) => (
                                 <JoinerAvatar
                                     key={i+1}
                                     is_liver={false}
-                                    name={joiner.name}
-                                    avatar={joiner.avatar}
-                                    quests={joiner.quest}
+                                    joiner_info={joiner}
+                                    status="joiner"
                                     applicant_id={joiner.applicant_id}
                                     onLeaveEvent={()=>onLeaveEvent(joiner.applicant_id)}
                                     replaceableUsers={board.waiter}
                                     onReplaceEvent={(replace_to) => onReplaceEvent(joiner.applicant_id, replace_to)}
+                                    onUpdateQuestEvent={(quest) => onUpdateQuestEvent(joiner.applicant_id, quest)}
                                 />
                             ))}
                         </Flex>
@@ -59,13 +65,11 @@ export default function Editor() {
                                     <JoinerAvatar
                                         key={i+1}
                                         is_liver={false}
-                                        name={waiter.name}
-                                        avatar={waiter.avatar}
-                                        quests={waiter.quest}
+                                        joiner_info={waiter}
+                                        status="waiter"
                                         applicant_id={waiter.applicant_id}
                                         onLeaveEvent={()=>onLeaveEvent(waiter.applicant_id)}
-                                        replaceableUsers={board.joiner}
-                                        onReplaceEvent={(replace_to) => onReplaceEvent(waiter.applicant_id, replace_to)}
+                                        onUpdateQuestEvent={(quest) => onUpdateQuestEvent(waiter.applicant_id, quest)}
                                     />
                                 ))}
                             </SimpleGrid>
@@ -89,7 +93,15 @@ export default function Editor() {
                     </GridItem>
                     <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.8), rgba(41, 50, 60, 0.6))" p={{sm: 2, base:4}}>
                         <Flex direction="column" gap={2} h="full" justify="space-between">
-                            <Button colorScheme="blackAlpha" size="lg" startIcon={<LuSwords/>} disabled={!is_connect_socket}>クエスト開始</Button>
+                            <Button 
+                                colorScheme="blackAlpha" 
+                                size="lg" 
+                                startIcon={<LuSwords/>} 
+                                disabled={!is_connect_socket}
+                                onClick={onStartQuestEvent}
+                            >
+                                クエスト開始
+                            </Button>
                             <Flex gap={2}>
                                 <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowUndo />} w="50%" disabled={!is_connect_socket}>元に戻す</Button>
                                 <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowRedo />} w="50%" disabled={!is_connect_socket}>やり直し</Button>

@@ -15,13 +15,37 @@ export default function useEditorBoardController() {
         console.log(board)
     }, [board])
 
+
     const onJoinEvent = (applicant: Omit<ManageInstantType, 'quest'>) => {
-        setBoard((prev) => ({
-            ...prev, 
-            joiner: prev.joiner.length < 3  ? [...prev.joiner, {...applicant, quest: 0}] : [...prev.joiner],
-            waiter: prev.joiner.length >= 3 ? [...prev.waiter, {...applicant, quest: 0}] : [...prev.waiter],
-            applicants: prev.applicants++
-        }))
+        setBoard((prev) => {
+            if (prev.joiner.length < 3) {
+                return ({
+                    ...prev, 
+                    joiner: [...prev.joiner, {...applicant, quest: 0}],
+                    applicants: prev.applicants+1
+                })
+            } else {
+                const insert_row_index_joiner = prev.joiner[prev.waiter.length % 3];
+                let insert_applicant_quest: number;
+
+                switch(insert_row_index_joiner.quest) {
+                    case 0:
+                        insert_applicant_quest = 2 * Math.ceil((prev.waiter.length + 1) / 3);
+                        break;
+                    case 1:
+                        insert_applicant_quest = 2 * Math.ceil((prev.waiter.length + 1) / 3) - 1;
+                        break;
+                    default:
+                        insert_applicant_quest = 2 * Math.ceil((prev.waiter.length + 1) / 3) - 2;
+                }
+
+                return ({
+                    ...prev, 
+                    waiter: [...prev.waiter, {...applicant, quest: insert_applicant_quest }],
+                    applicants: prev.applicants+1
+                })
+            }
+        })
     };
 
     const onLeaveEvent = (applicant_id: ManageInstantType["applicant_id"]) => {
@@ -32,7 +56,7 @@ export default function useEditorBoardController() {
             if (filterd_joiner.length == 2) {
                 return {
                     ...prev,
-                    joiner: filterd_joiner.length == 2 ? [...filterd_joiner, filterd_waiter[0]] : filterd_joiner,
+                    joiner: filterd_joiner.length == 2 ? [...filterd_joiner, {... filterd_waiter[0], quest: 0}] : filterd_joiner,
                     waiter: filterd_waiter.slice(1)
                 }
             } else {
@@ -45,12 +69,29 @@ export default function useEditorBoardController() {
         });
     };
 
+    const onUpdateQuestEvent = (applicant_id: ManageInstantType["applicant_id"], quest: ManageInstantType['quest']) => {
+        setBoard((prev) => ({
+            ...prev,
+            joiner: prev.joiner.map((j) => j.applicant_id == applicant_id ? { ...j, quest } : j),
+            waiter: prev.waiter.map((w) => w.applicant_id == applicant_id ? { ...w, quest } : w)
+        }))
+    }
+
+    const onStartQuestEvent = () => {
+        setBoard((prev) => ({
+            ...prev,
+            quests: prev.quests+1,
+            joiner: prev.joiner.map((j) => ({ ...j, quest: j.quest + 1 })),
+            waiter: prev.waiter.map((w) => ({ ...w, quest: w.quest == 0 ? 0 : w.quest - 1 }))
+        }))
+    }
+
     const onReplaceEvent = (applicant_id: ManageInstantType["applicant_id"], replace_id: ManageInstantType["applicant_id"]) => {
         setBoard((prev) => {
             const replace_applicant = prev.joiner.find((j) => j.applicant_id == replace_id) || prev.waiter.find((w) => w.applicant_id == replace_id);
             return replace_applicant ? {
                 ...prev,
-                joiner: prev.joiner.map((j) => j.applicant_id == applicant_id ? replace_applicant : j),
+                joiner: prev.joiner.map((j) => j.applicant_id == applicant_id ? {...replace_applicant, quest: 0} : j),
                 waiter: prev.waiter.map((w) => w.applicant_id == applicant_id ? replace_applicant : w).filter((j) => j.applicant_id != replace_id)
             } : prev
         })
@@ -70,6 +111,8 @@ export default function useEditorBoardController() {
         onJoinEvent,
         onLeaveEvent,
         onReplaceEvent,
+        onUpdateQuestEvent,
+        onStartQuestEvent,
         onResetBoard
     }
 }
