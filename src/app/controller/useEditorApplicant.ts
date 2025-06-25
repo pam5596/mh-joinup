@@ -6,7 +6,7 @@ import useEditorBoardController from "./useEditorBoard";
 import { ConnectionPayload, SettingsPayload, ApplicantPayload, GoogleOauthPayload } from "@/models/application/payload";
 
 export default function useEditorApplicantController() {
-    const { board, onJoin, onResetBoard } = useEditorBoardController();
+    const { board, onJoinEvent, onLeaveEvent, onResetBoard } = useEditorBoardController();
     
     const [liver_info, setLiverInfo] = useState<GoogleOauthPayload.GETResponseType>();
     const [user_settings, setUserSettings] = useState<Partial<SettingsPayload.GETResponseType>>({});
@@ -60,7 +60,7 @@ export default function useEditorApplicantController() {
             undefined,
             (response) => {
                 setApplicants(prevApplicants => [...prevApplicants, ...response.applicants]);
-                response.applicants.forEach((applicant) => onJoin(applicant));
+                response.applicants.forEach((applicant) => onJoinEvent(applicant));
             }
         )
     }
@@ -94,5 +94,5 @@ export default function useEditorApplicantController() {
         onResetBoard()
     }
 
-    return { liver_info, applicants, board, onEmitEvent, onResetEvent }
+    return { liver_info, applicants, board, onEmitEvent, onResetEvent, onLeaveEvent }
 }

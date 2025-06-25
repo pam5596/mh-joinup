@@ -15,14 +15,22 @@ export default function useEditorBoardController() {
         console.log(board)
     }, [board])
 
-    const onJoin = (applicant: Omit<ManageInstantType, 'quest'>) => {
+    const onJoinEvent = (applicant: Omit<ManageInstantType, 'quest'>) => {
         setBoard((prev) => ({
             ...prev, 
             joiner: prev.joiner.length < 3  ? [...prev.joiner, {...applicant, quest: 0}] : [...prev.joiner],
             waiter: prev.joiner.length >= 3 ? [...prev.waiter, {...applicant, quest: 0}] : [...prev.waiter],
             applicants: prev.applicants++
         }))
-    }
+    };
+
+    const onLeaveEvent = (applicant_id: ManageInstantType["applicant_id"]) => {
+        setBoard((prev) => ({
+            ...prev,
+            joiner: prev.joiner.filter((joiner) => joiner.applicant_id != applicant_id),
+            waiter: prev.waiter.filter((waiter) => waiter.applicant_id != applicant_id)
+        }))
+    };
 
 
     const onResetBoard = async () => {
@@ -36,7 +44,8 @@ export default function useEditorBoardController() {
 
     return {
         board,
-        onJoin,
+        onJoinEvent,
+        onLeaveEvent,
         onResetBoard
     }
 }

@@ -13,6 +13,8 @@ type Props = {
     name: string;
     avatar: string;
     quests: number;
+    onLeaveEvent?: () => void;
+    applicant_id?: string;
 }
 
 export default function JoinerAvatar(props: Props) {
@@ -62,7 +64,7 @@ export default function JoinerAvatar(props: Props) {
                             <Button colorScheme="teal">交代</Button>
                         </Flex>
 
-                        <Button colorScheme="danger" w="full">退席</Button>
+                        <Button colorScheme="danger" w="full" onClick={props.onLeaveEvent}>退席</Button>
                     </Flex>
                 </PopoverBody>
             </PopoverContent>

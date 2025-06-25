@@ -13,7 +13,10 @@ import LogItem from "./logItem";
 import { useEditorController } from "@/app/controller";
 
 export default function Editor() {
-    const { board, liver_info, is_connect_socket, connection_info, applicants, connectionEvent, disconnectionEvent } = useEditorController()
+    const { 
+        board, liver_info, is_connect_socket, connection_info, applicants, 
+        connectionEvent, disconnectionEvent, onLeaveEvent
+    } = useEditorController()
 
     return (
         <GoogleOauthProvider>
@@ -39,6 +42,8 @@ export default function Editor() {
                                     name={joiner.name}
                                     avatar={joiner.avatar}
                                     quests={joiner.quest}
+                                    applicant_id={joiner.applicant_id}
+                                    onLeaveEvent={()=>onLeaveEvent(joiner.applicant_id)}
                                 />
                             ))}
                         </Flex>
@@ -55,6 +60,8 @@ export default function Editor() {
                                         name={waiter.name}
                                         avatar={waiter.avatar}
                                         quests={waiter.quest}
+                                        applicant_id={waiter.applicant_id}
+                                        onLeaveEvent={()=>onLeaveEvent(waiter.applicant_id)}
                                     />
                                 ))}
                             </SimpleGrid>
