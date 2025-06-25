@@ -31,11 +31,12 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
 
 
     async selectById(management_id: ObjectId): Promise<ManageEntity|null> {
-        const result = await this.selectByIdRaw(management_id)
+        const result = await this.selectByIdRaw(management_id);
         
         if (result) {
             return new ManageEntity(
                 result._id,
+                result.connection_id,
                 result.joiner.map(
                     (joiner: ManageInstantType) => 
                         new ManageInstant(

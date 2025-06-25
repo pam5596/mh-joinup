@@ -1,4 +1,5 @@
 export type POSTRequestType = {
+    connection_id: string;
     joiner: {
         user_id: string;
         name: string;

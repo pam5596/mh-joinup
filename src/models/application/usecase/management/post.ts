@@ -21,6 +21,7 @@ export default class ManagementPOSTUseCase extends AbsUseCase<ManagementPayload.
     async execute(): Promise<ManagementPayload.POSTResponseType> {
         const management = new ManageEntity(
             new ObjectId(),
+            new ObjectId(this.request.connection_id),
             this.request.joiner.map((joiner) => new ManageInstant(
                 new ObjectId(joiner.user_id),
                 new ObjectId(joiner.applicant_id),

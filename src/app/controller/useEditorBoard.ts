@@ -5,6 +5,7 @@ import { ManageInstantType } from "@/models/domain/embedded/managements/instant/
 
 export default function useEditorBoardController() {
     const [board, setBoard] = useState<ManagementPayload.POSTRequestType>({
+        connection_id: '',
         joiner: [],
         waiter: [],
         quests: 0,
@@ -99,6 +100,7 @@ export default function useEditorBoardController() {
 
     const onResetBoard = async () => {
         setBoard({
+            connection_id: '',
             joiner: [],
             waiter: [],
             quests: 0,

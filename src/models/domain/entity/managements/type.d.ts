@@ -4,6 +4,7 @@ import { ManageInstantType } from "@/models/domain/embedded/managements/instant/
 
 export type ManageType = {
     id: string;
+    connection_id: string;
     joiner: ManageInstantType[];
     waiter: ManageInstantType[];
     quests: number;
@@ -12,6 +13,7 @@ export type ManageType = {
 
 export type ManageDTO = {
     id: ObjectId;
+    connection_id: ObjectId;
     joiner: ManageInstantDTO[];
     waiter: ManageInstantDTO[];
     quests: ManageQuest;
