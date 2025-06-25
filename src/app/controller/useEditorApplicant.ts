@@ -6,8 +6,18 @@ import useEditorBoardController from "./useEditorBoard";
 import { ConnectionPayload, SettingsPayload, ApplicantPayload, GoogleOauthPayload } from "@/models/application/payload";
 
 export default function useEditorApplicantController() {
-    const { board, onJoinEvent, onLeaveEvent, onReplaceEvent, onUpdateQuestEvent, onStartQuestEvent, onResetBoard } = useEditorBoardController();
+    const { 
+        board, 
+        onJoinEvent, 
+        onLeaveEvent, 
+        onReplaceEvent, 
+        onUpdateQuestEvent, 
+        onStartQuestEvent, 
+        onResetBoard, 
+        postManagementEvent 
+    } = useEditorBoardController();
     
+    const [can_go_live, setCanGoLive] = useState({get_liver_info: false, get_user_setting: false}) 
     const [liver_info, setLiverInfo] = useState<GoogleOauthPayload.GETResponseType>();
     const [user_settings, setUserSettings] = useState<Partial<SettingsPayload.GETResponseType>>({});
 
@@ -21,9 +31,6 @@ export default function useEditorApplicantController() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    // useEffect(()=>{
-    //     console.log(applicants)
-    // }, [applicants])
 
     const getLiverInfoEvent = async () => {
         await fetchAPI<undefined, GoogleOauthPayload.GETResponseType>(
@@ -34,6 +41,7 @@ export default function useEditorApplicantController() {
             "ライバー情報の取得に失敗しました。",
             (response) => {
                 setLiverInfo(response);
+                setCanGoLive((prev) => ({...prev, get_liver_info: true}));
             }
         )
     }
@@ -47,6 +55,7 @@ export default function useEditorApplicantController() {
             "ユーザー設定の取得に失敗しました。",
             (response) => {
                 setUserSettings(response);
+                setCanGoLive((prev) => ({...prev, get_user_setting: true}));
             }
         )
     }
@@ -94,5 +103,17 @@ export default function useEditorApplicantController() {
         onResetBoard()
     }
 
-    return { liver_info, applicants, board, onEmitEvent, onLeaveEvent, onReplaceEvent, onUpdateQuestEvent, onStartQuestEvent, onResetEvent }
+    return { 
+        can_go_live, 
+        liver_info, 
+        applicants, 
+        board, 
+        onEmitEvent, 
+        onLeaveEvent, 
+        onReplaceEvent, 
+        onUpdateQuestEvent, 
+        onStartQuestEvent, 
+        onResetEvent,
+        postManagementEvent
+    }
 }

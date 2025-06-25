@@ -16,7 +16,6 @@ export default function useEditorConnectionController() {
     const [is_connect_socket, setIsConnect] = useState(false);
     const [connection_info, setConnectInfo] = useState<Partial<ConnectionPayload.GETResponseType>>({});
 
-
     const { fetchAPI } = useCallApi();
 
     const onConnectEvent = async (

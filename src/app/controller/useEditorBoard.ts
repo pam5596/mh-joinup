@@ -1,20 +1,41 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
+
+import { useCallApi } from "@/hooks";
 import { ManagementPayload } from "@/models/application/payload";
 import { ManageInstantType } from "@/models/domain/embedded/managements/instant/type";
 
 export default function useEditorBoardController() {
-    const [board, setBoard] = useState<ManagementPayload.POSTRequestType>({
-        connection_id: '',
+    const [board, setBoard] = useState<Omit<ManagementPayload.POSTRequestType, 'connection_id'>>({
         joiner: [],
         waiter: [],
         quests: 0,
         applicants: 0,
     });
+    const [managements, setManagements] = useState<ManagementPayload.POSTResponseType['management_id'][]>([])
 
-    useEffect(() => {
-        console.log(board)
-    }, [board])
+    const { fetchAPI } = useCallApi();
+
+
+    const postManagementEvent = async (connection_id: string) => {
+        await fetchAPI<ManagementPayload.POSTRequestType, ManagementPayload.POSTResponseType>(
+            "/api/management",
+            'POST',
+            { ...board, connection_id },
+            undefined,
+            "参加状況の保存に失敗しました",
+            (response) => {
+                setManagements(
+                    (prev) => [...prev, response.management_id]
+                )
+            },
+            undefined
+        )
+    };
+
+    // const getBeforeManagementEvent = async (management_id: string) => {
+    //     const state_management = managements.find((m) => m == management_id)
+    // }
 
 
     const onJoinEvent = (applicant: Omit<ManageInstantType, 'quest'>) => {
@@ -100,7 +121,6 @@ export default function useEditorBoardController() {
 
     const onResetBoard = async () => {
         setBoard({
-            connection_id: '',
             joiner: [],
             waiter: [],
             quests: 0,
@@ -115,6 +135,7 @@ export default function useEditorBoardController() {
         onReplaceEvent,
         onUpdateQuestEvent,
         onStartQuestEvent,
-        onResetBoard
+        onResetBoard,
+        postManagementEvent
     }
 }

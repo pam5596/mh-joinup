@@ -14,7 +14,7 @@ import { useEditorController } from "@/app/controller";
 
 export default function Editor() {
     const { 
-        board, liver_info, is_connect_socket, connection_info, applicants, 
+        can_go_live, board, liver_info, is_connect_socket, connection_info, applicants, 
         connectionEvent, disconnectionEvent, onLeaveEvent, onUpdateQuestEvent, onReplaceEvent, onStartQuestEvent
     } = useEditorController()
 
@@ -111,7 +111,14 @@ export default function Editor() {
                                         配信を切断
                                     </Button>
                                 ) : (
-                                    <Button colorScheme="blackAlpha" size="lg" startIcon={<FaYoutube/>} color="red.400" onClick={connectionEvent}>
+                                    <Button 
+                                        colorScheme="blackAlpha" 
+                                        size="lg" 
+                                        startIcon={<FaYoutube/>} 
+                                        color="red.400" 
+                                        onClick={connectionEvent} 
+                                        disabled={!(can_go_live.get_liver_info && can_go_live.get_user_setting)}
+                                    >
                                         配信に接続
                                     </Button>
                                 )
