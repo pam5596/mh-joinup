@@ -15,7 +15,7 @@ import { useEditorController } from "@/app/controller";
 export default function Editor() {
     const { 
         board, liver_info, is_connect_socket, connection_info, applicants, 
-        connectionEvent, disconnectionEvent, onLeaveEvent
+        connectionEvent, disconnectionEvent, onLeaveEvent, onReplaceEvent
     } = useEditorController()
 
     return (
@@ -44,6 +44,8 @@ export default function Editor() {
                                     quests={joiner.quest}
                                     applicant_id={joiner.applicant_id}
                                     onLeaveEvent={()=>onLeaveEvent(joiner.applicant_id)}
+                                    replaceableUsers={board.waiter}
+                                    onReplaceEvent={(replace_to) => onReplaceEvent(joiner.applicant_id, replace_to)}
                                 />
                             ))}
                         </Flex>
@@ -62,6 +64,8 @@ export default function Editor() {
                                         quests={waiter.quest}
                                         applicant_id={waiter.applicant_id}
                                         onLeaveEvent={()=>onLeaveEvent(waiter.applicant_id)}
+                                        replaceableUsers={board.joiner}
+                                        onReplaceEvent={(replace_to) => onReplaceEvent(waiter.applicant_id, replace_to)}
                                     />
                                 ))}
                             </SimpleGrid>

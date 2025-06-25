@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { 
     Avatar, Indicator, Tooltip, 
     Popover, PopoverContent, PopoverTrigger, PopoverHeader, PopoverBody, 
@@ -7,14 +8,17 @@ import {
     Select, Option, Button
 } from "@yamada-ui/react";
 import { FaPlus, FaMinus } from "react-icons/fa";
+import { ManageInstantType } from "@/models/domain/embedded/managements/instant/type";
 
 type Props = {
     is_liver: boolean;
     name: string;
     avatar: string;
     quests: number;
-    onLeaveEvent?: () => void;
     applicant_id?: string;
+    onLeaveEvent?: () => void;
+    replaceableUsers?: ManageInstantType[];
+    onReplaceEvent?: (replace_to: string) => void
 }
 
 export default function JoinerAvatar(props: Props) {
@@ -22,6 +26,7 @@ export default function JoinerAvatar(props: Props) {
         defaultValue: props.quests,
         min: 0
     });
+    const [replace_to_id, setChangeUserId] = useState<string>()
 
     return (
         <Popover trigger="click">
@@ -50,18 +55,31 @@ export default function JoinerAvatar(props: Props) {
                         </Flex>
 
                         <Flex w="full" align="center" gap={2}>
-                            <Select placeholder="待機者を選択" placeholderInOptions={false} textColor="white" iconProps={{color: "white"}} listProps={{bg: "#2c2c2c", rounded: "md", _scrollbar: { display: "none" }}}>
-                                {Array(10).fill(0).map((_, i) => (
-                                    <Option key={i} value={i.toString()}>
+                            <Select 
+                                placeholder="待機者を選択" 
+                                placeholderInOptions={false} 
+                                textColor="white" 
+                                iconProps={{color: "white"}} 
+                                listProps={{bg: "#2c2c2c", rounded: "md", _scrollbar: { display: "none" }}}
+                                onChange={setChangeUserId}
+                            >
+                                {props.replaceableUsers ? props.replaceableUsers.map((user, i) => (
+                                    <Option key={i} value={user.applicant_id}>
                                         <Flex align="center" gap={2}>
-                                            <Avatar size="xs" name={`待機者${i}`} />
-                                            <Text maxW="150px" isTruncated>待機者</Text>
+                                            <Avatar size="xs" src={user.avatar} name={user.name} />
+                                            <Text maxW="150px" isTruncated>{user.name}</Text>
                                         </Flex>
                                     </Option>
-                                ))}
+                                )) : null}
                             </Select>
                             <Text>と</Text>
-                            <Button colorScheme="teal">交代</Button>
+                            <Button 
+                                colorScheme="teal" 
+                                disabled={!Boolean(replace_to_id)}
+                                onClick={() => replace_to_id && props.onReplaceEvent ? props.onReplaceEvent(replace_to_id) : undefined}
+                            >
+                                交代
+                            </Button>
                         </Flex>
 
                         <Button colorScheme="danger" w="full" onClick={props.onLeaveEvent}>退席</Button>

@@ -6,7 +6,7 @@ import useEditorApplicantController from "./useEditorApplicant";
 
 export default function useEditorController() {
     const { connection_info, is_connect_socket, onConnectEvent, onDisconnectEvent } = useEditorConnectionController();
-    const { liver_info, applicants, board, onEmitEvent, onResetEvent, onLeaveEvent } = useEditorApplicantController();
+    const { liver_info, applicants, board, onEmitEvent, onLeaveEvent, onReplaceEvent, onResetEvent } = useEditorApplicantController();
 
     const connectionEvent = () => onConnectEvent(onEmitEvent);
     const disconnectionEvent = () => onDisconnectEvent(onResetEvent);
@@ -19,6 +19,7 @@ export default function useEditorController() {
         board,
         connectionEvent,
         disconnectionEvent,
-        onLeaveEvent
+        onLeaveEvent,
+        onReplaceEvent
     }
 }

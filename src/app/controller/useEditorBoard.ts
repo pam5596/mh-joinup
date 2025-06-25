@@ -25,13 +25,36 @@ export default function useEditorBoardController() {
     };
 
     const onLeaveEvent = (applicant_id: ManageInstantType["applicant_id"]) => {
-        setBoard((prev) => ({
-            ...prev,
-            joiner: prev.joiner.filter((joiner) => joiner.applicant_id != applicant_id),
-            waiter: prev.waiter.filter((waiter) => waiter.applicant_id != applicant_id)
-        }))
+        setBoard((prev) => {
+            const filterd_joiner = prev.joiner.filter((joiner) => joiner.applicant_id != applicant_id);
+            const filterd_waiter = prev.waiter.filter((waiter) => waiter.applicant_id != applicant_id);
+            
+            if (filterd_joiner.length == 2) {
+                return {
+                    ...prev,
+                    joiner: filterd_joiner.length == 2 ? [...filterd_joiner, filterd_waiter[0]] : filterd_joiner,
+                    waiter: filterd_waiter.slice(1)
+                }
+            } else {
+                return {
+                    ...prev,
+                    joiner: filterd_joiner,
+                    waiter: filterd_waiter
+                }
+            }
+        });
     };
 
+    const onReplaceEvent = (applicant_id: ManageInstantType["applicant_id"], replace_id: ManageInstantType["applicant_id"]) => {
+        setBoard((prev) => {
+            const replace_applicant = prev.joiner.find((j) => j.applicant_id == replace_id) || prev.waiter.find((w) => w.applicant_id == replace_id);
+            return replace_applicant ? {
+                ...prev,
+                joiner: prev.joiner.map((j) => j.applicant_id == applicant_id ? replace_applicant : j),
+                waiter: prev.waiter.map((w) => w.applicant_id == applicant_id ? replace_applicant : w).filter((j) => j.applicant_id != replace_id)
+            } : prev
+        })
+    }
 
     const onResetBoard = async () => {
         setBoard({
@@ -46,6 +69,7 @@ export default function useEditorBoardController() {
         board,
         onJoinEvent,
         onLeaveEvent,
+        onReplaceEvent,
         onResetBoard
     }
 }
