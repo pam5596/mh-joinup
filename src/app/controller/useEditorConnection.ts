@@ -9,7 +9,8 @@ export default function useEditorConnectionController() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [socketClient, _] = useState<Socket>(
         io(`${process.env.NEXT_PUBLIC_SOCKET_API_DOMAIN}/castcraft_webhook`, {
-            path: "/socket.io/mhjoinup"
+            path: "/socket.io/mhjoinup",
+            autoConnect: false
         })
     );
     const [is_connect_socket, setIsConnect] = useState(false);
@@ -24,6 +25,7 @@ export default function useEditorConnectionController() {
             connection_response: ConnectionPayload.GETResponseType
         ) => void
     ) => {
+        socketClient.connect()
         await fetchAPI(
             "/api/connection",
             "GET",

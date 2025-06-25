@@ -29,10 +29,18 @@ export default function Editor() {
                                     is_liver={true}
                                     name={liver_info.name}
                                     avatar={liver_info.avatar}
-                                    channel_id={liver_info.channel_id}
                                     quests={0}
                                 />
                             ) : null}
+                            { board.joiner.map((joiner, i) => (
+                                <JoinerAvatar
+                                    key={i+1}
+                                    is_liver={false}
+                                    name={joiner.name}
+                                    avatar={joiner.avatar}
+                                    quests={joiner.quest}
+                                />
+                            ))}
                         </Flex>
                     </GridItem>
                     <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}}>
@@ -40,7 +48,15 @@ export default function Editor() {
                         <Separator mt={2} mb={2} />
                         <ScrollArea h="354px" overflowX="hidden">
                             <SimpleGrid columns={{md:3, base: 4}} gap={{sm: 1, base: 4}} justifyItems="center" p={3}>
-                                {/* { Array(30).fill(0).map((_, i) => <JoinerAvatar key={i} />)} */}
+                                { board.waiter.map((waiter, i) => (
+                                    <JoinerAvatar
+                                        key={i+1}
+                                        is_liver={false}
+                                        name={waiter.name}
+                                        avatar={waiter.avatar}
+                                        quests={waiter.quest}
+                                    />
+                                ))}
                             </SimpleGrid>
                         </ScrollArea>
                     </GridItem>

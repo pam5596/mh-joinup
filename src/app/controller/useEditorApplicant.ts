@@ -6,7 +6,7 @@ import useEditorBoardController from "./useEditorBoard";
 import { ConnectionPayload, SettingsPayload, ApplicantPayload, GoogleOauthPayload } from "@/models/application/payload";
 
 export default function useEditorApplicantController() {
-    const { board, onResetBoard } = useEditorBoardController();
+    const { board, onJoin, onResetBoard } = useEditorBoardController();
     
     const [liver_info, setLiverInfo] = useState<GoogleOauthPayload.GETResponseType>();
     const [user_settings, setUserSettings] = useState<Partial<SettingsPayload.GETResponseType>>({});
@@ -21,9 +21,9 @@ export default function useEditorApplicantController() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
-    useEffect(()=>{
-        console.log(applicants)
-    }, [applicants])
+    // useEffect(()=>{
+    //     console.log(applicants)
+    // }, [applicants])
 
     const getLiverInfoEvent = async () => {
         await fetchAPI<undefined, GoogleOauthPayload.GETResponseType>(
@@ -60,6 +60,7 @@ export default function useEditorApplicantController() {
             undefined,
             (response) => {
                 setApplicants(prevApplicants => [...prevApplicants, ...response.applicants]);
+                response.applicants.forEach((applicant) => onJoin(applicant));
             }
         )
     }
@@ -74,11 +75,17 @@ export default function useEditorApplicantController() {
             chat_data: emit_data.chat_data.filter(
                 (chatData) => user_settings.keywords!.some(
                     (keyword) => chatData.message.includes(keyword)
+                ) && !board.joiner.some(
+                    (j) => j.avatar == chatData.avatar
+                ) && !board.waiter.some(
+                    (w) => w.avatar == chatData.avatar
                 )
             )
         };
 
-        if (applicant_messages.chat_data.length) await postApplicantEvent(applicant_messages);
+        if (applicant_messages.chat_data.length) {
+            await postApplicantEvent(applicant_messages);
+        }
     }
 
 

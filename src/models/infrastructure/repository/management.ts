@@ -16,7 +16,7 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
     }
 
 
-    async insert(entity: ManageEntity): Promise<void|ObjectId> {
+    async insert(entity: ManageEntity): Promise<ObjectId> {
         const result = await this.insertRaw(entity);
 
         if (!result.acknowledged) {
@@ -30,13 +30,12 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
     }
 
 
-    async selectNewOneByConnectionId(connection_id: ObjectId): Promise<ManageEntity|null> {
-        const result = await this.selectNewOneByOtherPropsRaw("connection_id", connection_id.toHexString())
+    async selectById(management_id: ObjectId): Promise<ManageEntity|null> {
+        const result = await this.selectByIdRaw(management_id)
         
         if (result) {
             return new ManageEntity(
                 result._id,
-                new ObjectId(result.connection_id),
                 result.joiner.map(
                     (joiner: ManageInstantType) => 
                         new ManageInstant(

@@ -12,7 +12,6 @@ type Props = {
     is_liver: boolean;
     name: string;
     avatar: string;
-    channel_id: string;
     quests: number;
 }
 
