@@ -31,7 +31,7 @@ export default class ConnectionGETUseCase extends AbsUseCase<ConnectionPayload.G
         
         if (!connection_info.id || !connection_info.snippet?.title || !connection_info.snippet?.channelId) 
             throw new UseCaseError(
-                "ライブ配信のid, title. channnelIdを取得できませんでした。",
+                "ライブ配信のid, title. channnel_idを取得できませんでした。",
                 connection_info, 400
             )
         

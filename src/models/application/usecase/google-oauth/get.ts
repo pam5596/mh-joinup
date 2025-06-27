@@ -33,7 +33,7 @@ export default class GoogleOauthGETUseCase extends AbsUseCase<GoogleOauthPayload
         // await this.confirmTokenService.execute(auth_token);
 
         const selected_user = await this.userRepository.selectById(user_id);
-        if (!selected_user) throw new UseCaseError("ユーザが見つかりませんでした", user_id, 404);
+        if (!selected_user) throw new UseCaseError("ユーザが見つかりませんでした。ログインし直してください。", user_id, 404);
 
         return {
             channel_id: selected_user.channel_id.value,

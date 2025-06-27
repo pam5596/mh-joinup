@@ -17,7 +17,7 @@ export default class GetStreamsInfoService extends AbsService<{auth_token: strin
         );
 
         if (!response.ok) throw new ServiceError(
-            "ユーザーのライブ配信の取得に失敗しました",
+            "ユーザーチャンネルのライブ配信情報の取得に失敗しました",
             response,
             response.status,
         )
@@ -25,7 +25,7 @@ export default class GetStreamsInfoService extends AbsService<{auth_token: strin
         const response_data = await response.json() as youtube_v3.Schema$LiveBroadcastListResponse;
 
         if (response_data.kind != "youtube#liveBroadcastListResponse") throw new ServiceError(
-            "YoutubeDataAPIのレスポンスが正しくありません。異なるリクエストを送信した可能性があります。",
+            "YoutubeDataAPIのレスポンスが不正です。異なるリクエストを送信した可能性があります。",
             response_data,
             400
         );
@@ -37,7 +37,7 @@ export default class GetStreamsInfoService extends AbsService<{auth_token: strin
         );
 
         if (!response_data.items.length) throw new ServiceError(
-            "ユーザーチャンネルで配信中のライブコンテンツが見つかりませんでした。",
+            "ユーザーチャンネルで配信中のライブコンテンツが見つかりませんでした。配信を開始してください。",
             response_data,
             404
         );

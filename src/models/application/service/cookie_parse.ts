@@ -9,7 +9,7 @@ export default class CookieParseService extends AbsService<Request, {user_id: Ob
     async execute(request: Request): Promise<{user_id: ObjectId, auth_token: string}> {
         const cookie = request.headers.get("cookie");
         if (!cookie) throw new ServiceError(
-            "不正なリクエストです。ヘッダーにcookieが含まれていません。",
+            "リクエストヘッダーにcookieが含まれていません。",
             request,
             401
         )
@@ -18,14 +18,14 @@ export default class CookieParseService extends AbsService<Request, {user_id: Ob
     
         const user_id = parsed_cookie.user_id;
         if (!user_id) throw new ServiceError(
-            "不正なリクエストです。UserIdがcookieに含まれていません。",
+            "UserIdがcookieに含まれていません。",
             parsed_cookie,
             400
         );
 
         const auth_token = parsed_cookie.auth_token;
         if (!auth_token) throw new ServiceError(
-            "不正なリクエストです。AuthTokenがcookieに含まれていません。",
+            "AuthTokenがcookieに含まれていません。",
             parsed_cookie,
             400
         )

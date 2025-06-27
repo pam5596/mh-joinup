@@ -29,7 +29,7 @@ export default class SettingsPUTUseCase extends AbsUseCase<SettingsPayload.PUTRe
 
         if (!request_body.setting_id || !request_body.keywords) 
             throw new UseCaseError(
-                "setting_idかkeywordsを検出できませんでした。リクエストボディが不正です。",
+                "リクエストボディにsetting_idおよびkeywordsが割り当てられていません。",
                 request_body,
                 400
             )

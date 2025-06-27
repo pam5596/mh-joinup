@@ -42,7 +42,7 @@ export default function useSettingController() {
             "GET",
             undefined,
             undefined,
-            "ユーザー設定の取得に失敗しました",
+            "ユーザー設定の取得に失敗しました。",
             (response) => {
                 setSettings(response);
             }

@@ -35,8 +35,8 @@ export default function useEditorBoardController() {
             "/api/management",
             'POST',
             { ...board, connection_id },
-            undefined,
-            "参加状況の保存に失敗しました",
+            "参加状況を保存しました。",
+            "参加状況の保存に失敗しました。",
             undefined,
             undefined
         )

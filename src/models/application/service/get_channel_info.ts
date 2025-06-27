@@ -16,7 +16,7 @@ export default class GetChannelInfoService extends AbsService<TokenResponse, you
         });
 
         if (!response.ok) throw new ServiceError(
-            "ユーザチャンネルの取得に失敗しました",
+            "ユーザチャンネルの情報取得に失敗しました",
             response,
             response.status,
         )

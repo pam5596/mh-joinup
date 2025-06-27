@@ -41,7 +41,7 @@ export default function useEditorApplicantController() {
             "GET",
             undefined,
             undefined,
-            "ライバー情報の取得に失敗しました。",
+            "ユーザー情報の取得に失敗しました。",
             (response) => {
                 setLiverInfo(response);
                 setCanGoLive((prev) => ({...prev, get_liver_info: true}));
@@ -69,7 +69,7 @@ export default function useEditorApplicantController() {
             "POST",
             request,
             "参加希望を確認しました。",
-            undefined,
+            "参加希望者の情報取得に失敗しました。",
             (response) => {
                 setApplicants(prevApplicants => [...prevApplicants, ...response.applicants]);
                 response.applicants.forEach((applicant) => onJoinEvent(applicant));
