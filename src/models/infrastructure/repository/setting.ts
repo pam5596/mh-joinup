@@ -2,7 +2,7 @@ import AbsRepository from "./abstruct";
 import { RepositoryError } from "@/models/error";
 
 import { SettingEntity } from "@/models/domain/entity";
-import { SettingKeyWord } from "@/models/domain/value_object";
+import { SettingKeyWord, SettingQuest } from "@/models/domain/value_object";
 
 import { Collection, ObjectId } from "mongodb";
 import MongoDBClient from "../client/mongodb";
@@ -20,7 +20,8 @@ export default class SettingRepository extends AbsRepository<SettingEntity> {
             return new SettingEntity(
                 result._id,
                 user_id,
-                result.keywords.map((keyword: string) => new SettingKeyWord(keyword))
+                result.keywords.map((keyword: string) => new SettingKeyWord(keyword)),
+                new SettingQuest(result.quest)
             );
         } else {
             return null;

@@ -5,11 +5,16 @@ import { FaQuestion, FaPlus } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 
 import KeywordEditor from "./keywordEditor";
-import { useSettingController } from "../controller";
+import type { SettingsPayload } from "@/models/application/payload";
 
-export default function KeyWordSetting() {
-    const { settings, addNewKeywordEvent, removeKeywordEvent, updateKeyWordEvent } = useSettingController();
+type Props = {
+    settings: SettingsPayload.GETResponseType;
+    addKeywordAction: () => void;
+    removeKeywordAction: (index: number) => void;
+    updateKeywordAction: (index: number, value: string) => void;
+}
 
+export default function KeyWordSetting(props: Props) {
     return (
         <>
             <Heading as="h2" size="sm">
@@ -24,17 +29,17 @@ export default function KeyWordSetting() {
                 <AccordionItem label="合言葉一覧">
                     <AccordionPanel p={2}>
                         <Flex direction="column" gap={2}>
-                            <Button size="sm" colorScheme="whiteAlpha" startIcon={<FaPlus/>} onClick={addNewKeywordEvent}>合言葉を追加する</Button>
+                            <Button size="sm" colorScheme="whiteAlpha" startIcon={<FaPlus/>} onClick={props.addKeywordAction}>合言葉を追加する</Button>
                             { 
-                                settings.keywords.map(
+                                props.settings.keywords.map(
                                     (keyword, index) => (
                                         <KeywordEditor 
                                             key={index}
                                             index={index}
-                                            setting_keywords={settings.keywords}
+                                            setting_keywords={props.settings.keywords}
                                             defaultValue={keyword}
-                                            removeAction={removeKeywordEvent}
-                                            updateAction={updateKeyWordEvent}
+                                            removeAction={props.removeKeywordAction}
+                                            updateAction={props.updateKeywordAction}
                                         />
                                     )
                                 )

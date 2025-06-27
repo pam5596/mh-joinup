@@ -5,14 +5,7 @@ import { useCallApi } from "@/hooks";
 import { SettingsPayload } from "@/models/application/payload";
 
 export default function useSettingController() {
-    const [settings, setSettings] = useState<SettingsPayload.GETResponseType>({
-        setting_id: "",
-        keywords: []
-    });
-    const [prev_settings, setPrevSettings] = useState<SettingsPayload.GETResponseType>({
-        setting_id: "",
-        keywords: []
-    });
+    const [settings, setSettings] = useState<SettingsPayload.GETResponseType>();
 
     useEffect(() => {
         getSettingsEvent();
@@ -20,19 +13,13 @@ export default function useSettingController() {
     }, []);
 
     useEffect(() => {
-        setPrevSettings(settings)
-        if (
-            prev_settings.setting_id.length && 
-            JSON.stringify(settings) != JSON.stringify(prev_settings)
-        ) {
-            if (
-                !settings.keywords.some((v)=>v=="")
-            ) {
+        if (settings) {
+            if (settings.setting_id && !settings.keywords.some((k) => k == '')) {
                 updateSettingsEvent()
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [settings.keywords])
+    }, [settings])
 
     const { fetchAPI } = useCallApi();
 
@@ -54,31 +41,45 @@ export default function useSettingController() {
             "/api/settings",
             "PUT",
             settings,
-            "ユーザ設定を更新しました。",
+            undefined,
             "ユーザ設定の更新に失敗しました。"
         )
     }
 
     const addNewKeywordEvent = () => setSettings(
-        (prev) => ({
+        (prev) => prev ? ({
             ...prev,
             keywords: [...prev.keywords, ""]
-        })
-    )
+        }) : prev
+    );
 
     const removeKeywordEvent = (index: number) => {
-        setSettings((prev) => ({
+        setSettings((prev) => prev ? ({
             ...prev,
             keywords: prev.keywords.filter((_, i) => i != index)
-        }))
+        }) : prev);
     }
 
     const updateKeyWordEvent = (index: number, value: string) => {
-        setSettings((prev) => ({
+        setSettings((prev) => prev ? ({
             ...prev,
             keywords: prev.keywords.map((keyword, i) => i == index ? value : keyword)
-        }));
+        }) : prev);
     }
 
-    return { settings, updateSettingsEvent, addNewKeywordEvent, removeKeywordEvent, updateKeyWordEvent }
+    const updateQuestEvent = (value: number) => setSettings(
+        (prev) => prev ? ({
+            ...prev,
+            quest: value
+        }) : prev
+    );
+
+    return { 
+        settings, 
+        updateSettingsEvent, 
+        addNewKeywordEvent, 
+        removeKeywordEvent, 
+        updateKeyWordEvent,
+        updateQuestEvent
+    }
 }
