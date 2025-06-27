@@ -25,6 +25,11 @@ export default function useEditorBoardController() {
         });
     },[managements, stash_boards])
 
+    useEffect(() => {
+        emitManagementEvent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [board])
+
 
     // const getManagementsEvent = async (connection_id: string) => {
     //     await fetchAPI<ManagementPayload.GETRequestType, ManagementPayload.GETResponseType>(
@@ -54,13 +59,35 @@ export default function useEditorBoardController() {
             "/api/management",
             'POST',
             { ...board, connection_id },
-            "参加状況を保存しました。",
+            undefined,
             "参加状況の保存に失敗しました。",
             undefined,
             undefined
         )
     };
 
+    const emitManagementEvent = async () => {
+        await fetchAPI(
+            "/api/management",
+            "PUT",
+            { 
+                joiner: board.joiner.map((j) => ({
+                    name: j.name,
+                    avatar: j.avatar,
+                    quest: j.quest
+                })),
+                waiter: board.waiter.map((w) => ({
+                    name: w.name,
+                    avatar: w.avatar,
+                    quest: w.quest
+                }))
+            },
+            undefined,
+            "参加状況の共有に失敗しました。",
+            undefined,
+            undefined
+        )
+    }
 
     // [FIXIT] 正しく元に戻すとやり直しができていないので修正が必要
     const undoBoardEvent = () => {

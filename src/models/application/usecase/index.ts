@@ -12,3 +12,4 @@ export { default as ApplicantPOSTUseCase } from "./applicant/post"
 
 export { default as ManagementPOSTUseCase } from "./management/post";
 export { default as ManagementGETUseCase } from "./management/get"
+export { default as ManagementPUTUseCase } from "./management/put"
