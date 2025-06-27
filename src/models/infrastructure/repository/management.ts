@@ -29,9 +29,9 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
         return result.insertedId;
     }
 
-
+    // [FIXIT] きちんと取得できていないようだ
     async selectAllByConnectionId(connection_id: ObjectId): Promise<ManageEntity[]|null> {
-        const find_result = await this.selectAllByOtherPropsRaw('connection_id', connection_id);
+        const find_result = await this.selectAllByOtherPropsRaw('connection_id', connection_id.toHexString());
 
         const result = [];
 
@@ -68,6 +68,7 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
             )
         }
         
+        console.log(result)
         return result.length ? result : null;
     }
 }

@@ -13,7 +13,8 @@ import { ManageInstantType } from "@/models/domain/embedded/managements/instant/
 type Props = {
     is_liver: boolean;
     status: 'joiner' | 'waiter';
-    joiner_info: ManageInstantType
+    joiner_info: ManageInstantType;
+    setting_quest: number;
     applicant_id?: string;
     onLeaveEvent?: () => void;
     replaceableUsers?: ManageInstantType[];
@@ -27,7 +28,18 @@ export default function JoinerAvatar(props: Props) {
     return (
         <Popover trigger="click" closeOnButton={false}>
             <PopoverTrigger>
-                <Indicator label={props.joiner_info.quest} offset={1} ping pingScale={1.4} hidden={props.is_liver}>
+                <Indicator 
+                    label={props.joiner_info.quest} 
+                    offset={1} 
+                    ping 
+                    pingScale={1.5} 
+                    colorScheme={props.status == 'joiner' ? (
+                        props.joiner_info.quest >= props.setting_quest ? 'success' : 'info'
+                    ) : (
+                        props.joiner_info.quest == 0 ? 'success' : 'info'
+                    )}
+                    hidden={props.is_liver}
+                >
                     <Tooltip label={props.joiner_info.name} p={1} isTruncated>
                         <Avatar name={props.joiner_info.name} src={props.joiner_info.avatar} size={{sm: "sm", base: "md"}} />
                     </Tooltip>

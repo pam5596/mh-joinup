@@ -19,12 +19,31 @@ export default function useEditorBoardController() {
     const { fetchAPI } = useCallApi();
 
     useEffect(() => {
-        console.log(managements);
         setManagementStatus({
             is_managements: managements.length > 2,
             is_stash_boards: Boolean(stash_boards.length)
-        })
+        });
     },[managements, stash_boards])
+
+
+    // const getManagementsEvent = async (connection_id: string) => {
+    //     await fetchAPI<ManagementPayload.GETRequestType, ManagementPayload.GETResponseType>(
+    //         `/api/management?connection_id=${connection_id}`,
+    //         'GET',
+    //         undefined,
+    //         undefined,
+    //         "参加状況の復元に失敗しました",
+    //         (response) => {
+    //             console.log(response)
+    //             setManagements(
+    //                 (prev) => [...prev, ...response.managements]
+    //             );
+    //             setBoard(
+    //                 () => response.managements.reverse()
+    //             )
+    //         }
+    //     )
+    // }
 
 
     const postManagementEvent = async (connection_id: string) => {
@@ -42,6 +61,8 @@ export default function useEditorBoardController() {
         )
     };
 
+
+    // [FIXIT] 正しく元に戻すとやり直しができていないので修正が必要
     const undoBoardEvent = () => {
         const before_management = managements.at(-2 - stash_boards.length);
 
@@ -65,7 +86,10 @@ export default function useEditorBoardController() {
     }
 
 
-    const onJoinEvent = (applicant: Omit<ManageInstantType, 'quest'>) => {
+    const onJoinEvent = (
+        applicant: Omit<ManageInstantType, 'quest'>,
+        setting_quest: number
+    ) => {
         setBoard((prev) => {
             if (prev.joiner.length < 3) {
                 return ({
@@ -77,15 +101,10 @@ export default function useEditorBoardController() {
                 const insert_row_index_joiner = prev.joiner[prev.waiter.length % 3];
                 let insert_applicant_quest: number;
 
-                switch(insert_row_index_joiner.quest) {
-                    case 0:
-                        insert_applicant_quest = 2 * Math.ceil((prev.waiter.length + 1) / 3);
-                        break;
-                    case 1:
-                        insert_applicant_quest = 2 * Math.ceil((prev.waiter.length + 1) / 3) - 1;
-                        break;
-                    default:
-                        insert_applicant_quest = 2 * Math.ceil((prev.waiter.length + 1) / 3) - 2;
+                if (insert_row_index_joiner.quest < setting_quest) {
+                    insert_applicant_quest = setting_quest * Math.ceil((prev.waiter.length + 1) / 3) - insert_row_index_joiner.quest;
+                } else {
+                    insert_applicant_quest = setting_quest * Math.ceil((prev.waiter.length + 1) / 3) - setting_quest
                 }
 
                 return ({

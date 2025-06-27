@@ -22,7 +22,7 @@ export default function useEditorApplicantController() {
     
     const [can_go_live, setCanGoLive] = useState({get_liver_info: false, get_user_setting: false}) 
     const [liver_info, setLiverInfo] = useState<GoogleOauthPayload.GETResponseType>();
-    const [user_settings, setUserSettings] = useState<Partial<SettingsPayload.GETResponseType>>({});
+    const [user_settings, setUserSettings] = useState<SettingsPayload.GETResponseType>();
 
     const [applicants, setApplicants] = useState<ApplicantPayload.POSTResponseType["applicants"]>([]);
 
@@ -72,7 +72,7 @@ export default function useEditorApplicantController() {
             "参加希望者の情報取得に失敗しました。",
             (response) => {
                 setApplicants(prevApplicants => [...prevApplicants, ...response.applicants]);
-                response.applicants.forEach((applicant) => onJoinEvent(applicant));
+                response.applicants.forEach((applicant) => onJoinEvent(applicant, user_settings!.quest));
             }
         )
     }
@@ -81,22 +81,22 @@ export default function useEditorApplicantController() {
         emit_data: ApplicantPayload.POSTRequestType,
         connection_response: ConnectionPayload.GETResponseType
     ) => {
-        const applicant_messages = {
-            ...emit_data,
-            connection_id: connection_response.connection_id,
-            chat_data: emit_data.chat_data.filter(
-                (chatData) => user_settings.keywords!.some(
-                    (keyword) => chatData.message.includes(keyword)
-                ) && !board.joiner.some(
-                    (j) => j.avatar == chatData.avatar
-                ) && !board.waiter.some(
-                    (w) => w.avatar == chatData.avatar
-                )
-            )
-        };
+        if (user_settings) {
+            console.log(board);
 
-        if (applicant_messages.chat_data.length) {
-            await postApplicantEvent(applicant_messages);
+            const applicant_messages = {
+                ...emit_data,
+                connection_id: connection_response.connection_id,
+                chat_data: emit_data.chat_data.filter(
+                    (chatData) => user_settings.keywords!.some(
+                        (keyword) => chatData.message.includes(keyword)
+                    )
+                )
+            };
+
+            if (applicant_messages.chat_data.length) {
+                await postApplicantEvent(applicant_messages);
+            }
         }
     }
 
@@ -109,6 +109,7 @@ export default function useEditorApplicantController() {
     return { 
         can_go_live, 
         liver_info, 
+        user_settings,
         applicants, 
         board, 
         management_status,

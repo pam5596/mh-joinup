@@ -10,6 +10,7 @@ export default function useEditorController() {
     const { 
         can_go_live, 
         liver_info, 
+        user_settings,
         applicants, 
         board, 
         management_status,
@@ -29,7 +30,6 @@ export default function useEditorController() {
 
     useEffect(() => {
         if (connection_info.connection_id) {
-            console.log(board);
             postManagementEvent(connection_info.connection_id)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,6 +46,7 @@ export default function useEditorController() {
         connection_info,
         is_connect_socket,
         liver_info,
+        user_settings,
         applicants,
         board,
         management_status,

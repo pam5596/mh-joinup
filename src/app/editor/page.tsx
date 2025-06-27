@@ -18,6 +18,7 @@ export default function Editor() {
         is_connect_socket, 
         liver_info, 
         connection_info, 
+        user_settings,
         management_status,
         board, 
         applicants,
@@ -43,6 +44,7 @@ export default function Editor() {
                                 <JoinerAvatar 
                                     key={0}
                                     is_liver={true}
+                                    setting_quest={user_settings?.quest || 2}
                                     joiner_info={{
                                         user_id: '',
                                         name: liver_info.name,
@@ -58,6 +60,7 @@ export default function Editor() {
                                 <JoinerAvatar
                                     key={i+1}
                                     is_liver={false}
+                                    setting_quest={user_settings?.quest || 2}
                                     joiner_info={joiner}
                                     status="joiner"
                                     applicant_id={joiner.applicant_id}
@@ -78,6 +81,7 @@ export default function Editor() {
                                     <JoinerAvatar
                                         key={i+1}
                                         is_liver={false}
+                                        setting_quest={user_settings?.quest || 2}
                                         joiner_info={waiter}
                                         status="waiter"
                                         applicant_id={waiter.applicant_id}
@@ -93,7 +97,7 @@ export default function Editor() {
                         <Separator mt={2} mb={2} />
                         <ScrollArea h="354px">
                             <Flex direction="column" gap={1}>
-                                { applicants.reverse().map((applicant, i) => 
+                                { applicants.map((applicant, i) => 
                                     <LogItem 
                                         key={i} 
                                         name={applicant.name}

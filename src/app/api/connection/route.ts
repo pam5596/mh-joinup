@@ -6,7 +6,7 @@ import { GetStreamInfoService, CookieParseService, GetConnectionIdService } from
 import { ConnectionRepository } from "@/models/infrastructure/repository";
 
 const mongoDBClient = new MongoDBClient(process.env.MONGODB_URI || "");
-const connectionCollection = mongoDBClient.field(process.env.MONGODB_NAME || '', "collections");
+const connectionCollection = mongoDBClient.field(process.env.MONGODB_NAME || '', "connections");
 const connectionRepository = new ConnectionRepository(mongoDBClient, connectionCollection)
 
 const cookieParseService = new CookieParseService();
