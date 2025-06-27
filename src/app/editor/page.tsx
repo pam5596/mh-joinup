@@ -14,8 +14,21 @@ import { useEditorController } from "@/app/controller";
 
 export default function Editor() {
     const { 
-        can_go_live, board, liver_info, is_connect_socket, connection_info, applicants, 
-        connectionEvent, disconnectionEvent, onLeaveEvent, onUpdateQuestEvent, onReplaceEvent, onStartQuestEvent
+        can_go_live, 
+        is_connect_socket, 
+        liver_info, 
+        connection_info, 
+        management_status,
+        board, 
+        applicants,
+        connectionEvent, 
+        disconnectionEvent, 
+        onLeaveEvent, 
+        onUpdateQuestEvent, 
+        onReplaceEvent, 
+        onStartQuestEvent,
+        undoBoardEvent,
+        rollBackBoardEvent
     } = useEditorController()
 
     return (
@@ -80,7 +93,7 @@ export default function Editor() {
                         <Separator mt={2} mb={2} />
                         <ScrollArea h="354px">
                             <Flex direction="column" gap={1}>
-                                { applicants.map((applicant, i) => 
+                                { applicants.reverse().map((applicant, i) => 
                                     <LogItem 
                                         key={i} 
                                         name={applicant.name}
@@ -103,8 +116,26 @@ export default function Editor() {
                                 クエスト開始
                             </Button>
                             <Flex gap={2}>
-                                <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowUndo />} w="50%" disabled={!is_connect_socket}>元に戻す</Button>
-                                <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowRedo />} w="50%" disabled={!is_connect_socket}>やり直し</Button>
+                                <Button 
+                                    colorScheme="blackAlpha" 
+                                    size="md" 
+                                    startIcon={<IoArrowUndo />} 
+                                    w="50%" 
+                                    disabled={!is_connect_socket || !management_status.is_managements}
+                                    onClick={undoBoardEvent}
+                                >
+                                    元に戻す
+                                </Button>
+                                <Button 
+                                    colorScheme="blackAlpha" 
+                                    size="md" 
+                                    startIcon={<IoArrowRedo />} 
+                                    w="50%" 
+                                    disabled={!is_connect_socket || !management_status.is_stash_boards}
+                                    onClick={rollBackBoardEvent}
+                                >
+                                    やり直し
+                                </Button>
                             </Flex>
                             { is_connect_socket ? (
                                     <Button colorScheme="blackAlpha" size="lg" startIcon={<AiFillThunderbolt/>} color="green.400" onClick={disconnectionEvent}>

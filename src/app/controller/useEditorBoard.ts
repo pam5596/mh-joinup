@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useCallApi } from "@/hooks";
 import { ManagementPayload } from "@/models/application/payload";
@@ -12,30 +12,57 @@ export default function useEditorBoardController() {
         quests: 0,
         applicants: 0,
     });
-    const [managements, setManagements] = useState<ManagementPayload.POSTResponseType['management_id'][]>([])
+    const [managements, setManagements] = useState<(ManagementPayload.POSTRequestType)[]>([])
+    const [stash_boards, setStashBoards] = useState<Omit<ManagementPayload.POSTRequestType, 'connection_id'>[]>([])
+    const [management_status, setManagementStatus] = useState({is_managements: false, is_stash_boards: false})
 
     const { fetchAPI } = useCallApi();
 
+    useEffect(() => {
+        console.log(managements);
+        setManagementStatus({
+            is_managements: managements.length > 2,
+            is_stash_boards: Boolean(stash_boards.length)
+        })
+    },[managements, stash_boards])
+
 
     const postManagementEvent = async (connection_id: string) => {
+        setManagements(
+            (prev) => [...prev, {...board, connection_id}]
+        );
         await fetchAPI<ManagementPayload.POSTRequestType, ManagementPayload.POSTResponseType>(
             "/api/management",
             'POST',
             { ...board, connection_id },
             undefined,
             "参加状況の保存に失敗しました",
-            (response) => {
-                setManagements(
-                    (prev) => [...prev, response.management_id]
-                )
-            },
+            undefined,
             undefined
         )
     };
 
-    // const getBeforeManagementEvent = async (management_id: string) => {
-    //     const state_management = managements.find((m) => m == management_id)
-    // }
+    const undoBoardEvent = () => {
+        const before_management = managements.at(-2 - stash_boards.length);
+
+        if (before_management) {
+            setStashBoards((prev) => [...prev, board])
+            setBoard(() => ({
+                connection_id: before_management.connection_id,
+                joiner: before_management.joiner,
+                waiter: before_management.waiter,
+                quests: before_management.quests,
+                applicants: before_management.applicants
+            }))
+        }
+    }
+
+    const rollBackBoardEvent = () => {
+        if (stash_boards.length) {
+            setBoard((prev) => stash_boards.at(-1) || prev)
+            setStashBoards((prev) => prev.slice(0, -1))
+        }
+    }
 
 
     const onJoinEvent = (applicant: Omit<ManageInstantType, 'quest'>) => {
@@ -126,16 +153,21 @@ export default function useEditorBoardController() {
             quests: 0,
             applicants: 0,
         });
+        setManagements([]);
+        setStashBoards([]);
     }
 
     return {
         board,
+        management_status,
         onJoinEvent,
         onLeaveEvent,
         onReplaceEvent,
         onUpdateQuestEvent,
         onStartQuestEvent,
         onResetBoard,
-        postManagementEvent
+        postManagementEvent,
+        undoBoardEvent,
+        rollBackBoardEvent
     }
 }

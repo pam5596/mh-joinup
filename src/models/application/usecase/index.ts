@@ -11,3 +11,4 @@ export { default as ConnectionGETUseCase } from "./connection/get"
 export { default as ApplicantPOSTUseCase } from "./applicant/post"
 
 export { default as ManagementPOSTUseCase } from "./management/post";
+export { default as ManagementGETUseCase } from "./management/get"

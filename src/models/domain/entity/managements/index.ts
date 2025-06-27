@@ -7,7 +7,7 @@ import { ManageQuest, ManageApplicant, MongoId } from "@/models/domain/value_obj
 import { ManageInstant } from "@/models/domain/embedded"
 
 export class ManageEntity extends AbsEntity<ManageType, ManageDTO> {
-    private connection_id: ObjectId;
+    public connection_id: ObjectId;
     public joiner: ManageInstant[];
     public waiter: ManageInstant[];
     public quests: ManageQuest;

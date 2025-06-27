@@ -12,25 +12,34 @@ export default function useEditorController() {
         liver_info, 
         applicants, 
         board, 
+        management_status,
         onEmitEvent, 
         onLeaveEvent, 
         onReplaceEvent, 
         onUpdateQuestEvent, 
         onStartQuestEvent, 
         onResetEvent,
-        postManagementEvent
+        postManagementEvent,
+        undoBoardEvent,
+        rollBackBoardEvent
     } = useEditorApplicantController();
 
     const connectionEvent = () => onConnectEvent(onEmitEvent);
     const disconnectionEvent = () => onDisconnectEvent(onResetEvent);
 
     useEffect(() => {
-        console.log(board);
         if (connection_info.connection_id) {
+            console.log(board);
             postManagementEvent(connection_info.connection_id)
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [connection_info.connection_id, board])
+    }, [
+        connection_info.connection_id, 
+        board.quests, 
+        board.applicants, 
+        board.joiner.length, 
+        board.waiter.length
+    ])
 
     return {
         can_go_live,
@@ -39,11 +48,14 @@ export default function useEditorController() {
         liver_info,
         applicants,
         board,
+        management_status,
         connectionEvent,
         disconnectionEvent,
         onLeaveEvent,
         onReplaceEvent,
         onUpdateQuestEvent,
         onStartQuestEvent,
+        undoBoardEvent,
+        rollBackBoardEvent
     }
 }

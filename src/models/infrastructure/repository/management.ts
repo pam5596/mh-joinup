@@ -30,40 +30,44 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
     }
 
 
-    async selectById(management_id: ObjectId): Promise<ManageEntity|null> {
-        const result = await this.selectByIdRaw(management_id);
-        
-        if (result) {
-            return new ManageEntity(
-                result._id,
-                result.connection_id,
-                result.joiner.map(
-                    (joiner: ManageInstantType) => 
-                        new ManageInstant(
-                            new ObjectId(joiner.user_id),
-                            new ObjectId(joiner.applicant_id),
-                            new UserName(joiner.name),
-                            new UserAvatar(joiner.avatar),
-                            new ApplicantMessage(joiner.message),
-                            new ManageQuest(joiner.quest)
-                        )
-                ),
-                result.waiter.map(
-                    (waiter: ManageInstantType) => 
-                        new ManageInstant(
-                            new ObjectId(waiter.user_id),
-                            new ObjectId(waiter.applicant_id),
-                            new UserName(waiter.name),
-                            new UserAvatar(waiter.avatar),
-                            new ApplicantMessage(waiter.message),
-                            new ManageQuest(waiter.quest)
-                        )
-                ),
-                new ManageQuest(result.quests),
-                new ManageApplicant(result.applicants)
-            );
-        } else {
-            return null
+    async selectAllByConnectionId(connection_id: ObjectId): Promise<ManageEntity[]|null> {
+        const find_result = await this.selectAllByOtherPropsRaw('connection_id', connection_id);
+
+        const result = [];
+
+        for await (const result_manage of find_result) {
+            result.push(
+                new ManageEntity(
+                    result_manage._id,
+                    result_manage.connection_id,
+                    result_manage.joiner.map(
+                        (joiner: ManageInstantType) => 
+                            new ManageInstant(
+                                new ObjectId(joiner.user_id),
+                                new ObjectId(joiner.applicant_id),
+                                new UserName(joiner.name),
+                                new UserAvatar(joiner.avatar),
+                                new ApplicantMessage(joiner.message),
+                                new ManageQuest(joiner.quest)
+                            )
+                    ),
+                    result_manage.waiter.map(
+                        (waiter: ManageInstantType) => 
+                            new ManageInstant(
+                                new ObjectId(waiter.user_id),
+                                new ObjectId(waiter.applicant_id),
+                                new UserName(waiter.name),
+                                new UserAvatar(waiter.avatar),
+                                new ApplicantMessage(waiter.message),
+                                new ManageQuest(waiter.quest)
+                            )
+                    ),
+                    new ManageQuest(result_manage.quests),
+                    new ManageApplicant(result_manage.applicants)
+                )
+            )
         }
+        
+        return result.length ? result : null;
     }
 }

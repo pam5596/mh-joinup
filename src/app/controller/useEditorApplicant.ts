@@ -8,13 +8,16 @@ import { ConnectionPayload, SettingsPayload, ApplicantPayload, GoogleOauthPayloa
 export default function useEditorApplicantController() {
     const { 
         board, 
+        management_status,
         onJoinEvent, 
         onLeaveEvent, 
         onReplaceEvent, 
         onUpdateQuestEvent, 
         onStartQuestEvent, 
         onResetBoard, 
-        postManagementEvent 
+        postManagementEvent,
+        undoBoardEvent,
+        rollBackBoardEvent
     } = useEditorBoardController();
     
     const [can_go_live, setCanGoLive] = useState({get_liver_info: false, get_user_setting: false}) 
@@ -108,12 +111,15 @@ export default function useEditorApplicantController() {
         liver_info, 
         applicants, 
         board, 
+        management_status,
         onEmitEvent, 
         onLeaveEvent, 
         onReplaceEvent, 
         onUpdateQuestEvent, 
         onStartQuestEvent, 
         onResetEvent,
-        postManagementEvent
+        postManagementEvent,
+        undoBoardEvent,
+        rollBackBoardEvent
     }
 }

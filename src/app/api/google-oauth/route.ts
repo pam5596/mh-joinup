@@ -49,7 +49,7 @@ export async function POST(request: Request) {
         const user_id_cookie = serialize('user_id', response.user_id, {
             path: '/',
             httpOnly: true,
-            maxAge: 60 * 60,
+            maxAge: 60 * 60 * 24,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax'
         });
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
         const auth_token_cookie = serialize('auth_token', response.auth_token, {
             path: '/',
             httpOnly: true,
-            maxAge: 60 * 60,
+            maxAge: 60 * 60 * 24,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'lax'
         });
