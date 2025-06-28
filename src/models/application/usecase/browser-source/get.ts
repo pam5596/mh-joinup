@@ -2,44 +2,43 @@ import AbsUseCase from "../abstruct";
 import { UseCaseError } from "@/models/error";
 
 import { BrowserSourcePayload } from "../../payload";
-import { CookieParseService, CreateHashedIdService } from "@/models/application/service";
 import { UserRepository } from "@/models/infrastructure/repository";
+import { UserChannelId } from "@/models/domain/value_object";
 
 
 export default class BrowserSourceGETUseCase extends AbsUseCase<BrowserSourcePayload.GETRequestType, BrowserSourcePayload.GETResponseType> {
     userRepository: UserRepository
-    cookieParseService: CookieParseService;
-    createHashedIdService: CreateHashedIdService;
-
 
     constructor(
         request: Request,
-        userRepository: UserRepository,
-        cookieParseService: CookieParseService,
-        createHashedIdService: CreateHashedIdService
+        userRepository: UserRepository
     ) {
         super(request)
         this.userRepository = userRepository
-        this.cookieParseService = cookieParseService
-        this.createHashedIdService = createHashedIdService
     }
 
     async execute(): Promise<BrowserSourcePayload.GETResponseType> {
-        const url_origin = new URL(this.request.url).origin;
-        const { user_id } = await this.cookieParseService.execute(this.request)
+        const search_params = new URL(this.request.url).searchParams
+        const channel_id = search_params.get('channel_id')
 
-        const hashed_user_id = await this.createHashedIdService.execute(user_id)
+        if (!channel_id) throw new UseCaseError(
+            'クエリパラメータにchannel_idが含まれていません',
+            this.request.url,
+            400
+        )
 
-        const selected_user = await this.userRepository.selectById(user_id);
+        const selected_user = await this.userRepository.selectByChannelId(new UserChannelId(channel_id))
 
         if (!selected_user) throw new UseCaseError(
             'ユーザが見つかりませんでした。ログインし直してください。',
-            this.request.url,
+            channel_id,
             404
         )
 
         return {
-            url: `${url_origin}/browser-source?hash=${hashed_user_id}&channel=${selected_user.channel_id.value}`
+            channel_id,
+            name: selected_user.name.value,
+            avatar: selected_user.avatar.value
         }
     }
 }

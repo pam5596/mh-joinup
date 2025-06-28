@@ -5,6 +5,7 @@ export { default as SettingsGETUseCase } from "./settings/get"
 export { default as SettingsPUTUseCase } from "./settings/put"
 
 export { default as BrowserSourceGETUseCase } from "./browser-source/get"
+export { default as BrowserSourcePOSTUseCase } from "./browser-source/post"
 
 export { default as ConnectionGETUseCase } from "./connection/get"
 

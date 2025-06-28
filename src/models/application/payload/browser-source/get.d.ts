@@ -1,5 +1,7 @@
 export type GETRequestType = Request;
 
 export type GETResponseType = {
-    url: string;
+    name: string;
+    avatar: string;
+    channel_id: string;
 }

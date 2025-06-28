@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useCallApi } from "@/hooks";
 
-import { GoogleOauthPayload } from "@/models/application/payload";
+import { GoogleOauthPayload, BrowserSourcePayload } from "@/models/application/payload";
 
 export default function useHomeController() {
     const [userInfo, setUserInfo] = useState<Partial<GoogleOauthPayload.GETResponseType>>({});
@@ -28,9 +28,9 @@ export default function useHomeController() {
     }
 
     const getBrowserSourceEvent = async () => {
-        await fetchAPI<undefined, { url: string }>(
+        await fetchAPI<undefined, BrowserSourcePayload.POSTResponseType>(
             "/api/browser-source",
-            "GET",
+            "POST",
             undefined,
             'ブラウザソースをクリップボードにコピーしました。',
             'ブラウザソースの取得に失敗しました。',
