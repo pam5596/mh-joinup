@@ -4,3 +4,4 @@ export { default as useSettingController } from "./useSetting";
 export { default as useEditorConnectionController } from "./useEditorConnection";
 export { default as useEditorApplicantController } from "./useEditorApplicant";
 export { default as useEditorController } from "./useEditor"; 
+export { default as useBrowserSource } from "./useBrowserSource";
