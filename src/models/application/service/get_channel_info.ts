@@ -15,12 +15,14 @@ export default class GetChannelInfoService extends AbsService<TokenResponse, you
             },
         });
 
+        const response_json = await response.json();
+
         if (!response.ok) throw new ServiceError(
-            "ユーザチャンネルの情報取得に失敗しました",
+            response_json.error.message,
             response,
             response.status,
         )
 
-        return await response.json();
+        return response_json
     }
 }
