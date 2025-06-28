@@ -28,19 +28,17 @@ export default function Home() {
                         </SkeletonText>
                     </Flex>
                     <Button 
-                        colorScheme="blackAlpha" 
+                        colorScheme="red"
                         w="90%" 
                         startIcon={<FaListUl/>} 
-                        color="whiteAlpha" 
                         onClick={()=>{location.href = '/editor'}}
                     >
-                        管理画面へ
+                        参加管理画面へ
                     </Button>
                     <Button 
-                        colorScheme="whiteAlpha" 
+                        colorScheme="emerald" 
                         w="90%" 
                         startIcon={<FaLink/>} 
-                        color="amber.700"
                         onClick={getBrowserSourceEvent}
                     >
                         ブラウザソースをコピー
@@ -49,7 +47,7 @@ export default function Home() {
                         colorScheme="blackAlpha" 
                         w="90%" 
                         startIcon={<IoSettingsSharp/>} 
-                        color="amber.300" 
+                        color="whiteAlpha" 
                         onClick={onOpen}
                     >
                         ユーザ設定

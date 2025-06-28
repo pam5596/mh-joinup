@@ -6,7 +6,7 @@ import { IoArrowUndo, IoArrowRedo } from "react-icons/io5";
 import { LuSwords } from "react-icons/lu";
 import { FaYoutube } from "react-icons/fa";
 
-import { LiveBackgroundProvider, GoogleOauthProvider } from "@/components/provider";
+import { MainBackgroundProvider, GoogleOauthProvider } from "@/components/provider";
 import JoinerAvatar from "./joinerAvatar";
 import LogItem from "./logItem";
 
@@ -34,7 +34,7 @@ export default function Editor() {
 
     return (
         <GoogleOauthProvider>
-            <LiveBackgroundProvider>
+            <MainBackgroundProvider>
                 <SimpleGrid w="full" h="2xl" columns={{md: 2, base: 3}} row={6} gap={{sm: 2, base: 4}} minW="265px">
                     <GridItem colSpan={{md: 2, base: 3}} rowSpan={1} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.9), rgba(72, 85, 99, 0.8))" p={{sm: 2, base: 4}}>
                         <Heading size="xs" color="white" mb={2}>参加者</Heading>
@@ -111,7 +111,7 @@ export default function Editor() {
                     <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.8), rgba(41, 50, 60, 0.6))" p={{sm: 2, base:4}}>
                         <Flex direction="column" gap={2} h="full" justify="space-between">
                             <Button 
-                                colorScheme="violet" 
+                                colorScheme="orange" 
                                 size="lg" 
                                 startIcon={<LuSwords/>} 
                                 disabled={!is_connect_socket}
@@ -177,7 +177,7 @@ export default function Editor() {
                         </Flex>
                     </GridItem>
                 </SimpleGrid>
-            </LiveBackgroundProvider>
+            </MainBackgroundProvider>
         </GoogleOauthProvider>
     )
 }
