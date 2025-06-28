@@ -1,10 +1,28 @@
 "use client";
+import { useEffect } from "react";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import { useCallApi, useAlertSnack } from "@/hooks";
 
 export default function useIndexController() {
     const { fetchAPI } = useCallApi();
     const { openSnack } = useAlertSnack();
+
+    useEffect(() => {
+        logoutEvent()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
+
+
+    const logoutEvent = async () => {
+        await fetchAPI(
+            '/api/google-oauth',
+            'DELETE',
+            undefined,
+            '正常にログアウトしました',
+            'ログアウトに失敗しました',
+        )
+    }
+
 
     const loginEvent = useGoogleLogin({
         scope: 'https://www.googleapis.com/auth/youtube.readonly',
