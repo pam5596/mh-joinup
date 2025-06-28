@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { ManageQuest, ManageApplicant } from "@/models/domain/value_object";
+import { ManageInstantType } from "@/models/domain/embedded/managements/instant/type";
 
 export type ManageType = {
     id: string;

@@ -8,7 +8,7 @@ import { ApplicantMessage, MongoId } from "@/models/domain/value_object";
 export class ApplicantEntity extends AbsEntity<ApplicantType, ApplicantDTO> {
     private user_id: ObjectId;
     private connection_id: ObjectId;
-    private message: ApplicantMessage;
+    public message: ApplicantMessage;
 
     constructor(
         id: ObjectId,

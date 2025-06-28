@@ -1,71 +1,183 @@
 "use client";
 
 import { SimpleGrid, GridItem, Button, Flex, Heading, ScrollArea, Separator, Text } from "@yamada-ui/react";
-import { IoSettingsSharp, IoArrowUndo, IoArrowRedo } from "react-icons/io5";
+import { AiFillThunderbolt } from "react-icons/ai";
+import { IoArrowUndo, IoArrowRedo } from "react-icons/io5";
 import { LuSwords } from "react-icons/lu";
 import { FaYoutube } from "react-icons/fa";
 
-
-import { LiveBackgroundProvider } from "@/components/provider";
+import { LiveBackgroundProvider, GoogleOauthProvider } from "@/components/provider";
 import JoinerAvatar from "./joinerAvatar";
 import LogItem from "./logItem";
 
+import { useEditorController } from "@/app/controller";
+
 export default function Editor() {
+    const { 
+        can_go_live, 
+        is_connect_socket, 
+        liver_info, 
+        connection_info, 
+        user_settings,
+        management_status,
+        board, 
+        applicants,
+        connectionEvent, 
+        disconnectionEvent, 
+        onLeaveEvent, 
+        onUpdateQuestEvent, 
+        onReplaceEvent, 
+        onStartQuestEvent,
+        undoBoardEvent,
+        rollBackBoardEvent
+    } = useEditorController()
+
     return (
-        <LiveBackgroundProvider>
-            <SimpleGrid w="full" h="2xl" columns={{md: 2, base: 3}} rows={6} spacing={4} gap={{sm: 2, base: 4}} minW="265px">
-                <GridItem colSpan={{md: 2, base: 3}} rowSpan={1} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.9), rgba(72, 85, 99, 0.8))" p={{sm: 2, base: 4}}>
-                    <Heading size="xs" color="white" mb={2}>参加者</Heading>
-                    <Separator mt={2} mb={2} />
-                    <Flex justify="center" align="center" gap={{sm: 2, md: 4, base: 6}} p={3}>
-                        <JoinerAvatar />
-                        <JoinerAvatar />
-                        <JoinerAvatar />
-                        <JoinerAvatar />
-                    </Flex>
-                </GridItem>
-                <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}}>
-                    <Heading size="xs" color="white">待機者</Heading>
-                    <Separator mt={2} mb={2} />
-                    <ScrollArea h="354px" overflowX="hidden">
-                        <SimpleGrid columns={{md:3, base: 4}} spacing={2} gap={{sm: 1, base: 4}} justifyItems="center" p={3}>
-                            { Array(30).fill(0).map((_, i) => <JoinerAvatar key={i} />)}
-                        </SimpleGrid>
-                    </ScrollArea>
-                </GridItem>
-                <GridItem  colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.6), rgba(72, 85, 99, 0.6))" p={{sm: 2, base:4}} display={{md: "none"}}>
-                    <Heading size="xs" color="white">ログ</Heading>
-                    <Separator mt={2} mb={2} />
-                    <ScrollArea h="354px">
-                        <Flex direction="column" gap={1}>
-                            { Array(20).fill(0).map((_, i) => <LogItem key={i} />)}
+        <GoogleOauthProvider>
+            <LiveBackgroundProvider>
+                <SimpleGrid w="full" h="2xl" columns={{md: 2, base: 3}} row={6} gap={{sm: 2, base: 4}} minW="265px">
+                    <GridItem colSpan={{md: 2, base: 3}} rowSpan={1} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.9), rgba(72, 85, 99, 0.8))" p={{sm: 2, base: 4}}>
+                        <Heading size="xs" color="white" mb={2}>参加者</Heading>
+                        <Separator mt={2} mb={2} />
+                        <Flex justify="center" align="center" gap={{sm: 2, md: 4, base: 6}} p={3}>
+                            { liver_info ? (
+                                <JoinerAvatar 
+                                    key={0}
+                                    is_liver={true}
+                                    setting_quest={user_settings?.quest || 2}
+                                    joiner_info={{
+                                        user_id: '',
+                                        name: liver_info.name,
+                                        avatar: liver_info.avatar,
+                                        applicant_id: '',
+                                        message: '',
+                                        quest: 0
+                                    }}
+                                    status="joiner"
+                                />
+                            ) : null}
+                            { board.joiner.map((joiner, i) => (
+                                <JoinerAvatar
+                                    key={i+1}
+                                    is_liver={false}
+                                    setting_quest={user_settings?.quest || 2}
+                                    joiner_info={joiner}
+                                    status="joiner"
+                                    applicant_id={joiner.applicant_id}
+                                    onLeaveEvent={()=>onLeaveEvent(joiner.applicant_id)}
+                                    replaceableUsers={board.waiter}
+                                    onReplaceEvent={(replace_to) => onReplaceEvent(joiner.applicant_id, replace_to)}
+                                    onUpdateQuestEvent={(quest) => onUpdateQuestEvent(joiner.applicant_id, quest)}
+                                />
+                            ))}
                         </Flex>
-                    </ScrollArea>
-                </GridItem>
-                <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.8), rgba(41, 50, 60, 0.6))" p={{sm: 2, base:4}}>
-                    <Flex direction="column" gap={2} h="full" justify="space-between">
-                        <Button colorScheme="blackAlpha" color="amber.400" size="lg" startIcon={<LuSwords/>}>クエスト終了</Button>
-                        <Flex gap={2}>
-                            <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowUndo />} w="50%">元に戻す</Button>
-                            <Button colorScheme="blackAlpha" size="md" startIcon={<IoArrowRedo />} w="50%">やり直し</Button>
-                        </Flex>
-                        <Button colorScheme="blackAlpha" startIcon={<FaYoutube/>} color="red.400">配信に接続</Button>
-                        <Button colorScheme="blackAlpha" startIcon={<IoSettingsSharp/>}>Bot設定</Button>
-                        <Flex direction="column" bgColor="#0000005C" rounded="md" p={{sm: 2, base:4}}>
-                            <Text fontWeight="bold" isTruncated>ライブタイトル</Text>
-                            <Separator mt={2} mb={2} />
-                            <Flex align="center">
-                                <Text isTruncated>参加希望者数：</Text>
-                                <Heading as="h2" isTruncated ml="auto">100</Heading>
+                    </GridItem>
+                    <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.6), rgba(41, 50, 60, 0.8))" p={{sm: 2, base: 4}}>
+                        <Heading size="xs" color="white">待機者</Heading>
+                        <Separator mt={2} mb={2} />
+                        <ScrollArea h="354px" overflowX="hidden">
+                            <SimpleGrid columns={{md:3, base: 4}} gap={{sm: 1, base: 4}} justifyItems="center" p={3}>
+                                { board.waiter.map((waiter, i) => (
+                                    <JoinerAvatar
+                                        key={i+1}
+                                        is_liver={false}
+                                        setting_quest={user_settings?.quest || 2}
+                                        joiner_info={waiter}
+                                        status="waiter"
+                                        applicant_id={waiter.applicant_id}
+                                        onLeaveEvent={()=>onLeaveEvent(waiter.applicant_id)}
+                                        onUpdateQuestEvent={(quest) => onUpdateQuestEvent(waiter.applicant_id, quest)}
+                                    />
+                                ))}
+                            </SimpleGrid>
+                        </ScrollArea>
+                    </GridItem>
+                    <GridItem  colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(41, 50, 60, 0.6), rgba(72, 85, 99, 0.6))" p={{sm: 2, base:4}} display={{md: "none"}}>
+                        <Heading size="xs" color="white">ログ</Heading>
+                        <Separator mt={2} mb={2} />
+                        <ScrollArea h="354px">
+                            <Flex direction="column" gap={1}>
+                                { applicants.map((applicant, i) => 
+                                    <LogItem 
+                                        key={i} 
+                                        name={applicant.name}
+                                        avatar={applicant.avatar}
+                                        message={applicant.message}
+                                    />
+                                )}
                             </Flex>
-                            <Flex align="center">
-                                <Text isTruncated>クエスト出発数：</Text>
-                                <Heading as="h2" isTruncated ml="auto">100</Heading>
+                        </ScrollArea>
+                    </GridItem>
+                    <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.8), rgba(41, 50, 60, 0.6))" p={{sm: 2, base:4}}>
+                        <Flex direction="column" gap={2} h="full" justify="space-between">
+                            <Button 
+                                colorScheme="violet" 
+                                size="lg" 
+                                startIcon={<LuSwords/>} 
+                                disabled={!is_connect_socket}
+                                onClick={onStartQuestEvent}
+                            >
+                                クエスト開始
+                            </Button>
+                            <Flex gap={2}>
+                                <Button 
+                                    colorScheme="blackAlpha" 
+                                    size="md" 
+                                    startIcon={<IoArrowUndo />} 
+                                    w="50%" 
+                                    disabled={!is_connect_socket || !management_status.is_managements}
+                                    onClick={undoBoardEvent}
+                                >
+                                    元に戻す
+                                </Button>
+                                <Button 
+                                    colorScheme="blackAlpha" 
+                                    size="md" 
+                                    startIcon={<IoArrowRedo />} 
+                                    w="50%" 
+                                    disabled={!is_connect_socket || !management_status.is_stash_boards}
+                                    onClick={rollBackBoardEvent}
+                                >
+                                    やり直し
+                                </Button>
+                            </Flex>
+                            { is_connect_socket ? (
+                                    <Button 
+                                        colorScheme="success" 
+                                        size="lg" 
+                                        startIcon={<AiFillThunderbolt/>} 
+                                        onClick={disconnectionEvent}
+                                    >
+                                        配信を切断
+                                    </Button>
+                                ) : (
+                                    <Button 
+                                        colorScheme="red" 
+                                        size="lg" 
+                                        startIcon={<FaYoutube/>} 
+                                        onClick={connectionEvent} 
+                                        disabled={!(can_go_live.get_liver_info && can_go_live.get_user_setting)}
+                                    >
+                                        配信に接続
+                                    </Button>
+                                )
+                            }
+                            <Flex direction="column" bgColor="#0000005C" rounded="md" p={{sm: 2, base:4}}>
+                                <Text fontWeight="bold" isTruncated>{connection_info.video_title || '配信に接続してください'}</Text>
+                                <Separator mt={2} mb={2} />
+                                <Flex align="center">
+                                    <Text isTruncated>参加希望者数：</Text>
+                                    <Heading as="h2" isTruncated ml="auto">{board.applicants}</Heading>
+                                </Flex>
+                                <Flex align="center">
+                                    <Text isTruncated>クエスト出発数：</Text>
+                                    <Heading as="h2" isTruncated ml="auto">{board.quests}</Heading>
+                                </Flex>
                             </Flex>
                         </Flex>
-                    </Flex>
-                </GridItem>
-            </SimpleGrid>
-        </LiveBackgroundProvider>
+                    </GridItem>
+                </SimpleGrid>
+            </LiveBackgroundProvider>
+        </GoogleOauthProvider>
     )
 }

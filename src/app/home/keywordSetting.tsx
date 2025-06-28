@@ -5,8 +5,16 @@ import { FaQuestion, FaPlus } from "react-icons/fa";
 import { MdOutlineChat } from "react-icons/md";
 
 import KeywordEditor from "./keywordEditor";
+import type { SettingsPayload } from "@/models/application/payload";
 
-export default function KeyWordSetting() {
+type Props = {
+    settings: SettingsPayload.GETResponseType;
+    addKeywordAction: () => void;
+    removeKeywordAction: (index: number) => void;
+    updateKeywordAction: (index: number, value: string) => void;
+}
+
+export default function KeyWordSetting(props: Props) {
     return (
         <>
             <Heading as="h2" size="sm">
@@ -21,8 +29,21 @@ export default function KeyWordSetting() {
                 <AccordionItem label="合言葉一覧">
                     <AccordionPanel p={2}>
                         <Flex direction="column" gap={2}>
-                            <Button size="sm" colorScheme="whiteAlpha" startIcon={<FaPlus/>}>合言葉を追加する</Button>
-                            <KeywordEditor defaultValue=""/>
+                            <Button size="sm" colorScheme="whiteAlpha" startIcon={<FaPlus/>} onClick={props.addKeywordAction}>合言葉を追加する</Button>
+                            { 
+                                props.settings.keywords.map(
+                                    (keyword, index) => (
+                                        <KeywordEditor 
+                                            key={index}
+                                            index={index}
+                                            setting_keywords={props.settings.keywords}
+                                            defaultValue={keyword}
+                                            removeAction={props.removeKeywordAction}
+                                            updateAction={props.updateKeywordAction}
+                                        />
+                                    )
+                                )
+                            }
                         </Flex>
                     </AccordionPanel>
                 </AccordionItem>

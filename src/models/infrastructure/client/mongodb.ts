@@ -33,21 +33,6 @@ export default class MongoDBClient extends MongoClient {
         }
 
         const result = await callback(query);
-
-        try {
-            await this.close();
-        } catch (error) {
-            if (error instanceof Error) {
-                throw new ClientError(
-                    `[MongoDBClient] ${error.message}`, 500
-                );
-            } else {
-                throw new ClientError(
-                    "[MongoDBClient] MongoDBの切断に失敗しました", 500
-                )
-            }
-        }
-
         return result;
     };
 }

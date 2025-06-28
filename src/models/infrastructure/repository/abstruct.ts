@@ -30,12 +30,9 @@ export default abstract class AbsRepository<Entitiy extends AbsEntity<unknown, u
         )
     }
 
-    protected async selectNewOneByOtherPropsRaw(props: string, search: unknown) {
+    protected async selectAllByOtherPropsRaw(props: string, search: unknown) {
         return await this.client.queryWrapper({props: search},
-            async({props: search}) => await this.collection.findOne(
-                { [props]: search },
-                { sort: { _id: -1 } }
-            )
+            async({props: search}) => this.collection.find({ [props]: search })
         )
     }
 

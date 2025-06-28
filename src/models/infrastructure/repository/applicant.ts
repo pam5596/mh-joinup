@@ -14,7 +14,7 @@ export default class ApplicantRepository extends AbsRepository<ApplicantEntity> 
     }
 
 
-    async insert(entity: ApplicantEntity): Promise<void|ObjectId> {
+    async insert(entity: ApplicantEntity): Promise<ObjectId> {
         const result = await this.insertRaw(entity);
 
         if (!result.acknowledged) {

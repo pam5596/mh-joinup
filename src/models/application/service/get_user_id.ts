@@ -18,7 +18,7 @@ export default class GetUserIdService extends AbsService<UserEntity, ObjectId> {
         if (selected_user) {
             return selected_user.objectId;
         } else {
-            return await this.repository.upsertByChannelId(request) as ObjectId;
+            return await this.repository.upsertByChannelId(request);
         }
     }
 }

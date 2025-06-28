@@ -7,11 +7,11 @@ import { ManageQuest, ManageApplicant, MongoId } from "@/models/domain/value_obj
 import { ManageInstant } from "@/models/domain/embedded"
 
 export class ManageEntity extends AbsEntity<ManageType, ManageDTO> {
-    private connection_id: ObjectId;
-    private joiner: ManageInstant[];
-    private waiter: ManageInstant[];
-    private quests: ManageQuest;
-    private applicants: ManageApplicant;
+    public connection_id: ObjectId;
+    public joiner: ManageInstant[];
+    public waiter: ManageInstant[];
+    public quests: ManageQuest;
+    public applicants: ManageApplicant;
 
     constructor(
         id: ObjectId,
@@ -22,7 +22,7 @@ export class ManageEntity extends AbsEntity<ManageType, ManageDTO> {
         applicants: ManageApplicant
     ){
         super(id, {
-            connection_id: connection_id.toString(),
+            connection_id: connection_id.toHexString(),
             joiner: joiner.map(j => j.toJson()),
             waiter: waiter.map(w => w.toJson()),
             quests: quests.value,

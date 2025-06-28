@@ -3,7 +3,8 @@ import { RepositoryError } from "@/models/error";
 
 import { ManageEntity } from "@/models/domain/entity";
 import { ManageInstant } from "@/models/domain/embedded";
-import { ManageApplicant, ManageQuest } from "@/models/domain/value_object";
+import { ManageInstantType } from "@/models/domain/embedded/managements/instant/type";
+import { ApplicantMessage, ManageApplicant, ManageQuest, UserAvatar, UserName } from "@/models/domain/value_object";
 
 import { Collection, ObjectId } from "mongodb";
 import MongoDBClient from "../client/mongodb";
@@ -15,7 +16,7 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
     }
 
 
-    async insert(entity: ManageEntity): Promise<void|ObjectId> {
+    async insert(entity: ManageEntity): Promise<ObjectId> {
         const result = await this.insertRaw(entity);
 
         if (!result.acknowledged) {
@@ -28,33 +29,46 @@ export default class ManagementRepository extends AbsRepository<ManageEntity> {
         return result.insertedId;
     }
 
+    // [FIXIT] きちんと取得できていないようだ
+    async selectAllByConnectionId(connection_id: ObjectId): Promise<ManageEntity[]|null> {
+        const find_result = await this.selectAllByOtherPropsRaw('connection_id', connection_id.toHexString());
 
-    async selectNewOneByConnectionId(connection_id: ObjectId): Promise<ManageEntity|null> {
-        const result = await this.selectNewOneByOtherPropsRaw("connection_id", connection_id.toHexString())
-        
-        if (result) {
-            return new ManageEntity(
-                result._id,
-                new ObjectId(result.connection_id),
-                result.joiner.map(
-                    (joiner: { user_id: string, quest: number }) => 
-                        new ManageInstant(
-                            new ObjectId(joiner.user_id),
-                            new ManageQuest(joiner.quest)
-                        )
-                ),
-                result.waiter.map(
-                    (waiter: { user_id: string, quest: number }) => 
-                        new ManageInstant(
-                            new ObjectId(waiter.user_id),
-                            new ManageQuest(waiter.quest)
-                        )
-                ),
-                new ManageQuest(result.quests),
-                new ManageApplicant(result.applicants)
-            );
-        } else {
-            return null
+        const result = [];
+
+        for await (const result_manage of find_result) {
+            result.push(
+                new ManageEntity(
+                    result_manage._id,
+                    result_manage.connection_id,
+                    result_manage.joiner.map(
+                        (joiner: ManageInstantType) => 
+                            new ManageInstant(
+                                new ObjectId(joiner.user_id),
+                                new ObjectId(joiner.applicant_id),
+                                new UserName(joiner.name),
+                                new UserAvatar(joiner.avatar),
+                                new ApplicantMessage(joiner.message),
+                                new ManageQuest(joiner.quest)
+                            )
+                    ),
+                    result_manage.waiter.map(
+                        (waiter: ManageInstantType) => 
+                            new ManageInstant(
+                                new ObjectId(waiter.user_id),
+                                new ObjectId(waiter.applicant_id),
+                                new UserName(waiter.name),
+                                new UserAvatar(waiter.avatar),
+                                new ApplicantMessage(waiter.message),
+                                new ManageQuest(waiter.quest)
+                            )
+                    ),
+                    new ManageQuest(result_manage.quests),
+                    new ManageApplicant(result_manage.applicants)
+                )
+            )
         }
+        
+        console.log(result)
+        return result.length ? result : null;
     }
 }
