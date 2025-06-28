@@ -82,8 +82,6 @@ export default function useEditorApplicantController() {
         connection_response: ConnectionPayload.GETResponseType
     ) => {
         if (user_settings) {
-            console.log(board);
-
             const applicant_messages = {
                 ...emit_data,
                 connection_id: connection_response.connection_id,

@@ -10,7 +10,8 @@ export default function useEditorConnectionController() {
     const [socketClient, _] = useState<Socket>(
         io(`${process.env.NEXT_PUBLIC_SOCKET_API_DOMAIN}/castcraft_webhook`, {
             path: "/socket.io/mhjoinup",
-            autoConnect: false
+            autoConnect: false,
+            forceNew: true
         })
     );
     const [is_connect_socket, setIsConnect] = useState(false);
