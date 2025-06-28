@@ -111,7 +111,7 @@ export default function Editor() {
                     <GridItem colSpan={1} rowSpan={5} rounded="md" bgGradient="linear(to-br, rgba(72, 85, 99, 0.8), rgba(41, 50, 60, 0.6))" p={{sm: 2, base:4}}>
                         <Flex direction="column" gap={2} h="full" justify="space-between">
                             <Button 
-                                colorScheme="blackAlpha" 
+                                colorScheme="violet" 
                                 size="lg" 
                                 startIcon={<LuSwords/>} 
                                 disabled={!is_connect_socket}
@@ -142,15 +142,19 @@ export default function Editor() {
                                 </Button>
                             </Flex>
                             { is_connect_socket ? (
-                                    <Button colorScheme="blackAlpha" size="lg" startIcon={<AiFillThunderbolt/>} color="green.400" onClick={disconnectionEvent}>
+                                    <Button 
+                                        colorScheme="success" 
+                                        size="lg" 
+                                        startIcon={<AiFillThunderbolt/>} 
+                                        onClick={disconnectionEvent}
+                                    >
                                         配信を切断
                                     </Button>
                                 ) : (
                                     <Button 
-                                        colorScheme="blackAlpha" 
+                                        colorScheme="red" 
                                         size="lg" 
                                         startIcon={<FaYoutube/>} 
-                                        color="red.400" 
                                         onClick={connectionEvent} 
                                         disabled={!(can_go_live.get_liver_info && can_go_live.get_user_setting)}
                                     >

@@ -45,7 +45,7 @@ export default function JoinerAvatar(props: Props) {
                     </Tooltip>
                 </Indicator>
             </PopoverTrigger>
-            <PopoverContent bgGradient="linear(to-br, rgba(103, 103, 103, 1), rgba(44, 44, 44, 1))" w="300px" p={2} rounded="md" borderColor="white" borderWidth={2}>
+            <PopoverContent bg='blackAlpha.800' w="300px" p={2} rounded="md">
                 <PopoverHeader isTruncated borderColor="white">
                     <Text maxW="250px" isTruncated>
                         {props.joiner_info.name}
