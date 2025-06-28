@@ -1,11 +1,11 @@
 import errorHandling from "@/utils/errorHandling";
 
-import { serialize } from "cookie";
 import MongoDBClient from "@/models/infrastructure/client/mongodb";
 import { GoogleOauthPayload } from "@/models/application/payload";
 import { GoogleOauthGETUseCase, GoogleOauthPOSTUseCase } from "@/models/application/usecase";
 import { GetUserIdService, GetChannelInfoService, CookieParseService, ConfirmTokenService } from "@/models/application/service";
 import { UserRepository } from "@/models/infrastructure/repository";
+import { cookies } from "next/headers";
 
 const mongoDBClient = new MongoDBClient(process.env.MONGODB_URI || "");
 const collection = mongoDBClient.field(process.env.MONGODB_NAME || '', "users");
@@ -44,52 +44,24 @@ export async function POST(request: Request) {
         )
 
         const response = await usecase.execute();
-        console.log(response)
 
-        const user_id_cookie = serialize('user_id', response.user_id, {
-            path: '/',
-            httpOnly: true,
-            maxAge: 60 * 60 * 24,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax'
-        });
-
-        const auth_token_cookie = serialize('auth_token', response.auth_token, {
-            path: '/',
-            httpOnly: true,
-            maxAge: 60 * 60 * 24,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax'
-        });
-
-        const headers = new Headers();
-        headers.append('Set-Cookie', user_id_cookie);
-        headers.append('Set-Cookie', auth_token_cookie);
+        const cookieStore = await cookies();
+        cookieStore.set('user_id', response.user_id, { httpOnly: true, maxAge: 86400 });
+        cookieStore.set('auth_token', response.auth_token, { httpOnly: true, maxAge: 86400 });
         
         return Response.json({
             next_path: '/home'
-        },{ headers })
+        })
     })
 }
 
 export async function DELETE(request: Request) {
     return errorHandling(request, async () => {
-        const user_id_cookie = serialize('user_id', '', {
-            path: '/',
-            expires: new Date(0)
-        });
+        const cookieStore = await cookies();
 
-        const auth_token_cookie = serialize('auth_token', '', {
-            path: '/',
-            expires: new Date(0)
-        });
-
-        const headers = new Headers();
-        headers.append('Set-Cookie', user_id_cookie);
-        headers.append('Set-Cookie', auth_token_cookie);
+        cookieStore.delete('user_id')
+        cookieStore.delete('auth_token')
         
-        return Response.json({
-            next_path: '/home'
-        },{ headers })
+        return Response.json({ next_path: '/home' })
     })
 }

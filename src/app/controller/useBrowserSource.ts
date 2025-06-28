@@ -52,7 +52,6 @@ export default function useBrowserSource() {
                 socketClient.on(
                     hashed_user_id,
                     (emit_data) => {
-                        console.log(emit_data)
                         setBoard(emit_data)
                     }
                 )
