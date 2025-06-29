@@ -26,14 +26,14 @@ export default function JoinerItem(props: Props) {
                 >
                     <Avatar src={props.joiner_info.avatar} name={props.joiner_info.name} size={{md: "sm", base: "md"}} />
                 </Indicator>
-                <Heading as="h5" size={{md: "sm", base: 'md'}} isTruncated fontFamily='ReggaeOne, sans-serif'>
+                <Heading as="h5" size={{md: "sm", base: 'md'}} lineClamp={1} fontFamily='ReggaeOne, sans-serif'>
                     {props.joiner_info.name}
                 </Heading>
                 <Tag
                     variant="solid"
                     colorScheme={props.is_liver ? "red" : (props.status == 'joiner' ? "success" : "info")}
                     marginLeft={"auto"}
-                    size="lg"
+                    flexShrink={0}
                 >
                     {props.is_liver ? "Liver" : (
                         props.status == 'joiner' ? `${props.joiner_info.quest} クエ` : `あと ${props.joiner_info.quest} クエ`
