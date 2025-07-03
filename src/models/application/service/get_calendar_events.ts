@@ -5,8 +5,18 @@ import { calendar_v3 } from "googleapis";
 
 export default class GetCalendarEventsService extends AbsService<{auth_token: string, calendar_id: string},calendar_v3.Schema$Event[]> {
     async execute(request: {auth_token: string, calendar_id: string}): Promise<calendar_v3.Schema$Event[]> {
+        const now = new Date();
+        
+        const sunday = new Date(now);
+        sunday.setDate(now.getDate() - now.getDay());
+        sunday.setHours(9, 0, 0, 0);
+
+        const saturday = new Date(now);
+        saturday.setDate(now.getDate() + (6 - now.getDay()) + 1);
+        saturday.setHours(8, 59, 59, 999);
+        
         const response = await fetch(
-            `https://www.googleapis.com/calendar/v3/calendars/${request.calendar_id}/events`,
+            `https://www.googleapis.com/calendar/v3/calendars/${request.calendar_id}/events?maxResults=7&orderBy=startTime&singleEvents=true&timeMin=${sunday.toISOString()}&timeMax=${saturday.toISOString()}`,
             {
                 method: "GET",
                 headers: {
