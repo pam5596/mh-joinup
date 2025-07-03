@@ -7,7 +7,7 @@ import ScheduleCard from "./scheduleCard";
 import { useScheduleController } from "../controller";
 
 export default function Schedule() {
-    const { calendars, events, this_week_days, setCalendarId } = useScheduleController(); 
+    const { user_info, calendars, events, this_week_days, setCalendarId } = useScheduleController(); 
 
     return (
         <MainBackgroundProvider>
@@ -38,7 +38,7 @@ export default function Schedule() {
                         </Flex>
                     </Flex>
                 </Card>
-                <ScheduleCard events={events} this_week_days={this_week_days}/>
+                <ScheduleCard user_info={user_info} events={events} this_week_days={this_week_days}/>
             </Flex>
         </MainBackgroundProvider>
     )

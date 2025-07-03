@@ -2,9 +2,10 @@
 import { useState, useEffect } from "react";
 import { useCallApi } from "@/hooks";
 
-import { SchedulePayload, ScheduleEventsPayload } from "@/models/application/payload";
+import { GoogleOauthPayload, SchedulePayload, ScheduleEventsPayload } from "@/models/application/payload";
 
 export default function useScheduleController() {
+    const [user_info, setUserInfo] = useState<GoogleOauthPayload.GETResponseType>()
     const [calendars, setCalendars] = useState<SchedulePayload.GETResponseType['calendars']>([]);
     const [calendar_id, setCalendarId] = useState<string>();
     const [events, setEvents] = useState<ScheduleEventsPayload.GETResponseType['events']>([]);
@@ -14,6 +15,7 @@ export default function useScheduleController() {
     const { fetchAPI } = useCallApi();
 
     useEffect(()=>{
+        getUserInfoEvent();
         getCalendarsEvent();
         setThisWeekDays(() => {
             const now = new Date();
@@ -35,6 +37,18 @@ export default function useScheduleController() {
         if (calendar_id) getCalendarEventsEvent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[calendar_id])
+
+    const getUserInfoEvent = async () => {
+        await fetchAPI(
+            '/api/google-oauth',
+            'GET',
+            undefined,
+            undefined,
+            'ユーザのチャンネル情報の取得に失敗しました。',
+            (response: GoogleOauthPayload.GETResponseType) => setUserInfo(response)
+        )
+    }
+
 
     const getCalendarsEvent = async () => {
         await fetchAPI(
@@ -61,6 +75,7 @@ export default function useScheduleController() {
     }
 
     return {
+        user_info,
         calendars,
         events,
         this_week_days,
