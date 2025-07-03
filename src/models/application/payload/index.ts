@@ -5,3 +5,4 @@ export type * as ConnectionPayload from "./connection";
 export type * as ApplicantPayload from "./applicant";
 export type * as ManagementPayload from "./management";
 export type * as SchedulePayload from "./schedule";
+export type * as ScheduleEventsPayload from "./schedule/events";

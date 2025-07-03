@@ -16,3 +16,4 @@ export { default as ManagementGETUseCase } from "./management/get";
 export { default as ManagementPUTUseCase } from "./management/put";
 
 export { default as ScheduleGETUseCase } from "./schedule/get";
+export { default as ScheduleEventsGETUseCase } from "./schedule/events/get"

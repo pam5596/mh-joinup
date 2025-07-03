@@ -6,3 +6,4 @@ export { default as GetStreamInfoService } from "./get_stream_info";
 export { default as GetConnectionIdService } from "./get_connection_id";
 export { default as ConfirmTokenService } from "./confirm_token";
 export { default as GetUserCalendarsService } from "./get_user_calendars";
+export { default as GetCalendarEventsService } from "./get_calendar_events";
