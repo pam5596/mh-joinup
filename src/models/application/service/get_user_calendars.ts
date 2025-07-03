@@ -2,7 +2,6 @@ import AbsService from "./abstruct";
 import { ServiceError } from "@/models/error";
 
 import { calendar_v3 } from "googleapis";
-import { SettingCalendarId } from "@/models/domain/value_object";
 
 export default class GetUserCalendarsService extends AbsService<{auth_token: string},calendar_v3.Schema$CalendarListEntry[]> {
     async execute(request: {auth_token: string}): Promise<calendar_v3.Schema$CalendarListEntry[]> {
@@ -37,8 +36,6 @@ export default class GetUserCalendarsService extends AbsService<{auth_token: str
             400
         );
 
-        return response_data.items.filter((calendar: calendar_v3.Schema$CalendarListEntry) => 
-            SettingCalendarId.schema().safeParse(calendar.id).success
-        )
+        return response_data.items
     }
 }
