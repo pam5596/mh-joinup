@@ -7,3 +7,4 @@ export { default as GetConnectionIdService } from "./get_connection_id";
 export { default as ConfirmTokenService } from "./confirm_token";
 export { default as GetUserCalendarsService } from "./get_user_calendars";
 export { default as GetCalendarEventsService } from "./get_calendar_events";
+export { default as GetEventColorsService } from "./get_event_colors";
