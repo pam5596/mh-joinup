@@ -2,10 +2,10 @@
 import { Box, Flex, Heading, Separator, SimpleGrid, GridItem, ScrollArea } from "@yamada-ui/react";
 import JoinerItem from "./joinerItem";
 
-import { useBrowserSource } from "../controller";
+import { useBrowserSourceController } from "../controller";
 
 export default function Board() {
-    const { containerRef, board, liver_info } = useBrowserSource();
+    const { containerRef, board, liver_info } = useBrowserSourceController();
 
     return (
         <Box color="white" bgColor="transparent" fontFamily='ReggaeOne, sans-serif' h="100vh">

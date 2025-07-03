@@ -4,4 +4,7 @@ export { default as CookieParseService } from "./cookie_parse";
 export { default as CreateHashedIdService } from "./create_hashed_id";
 export { default as GetStreamInfoService } from "./get_stream_info";
 export { default as GetConnectionIdService } from "./get_connection_id";
-export { default as ConfirmTokenService } from "./confirm_token"
+export { default as ConfirmTokenService } from "./confirm_token";
+export { default as GetUserCalendarsService } from "./get_user_calendars";
+export { default as GetCalendarEventsService } from "./get_calendar_events";
+export { default as GetEventColorsService } from "./get_event_colors";

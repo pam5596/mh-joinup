@@ -1,7 +1,7 @@
 "use client";
 
 import { Flex, Heading, Image, Button, useDisclosure, SkeletonCircle, SkeletonText } from "@yamada-ui/react";
-import { FaListUl, FaLink } from "react-icons/fa";
+import { FaListUl, FaLink, FaCalendarCheck } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 
 import { MainBackgroundProvider, GoogleOauthProvider } from "@/components/provider";
@@ -29,7 +29,7 @@ export default function Home() {
                     </Flex>
                     <Button 
                         colorScheme="red"
-                        w="90%" 
+                        w="full" 
                         startIcon={<FaListUl/>} 
                         onClick={()=>{location.href = '/editor'}}
                     >
@@ -37,15 +37,23 @@ export default function Home() {
                     </Button>
                     <Button 
                         colorScheme="emerald" 
-                        w="90%" 
+                        w="full" 
                         startIcon={<FaLink/>} 
                         onClick={getBrowserSourceEvent}
                     >
                         ブラウザソースをコピー
                     </Button>
                     <Button 
+                        colorScheme="indigo" 
+                        w="full" 
+                        startIcon={<FaCalendarCheck/>} 
+                        onClick={()=>{location.href = '/schedule'}}
+                    >
+                        今週の配信スケジュール
+                    </Button>
+                    <Button 
                         colorScheme="blackAlpha" 
-                        w="90%" 
+                        w="full" 
                         startIcon={<IoSettingsSharp/>} 
                         color="whiteAlpha" 
                         onClick={onOpen}
