@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallApi } from "@/hooks";
 import { ManagementPayload, BrowserSourcePayload } from "@/models/application/payload";
 
-export default function useBrowserSource() {
+export default function useBrowserSourceController() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [socketClient, _] = useState<Socket>(
         io(`${process.env.NEXT_PUBLIC_SOCKET_API_DOMAIN}/board_management`, {

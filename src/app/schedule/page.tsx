@@ -4,10 +4,10 @@ import { FaCalendarCheck } from "react-icons/fa";
 import { MainBackgroundProvider } from "@/components/provider";
 import ScheduleCard from "./scheduleCard";
 
-import { useSchedule } from "../controller";
+import { useScheduleController } from "../controller";
 
 export default function Schedule() {
-    const { calendars, events, this_week_days, setCalendarId } = useSchedule(); 
+    const { calendars, events, this_week_days, setCalendarId } = useScheduleController(); 
 
     return (
         <MainBackgroundProvider>

@@ -4,7 +4,7 @@ import { useCallApi } from "@/hooks";
 
 import { SchedulePayload, ScheduleEventsPayload } from "@/models/application/payload";
 
-export default function useSchedule() {
+export default function useScheduleController() {
     const [calendars, setCalendars] = useState<SchedulePayload.GETResponseType['calendars']>([]);
     const [calendar_id, setCalendarId] = useState<string>();
     const [events, setEvents] = useState<ScheduleEventsPayload.GETResponseType['events']>([]);
