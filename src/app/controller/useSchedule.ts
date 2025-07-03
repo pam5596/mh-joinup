@@ -74,11 +74,17 @@ export default function useScheduleController() {
         )
     }
 
+    const toScheduleSourceEvent = () => {
+        if (user_info && calendar_id)
+        document.location = `/schedule-source?calendar_id=${calendar_id}&channel_id=${user_info.channel_id}`
+    }
+
     return {
         user_info,
         calendars,
         events,
         this_week_days,
-        setCalendarId
+        setCalendarId,
+        toScheduleSourceEvent
     }
 }
