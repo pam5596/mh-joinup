@@ -2,21 +2,24 @@ import AbsUseCase from "../../abstruct";
 import { UseCaseError } from "@/models/error";
 
 import { ScheduleEventsPayload } from "@/models/application/payload";
-import { CookieParseService, GetCalendarEventsService } from "@/models/application/service";
+import { CookieParseService, GetCalendarEventsService, GetEventColorsService } from "@/models/application/service";
 
 
 export default class ScheduleEventsGETUseCase extends AbsUseCase<ScheduleEventsPayload.GETRequestType, ScheduleEventsPayload.GETResponseType> {
     cookieParseService: CookieParseService;
     getCalendarEventsService: GetCalendarEventsService;
+    getEventColorsService: GetEventColorsService;
 
     constructor(
         request: ScheduleEventsPayload.GETRequestType,
         cookieParseService: CookieParseService,
-        getCalendarEventsService: GetCalendarEventsService
+        getCalendarEventsService: GetCalendarEventsService,
+        getEventColorsService: GetEventColorsService
     ){
         super(request)
         this.cookieParseService = cookieParseService
         this.getCalendarEventsService = getCalendarEventsService
+        this.getEventColorsService = getEventColorsService
     }
 
     async execute(): Promise<ScheduleEventsPayload.GETResponseType> {
@@ -32,6 +35,7 @@ export default class ScheduleEventsGETUseCase extends AbsUseCase<ScheduleEventsP
         )
 
         const events = await this.getCalendarEventsService.execute({ auth_token, calendar_id });
+        const { event: colors } = await this.getEventColorsService.execute({ auth_token });
         
         if (events.length) {
             return {
@@ -39,7 +43,7 @@ export default class ScheduleEventsGETUseCase extends AbsUseCase<ScheduleEventsP
                     id: event.id,
                     summary: event.summary,
                     start: event.start,
-                    colorId: event.colorId
+                    color: colors![event.colorId || '1'].background || ''
                 }))
             }
         } else {

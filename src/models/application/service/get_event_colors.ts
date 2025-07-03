@@ -30,6 +30,6 @@ export default class GetEventColorsService extends AbsService<{auth_token: strin
             400
         );
 
-        return response_data.event
+        return response_data
     }
 }

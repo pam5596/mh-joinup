@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { Flex, Card, Heading } from "@yamada-ui/react";
+import { Flex, Card, Heading, Text } from "@yamada-ui/react";
 
 import { ScheduleEventsPayload } from "@/models/application/payload";
 
@@ -11,9 +11,16 @@ type Props = {
 }
 
 export default function WeeklyEvent(props: Props) {
+    const [day, setDay] = useState<string>()
     const [startTime, setStartTime] = useState<string>();
-    
+
     useEffect(()=>{
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        setDay((_) => {
+            const days = ['日','月','火','水','木','金','土']
+            return days[props.date.getDay()]
+        })
+
         if (props.event?.start?.dateTime) {
             const start_time = new Date(props.event.start.dateTime)
             setStartTime(start_time.toLocaleTimeString().slice(0,5) + '~')
@@ -22,7 +29,10 @@ export default function WeeklyEvent(props: Props) {
 
     return (
         <Flex flexDirection="row" gap={4} justifyContent="space-between">
-            <Card w="10%" 
+            <Card w="17%" 
+                flexDirection="row"
+                alignItems="end"
+                justifyContent="space-around"
                 borderRadius={50} 
                 variant="solid" 
                 bgImage={
@@ -35,9 +45,12 @@ export default function WeeklyEvent(props: Props) {
                 <Heading textAlign="center" size="md" color="white" fontFamily='ReggaeOne, sans-serif'>
                     {props.date.getMonth()+1}/{props.date.getDate()}
                 </Heading>
+                <Text size="sm" fontFamily='ReggaeOne, sans-serif'>
+                    ({day})
+                </Text>
             </Card>
-            <Card justifyContent="center" variant="solid" colorScheme="whiteAlpha" w="70%" p={2}>
-                <Heading size="md" color="white" fontFamily='ReggaeOne, sans-serif'>
+            <Card justifyContent="center" variant="outline" colorScheme="whiteAlpha" w="70%" p={2}>
+                <Heading isTruncated size="md" fontFamily='ReggaeOne, sans-serif'>
                     { props.event?.summary || '休み'}
                 </Heading>
             </Card>
