@@ -50,7 +50,7 @@ export default function WeeklyEvent(props: Props) {
                 </Text>
             </Card>
             <Card justifyContent="center" variant="outline" colorScheme="whiteAlpha" w="70%" p={2}>
-                <Heading isTruncated size="md" fontFamily='ReggaeOne, sans-serif'>
+                <Heading color="white" isTruncated size="md" fontFamily='ReggaeOne, sans-serif'>
                     { props.event?.summary || '休み'}
                 </Heading>
             </Card>
