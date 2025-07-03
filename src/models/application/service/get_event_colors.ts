@@ -3,14 +3,13 @@ import { ServiceError } from "@/models/error";
 
 import { calendar_v3 } from "googleapis";
 
-export default class GetEventColorsService extends AbsService<{auth_token: string},calendar_v3.Schema$Colors> {
-    async execute(request: {auth_token: string}): Promise<calendar_v3.Schema$Colors> {
+export default class GetEventColorsService extends AbsService<undefined,calendar_v3.Schema$Colors> {
+    async execute(): Promise<calendar_v3.Schema$Colors> {
         const response = await fetch(
-            `https://www.googleapis.com/calendar/v3/colors`,
+            `https://www.googleapis.com/calendar/v3/colors?key=${process.env.GOOGLE_API_KEY}`,
             {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${request.auth_token}`,
                     "Content-Type": "application/json",
                 },
             }

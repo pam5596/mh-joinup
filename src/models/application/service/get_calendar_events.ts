@@ -3,8 +3,8 @@ import { ServiceError } from "@/models/error";
 
 import { calendar_v3 } from "googleapis";
 
-export default class GetCalendarEventsService extends AbsService<{auth_token: string, calendar_id: string},calendar_v3.Schema$Event[]> {
-    async execute(request: {auth_token: string, calendar_id: string}): Promise<calendar_v3.Schema$Event[]> {
+export default class GetCalendarEventsService extends AbsService<{calendar_id: string},calendar_v3.Schema$Event[]> {
+    async execute(request: {calendar_id: string}): Promise<calendar_v3.Schema$Event[]> {
         const now = new Date();
         
         const sunday = new Date(now);
@@ -16,11 +16,10 @@ export default class GetCalendarEventsService extends AbsService<{auth_token: st
         saturday.setHours(8, 59, 59, 999);
         
         const response = await fetch(
-            `https://www.googleapis.com/calendar/v3/calendars/${request.calendar_id}/events?maxResults=7&orderBy=startTime&singleEvents=true&timeMin=${sunday.toISOString()}&timeMax=${saturday.toISOString()}`,
+            `https://www.googleapis.com/calendar/v3/calendars/${request.calendar_id}/events?maxResults=7&orderBy=startTime&singleEvents=true&timeMin=${sunday.toISOString()}&timeMax=${saturday.toISOString()}&key=${process.env.GOOGLE_API_KEY}`,
             {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${request.auth_token}`,
                     "Content-Type": "application/json",
                 },
             }

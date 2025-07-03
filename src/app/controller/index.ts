@@ -6,3 +6,4 @@ export { default as useEditorApplicantController } from "./useEditorApplicant";
 export { default as useEditorController } from "./useEditor"; 
 export { default as useBrowserSourceController } from "./useBrowserSource";
 export { default as useScheduleController } from "./useSchedule";
+export { default as useScheduleSourceController } from "./useScheduleSource";
