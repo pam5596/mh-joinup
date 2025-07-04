@@ -23,7 +23,13 @@ export default function WeeklyEvent(props: Props) {
 
         if (props.event?.start?.dateTime) {
             const start_time = new Date(props.event.start.dateTime)
-            setStartTime(start_time.toLocaleTimeString().slice(0,5) + '~')
+            setStartTime(
+                start_time.toLocaleTimeString(
+                'ja-JP', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }
+            ) + '~')
         }
     },[props])
 
