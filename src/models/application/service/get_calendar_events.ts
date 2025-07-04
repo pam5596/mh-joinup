@@ -5,15 +5,15 @@ import { calendar_v3 } from "googleapis";
 
 export default class GetCalendarEventsService extends AbsService<{calendar_id: string},calendar_v3.Schema$Event[]> {
     async execute(request: {calendar_id: string}): Promise<calendar_v3.Schema$Event[]> {
-        const now = new Date();
+        const now = new Date(new Date().toLocaleString("ja-JP"));
         
         const sunday = new Date(now);
         sunday.setDate(now.getDate() - now.getDay());
-        sunday.setHours(9, 0, 0, 0);
+        sunday.setHours(0, 0, 0, 0);
 
         const saturday = new Date(now);
-        saturday.setDate(now.getDate() + (6 - now.getDay()) + 1);
-        saturday.setHours(8, 59, 59, 999);
+        saturday.setDate(now.getDate() + (6 - now.getDay()));
+        saturday.setHours(23, 59, 59, 999);
         
         const response = await fetch(
             `https://www.googleapis.com/calendar/v3/calendars/${request.calendar_id}/events?maxResults=7&orderBy=startTime&singleEvents=true&timeMin=${sunday.toISOString()}&timeMax=${saturday.toISOString()}&key=${process.env.GOOGLE_API_KEY}`,
