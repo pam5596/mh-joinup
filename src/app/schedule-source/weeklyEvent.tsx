@@ -23,6 +23,7 @@ export default function WeeklyEvent(props: Props) {
 
         if (props.event?.start?.dateTime) {
             const start_time = new Date(props.event.start.dateTime)
+            start_time.setHours(start_time.getHours() + 9);
             setStartTime(
                 start_time.toLocaleTimeString(
                 'ja-JP', {
