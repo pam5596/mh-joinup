@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { Flex, Card, Heading, Text } from "@yamada-ui/react";
+import { Flex, Card, Text } from "@yamada-ui/react";
 
 import { ScheduleEventsPayload } from "@/models/application/payload";
 
@@ -35,43 +35,44 @@ export default function WeeklyEvent(props: Props) {
     },[props])
 
     return (
-        <Flex flexDirection="row" gap={4} justifyContent="space-between">
-            <Card w="17%" 
+        <Flex flexDirection="row" gap={2} justifyContent="space-between">
+            <Card
                 flexDirection="row"
-                alignItems="end"
+                alignItems="center"
                 justifyContent="space-around"
                 borderRadius={50} 
                 variant="solid" 
                 bgImage={
                     [0,6].includes(props.date.getDay()) ? 
                     "linear-gradient(-60deg, #5b7bda 0%, #a390de 100%);" 
-                    : "linear-gradient(135deg, #fcd060 0%, #ff8e2b 100%)"
+                    : "linear-gradient(135deg, #ff9900 0%, #ffcd7d 100%)"
                 }
                 p={2}
+                minW="20%"
             >
-                <Heading textAlign="center" size="md" color="white" fontFamily='ReggaeOne, sans-serif'>
+                <Text fontSize="xl" color="white" fontFamily='ReggaeOne, sans-serif'>
                     {props.date.getMonth()+1}/{props.date.getDate()}
-                </Heading>
-                <Text size="sm" fontFamily='ReggaeOne, sans-serif'>
+                </Text>
+                <Text fontSize="sm" fontFamily='ReggaeOne, sans-serif'>
                     ({day})
                 </Text>
             </Card>
-            <Card justifyContent="center" variant="outline" colorScheme="whiteAlpha" w="70%" p={2}>
-                <Heading color="white" isTruncated size="md" fontFamily='ReggaeOne, sans-serif'>
+            <Card justifyContent="center" variant="outline" colorScheme="whiteAlpha" p={2} w="full" minW="282">
+                <Text color="white" isTruncated fontSize="lg" fontFamily='ReggaeOne, sans-serif'>
                     { props.event?.summary || '休み'}
-                </Heading>
+                </Text>
             </Card>
-            <Card justifyContent="center"  variant="solid" colorScheme="whiteAlpha" w="20%" p={2}>
-                <Heading 
+            <Card justifyContent="center"  variant="solid" colorScheme="whiteAlpha" p={2} minW="20%">
+                <Text 
                     textAlign="center" 
-                    size="md" 
+                    fontSize="lg" 
                     color="white" 
                     fontFamily='ReggaeOne, sans-serif'
                     bgClip="text"
                     bgGradient="linear-gradient(45deg, #3f51b1 0%, #5a55ae 13%, #7b5fac 25%, #8f6aae 38%, #a86aa4 50%, #cc6b8e 62%, #f18271 75%, #f3a469 87%, #f7c978 100%)"
                 >
                     {startTime}
-                </Heading>
+                </Text>
             </Card>
         </Flex>
     )
