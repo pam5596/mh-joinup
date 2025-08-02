@@ -43,10 +43,10 @@ export default function WeeklyEvent(props: Props) {
                 p={2}
                 minW="20%"
             >
-                <Text fontSize="xl" color="white" fontFamily='ReggaeOne, sans-serif'>
+                <Text fontSize="lg" color="white" fontFamily='ReggaeOne, sans-serif'>
                     {props.date.getMonth()+1}/{props.date.getDate()}
                 </Text>
-                <Text fontSize="sm" fontFamily='ReggaeOne, sans-serif'>
+                <Text fontSize="md" fontFamily='ReggaeOne, sans-serif'>
                     ({day})
                 </Text>
             </Card>
