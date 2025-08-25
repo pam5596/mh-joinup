@@ -8,7 +8,7 @@ import { AlertSnackProvider } from "@/components/provider";
 
 export const metadata: Metadata = {
     title: "MHJoinUp",
-    description: "モンスターハンター参加型配信用、参加希望者管理アプリ",
+    description: "モンスターハンター参加型配信用、参加者管理アプリ",
 };
 
 
