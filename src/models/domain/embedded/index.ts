@@ -1,1 +1,0 @@
-export {ManageInstant} from './managements/instant'

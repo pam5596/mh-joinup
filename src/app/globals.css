@@ -1,8 +1,0 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-@font-face {
-    font-family: 'ReggaeOne';
-    src: url('/ReggaeOne-Regular.ttf') format('opentype');
-}
