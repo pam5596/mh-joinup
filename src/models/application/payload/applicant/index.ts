@@ -1,1 +1,0 @@
-export type { POSTRequestType, POSTResponseType } from "./post";
